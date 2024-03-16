@@ -12,9 +12,11 @@
 
 import sys, os
 
-# Set working directory
+# Set working directory to be root directory of the repository
 
-os.chdir("/home/selliott/Research/roy_model_matching")
+os.chdir(os.path.dirname(__file__))
+os.chdir('../..')
+
 
 # Import the "package"
 
