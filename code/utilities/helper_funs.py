@@ -1,10 +1,10 @@
 ###############################################################################
 # Sean Elliott - March 2024
 #
-# Some helper functions for the simluations
-# These are just some utility functions, not really part of the core functionality
-# The difference between these functions and the ones in sim_methods.py is that these are
-# called only from that script and not the main script (i.e. it is a level below)
+# These are generic "helper" functions which are called by sim_methods.py
+# That is, they are a layer further removed from the functions which the user
+# would ever interact with.
+###############################################################################
 
 import numpy as np, statistics, scipy, pandas as pd
 

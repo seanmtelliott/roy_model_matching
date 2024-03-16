@@ -1,7 +1,12 @@
 ###############################################################################
 # Sean Elliott - March 2024
 #
-# Core functionality needed to perform simulations.
+# This script contains functions called by roy_model_matching.py 
+# these are not "visible" to the user in the sense that they need not interact
+# with them to produce simulation results.
+###############################################################################
+
+# Import libraries
 
 import numpy as np, pandas as pd, sys, itertools, ot, yaml
 sys.path.append('code/utilities')
@@ -11,7 +16,7 @@ import helper_funs as helpers
 
 
 ## MODIFY THE CONFIG
-# This stores
+# This fills the fields of the template config yaml file based on user specification
 def modify_config(size,dist,dist_params,revenue_params,tol=0.01,adj_wage=True):
     # Read in blank file
     with open('code/config/config.yaml','r') as file:

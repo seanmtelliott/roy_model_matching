@@ -3,10 +3,11 @@
 #
 # Simulations for "A generalization of a model of Roy for partition of labour force via matching and occupational choice"
 #
-# This is just the example of recreating the simulations already performed
-# The code in here will be generalized to allow for any underlying skill distribution
-# and other relevant parameters.
-# I will make a note anywhere that a parameterization/generalization is needed.
+# These are the callable functions from the perspective of the user.
+# It contains the main functionality:
+# 1. Perform simulation
+# 2. Generate plots based on simulation results
+#TODO: 3. Output the results in a .csv file
 ################################################################################
 
 # Import libraries
@@ -54,9 +55,6 @@ def gen_plots(results,labels,output_path):
     
     # Put the plots together
     fig, axes = plt.subplots(2,2)
-    
-    #config = results[0]['config']
-    
     
     # Specify some colours
     if len(labels) == 3:
@@ -130,7 +128,7 @@ def gen_plots(results,labels,output_path):
 
 ###############################################################################
 
-
+#TODO: add this part
 ## GENERATE WORKER DF
 def gen_worker_df(ot_results,worker_df):
     
