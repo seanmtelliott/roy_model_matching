@@ -16,6 +16,8 @@ logging.getLogger().setLevel(logging.CRITICAL)
 sys.path.append('code/utilities')
 import sim_methods as sm
 
+################################################################################
+
 ## PERFORM SIMULATION
 
 def model_sim(size,dist,dist_params,revenue_params):
@@ -56,6 +58,7 @@ def gen_plots(results,labels,output_path):
     # Put the plots together
     fig, axes = plt.subplots(2,2)
     
+    # TODO: generalize this for different number of labels (only handles 3 and 5 at the moment)
     # Specify some colours
     if len(labels) == 3:
         colors = ['grey','brown','k']
@@ -88,7 +91,6 @@ def gen_plots(results,labels,output_path):
 
 
         # Separating function
-    
         wage_differential = [[wage_key[k]-wage_sec[s] for s in range(num_types)] for k in range(num_types)]
         wage_differential_abs = [[abs(wage_key[k]-wage_sec[s]) for s in range(num_types)] for k in range(num_types)]
         sep_function = [wage_differential_abs[k].index(min(wage_differential_abs[k]))/(num_types-1) for k in range(num_types)]
@@ -113,7 +115,8 @@ def gen_plots(results,labels,output_path):
         
     lines_labels = [fig.axes[1].get_legend_handles_labels()]
     lines, labels = [sum(lol, []) for lol in zip(*lines_labels)]
-    # Position the legend differently depending on how many labels we have
+    # Position the legend differently depending on how many labels we have 
+    # TODO: generalize this also
     if len(labels) == 3:
         fig.legend(lines, labels, loc="lower center",ncol=(len(labels)),  prop = { "size": 7.5 })
     if len(labels) == 5:
