@@ -37,7 +37,7 @@ for i in c_vals:
 
 # Generate the plots
 rmm.gen_plots(all_results_grid,labels=["c=0.01","c=1.5","c=3"],output_path = os.path.join(os.getcwd(),'data', 'output','grid_plot.png'))
-# Write the results to disk
+# TODO: Write the results to disk
 #rmm.save_results(all_results_grid,labels=["c=0.01","c=1.5","c=3"],output_path = os.path.join(os.getcwd(),'data', 'output','worker_summary.csv'))
 
 ## Lognormal with different values of c and rho

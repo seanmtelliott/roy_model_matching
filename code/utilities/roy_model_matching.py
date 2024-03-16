@@ -1,5 +1,5 @@
 ################################################################################
-# Sean Elliott - Feb 2024
+# Sean Elliott - March 2024
 #
 # Simulations for "A generalization of a model of Roy for partition of labour force via matching and occupational choice"
 #
