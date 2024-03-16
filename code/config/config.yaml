@@ -1,0 +1,26 @@
+# Economy size parameters
+size:
+    num_types:   # an N x N matrix of workers
+
+# Skill distribution parameters
+distribution:
+    distribution_type:      # options are: grid, lognormal
+    parameters:     # leave blank if grid, must be specified for a lognormal (symmetric) distribution
+        mean:       # a single value
+        variance:   # a single value
+        correlation:     # a single value
+
+# Revenue function
+# This is of the form F(k,s) = a*k^n + b*s^m + c*k*s all values must be specified.
+revenue:
+    coefficients:
+        a: 
+        b: 
+        c: 
+    exponents:
+        n: 
+        m: 
+    
+# Misc parameters (leave these as default for now)
+tolerance: 0.01
+adj_wage: True
