@@ -16,3 +16,4 @@
 *.pyc
 *.csv
 *.tex
+sim_testing.py

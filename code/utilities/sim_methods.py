@@ -109,15 +109,10 @@ def gen_workers(config):
         
         mvn_samples_trunc = mvn_samples_trunc.round(decimals=3)
         mvn_samples_trunc = mvn_samples_trunc[(mvn_samples_trunc > 0).all(axis=1)] #taking (0,1)
-        
-        
-        # Need to sample them to reduce dimensionality
-        #mvn_sample_subset = mvn_samples_trunc[np.random.choice(mvn_samples_trunc.shape[0], 10000, replace=False)]
 
         # Sort them
         mvn_samples_sorted = np.array(sorted(sorted(mvn_samples_trunc,key=lambda e:e[1]),key=lambda e:e[0]))
         
-       
         types = {}
         types['workers'] = mvn_samples_sorted
         types['key'] = np.unique(mvn_samples_sorted[:,0])
@@ -147,6 +142,7 @@ def cost_matrix(types,config):
     skill_pairs = pd.DataFrame(data = np.array(list(itertools.product(k_types, s_types))), columns = ['k','s'])
     skill_pairs['cost'] = -helpers.revenue(skill_pairs['k'],skill_pairs['s'],config)
     cost_mat = np.array(skill_pairs['cost']).reshape(len(k_types),len(s_types))
+    
     return cost_mat
 
 ###############################################################################
@@ -165,6 +161,7 @@ def set_init_wage(types,config):
     wages = {}
     wages['key'] = wage_key
     wages['sec'] = wage_sec
+    
     return wages
 
 ###############################################################################

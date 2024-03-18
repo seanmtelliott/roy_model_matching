@@ -23,6 +23,7 @@ def revenue(k,s,config):
     c = config['revenue']['coefficients']['c']
     
     rev = a*k**n + b*s**m + c*k*s 
+    
     return rev
 
 ###############################################################################
@@ -46,8 +47,6 @@ def f_transform(wage,key_types,sec_types,config,role="s"):
 # Determine the mass of workers of each type who choose which role.
 def worker_choice(adj_factor,N_type,wage_key,wage_sec,types,perform_check,config):    
     
-    dist = config['distribution']['distribution_type'] 
-    
     key_dist = [0] * N_type['k'][0]
     sec_dist = [0] * N_type['s'][0]
 
@@ -57,51 +56,30 @@ def worker_choice(adj_factor,N_type,wage_key,wage_sec,types,perform_check,config
     wage_key_altered = [x + adj_factor for x in wage_key]
     wage_sec_altered = [x - adj_factor for x in wage_sec]
 
-    # If the distribution is a grid we can just simply count them up since everything is symmetric 
-    # we need to actually look at the list of workers in the lognormal case
+    # Workers choose the occupation which has a greater wage 
+        
+    workers = types['workers']
+ 
+    # Put the worker df together
+    wage_fun_key = pd.DataFrame(np.column_stack([types['key'],wage_key_altered]),columns=("k","wage_k"))
+    wage_fun_sec = pd.DataFrame(np.column_stack([types['sec'],wage_sec_altered]),columns=("s","wage_s"))
+    worker_df = pd.DataFrame(workers,columns=("k","s"))
+    worker_wages = worker_df.merge(wage_fun_key,on="k").merge(wage_fun_sec,on="s")
     
-    if dist=="grid":
-        
-        for k in range(N_type['k'][0]):
-            for s in range(N_type['s'][0]):
-                if wage_key_altered[k] > wage_sec_altered[s]:
-                    key_worker_count += 1
-                    key_dist[k] += 1
-                else:
-                    sec_worker_count += 1
-                    sec_dist[s] += 1
-
-        # Check the balance
-        if perform_check == 1:
-            diff = key_worker_count - sec_worker_count
-            return diff
-        if perform_check == 0:
-            return key_dist,sec_dist
-        
-    elif dist=="lognormal":
-      
-        workers = types['workers']
-
-        # Put the worker df together
-        wage_fun_key = pd.DataFrame(np.column_stack([types['key'],wage_key_altered]),columns=("k","wage_k"))
-        wage_fun_sec = pd.DataFrame(np.column_stack([types['sec'],wage_sec_altered]),columns=("s","wage_s"))
-        worker_df = pd.DataFrame(workers,columns=("k","s"))
-        worker_wages = worker_df.merge(wage_fun_key,on="k").merge(wage_fun_sec,on="s")
-        
-        # Select their roles
-        worker_wages['role_sel_key'] = np.where(worker_wages["wage_k"]>worker_wages["wage_s"],1,0)
-        worker_wages['role_sel_sec'] = np.where(worker_wages["wage_k"]<worker_wages["wage_s"],1,0)
-        
-        key_worker_count = sum(worker_wages['role_sel_key'])
-        sec_worker_count = sum(worker_wages['role_sel_sec'])
-        # Check the balance
-        if perform_check == 1:
-            diff = key_worker_count - sec_worker_count
-            return diff
-        if perform_check == 0:
-            key_dist = np.array(worker_wages.groupby(['k'])['role_sel_key'].agg('sum'))
-            sec_dist = np.array(worker_wages.groupby(['s'])['role_sel_sec'].agg('sum'))
-            return key_dist,sec_dist
+    # Select their roles
+    worker_wages['role_sel_key'] = np.where(worker_wages["wage_k"]>worker_wages["wage_s"],1,0)
+    worker_wages['role_sel_sec'] = np.where(worker_wages["wage_k"]<worker_wages["wage_s"],1,0)
+    
+    key_worker_count = sum(worker_wages['role_sel_key'])
+    sec_worker_count = sum(worker_wages['role_sel_sec'])
+    # Check the balance
+    if perform_check == 1:
+        diff = key_worker_count - sec_worker_count
+        return diff
+    if perform_check == 0:
+        key_dist = np.array(worker_wages.groupby(['k'])['role_sel_key'].agg('sum'))
+        sec_dist = np.array(worker_wages.groupby(['s'])['role_sel_sec'].agg('sum'))
+        return key_dist,sec_dist
       
 ###############################################################################
 
