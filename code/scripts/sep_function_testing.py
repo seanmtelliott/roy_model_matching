@@ -57,6 +57,23 @@ for i in c_vals:
 # Generate the plots
 rmm.gen_plots(all_results_grid,labels=["c=0.01","c=0.5","c=2"],output_path = os.path.join(os.getcwd(),'data', 'output','sep_function_test','grid_plot_linear_ks.png'))
 
+# Rectangular grid distribution with different values of 'c' in the revenue function
+size = 1000
+dist = "grid"
+dist_params = None
+c_vals = [0.01,0.5,5]
+
+all_results_grid = []
+for i in c_vals:
+    
+    revenue_params = {'a':3,'b':1,'c':i,'n':1,'m':1} # where F(k,s) = a*k**n + b*s**m + c*k*s
+    
+    sim_results_grid = rmm.model_sim(size,dist,dist_params,revenue_params)
+    all_results_grid.append(sim_results_grid)
+
+# Generate the plots
+rmm.gen_plots(all_results_grid,labels=["c=0.01","c=0.5","c=5"],output_path = os.path.join(os.getcwd(),'data', 'output','sep_function_test','grid_plot_linear_ks_extreme.png'))
+
 ## Now we get linearity when c -> 0
 ## Using a similar distribution from HH (lognormal, sigma11 > sigma12)
 ## Start with low correlation (rho=0.25)
