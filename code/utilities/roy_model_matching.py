@@ -11,7 +11,7 @@
 ################################################################################
 
 # Import libraries
-import sys, matplotlib.pyplot as plt, logging
+import sys, matplotlib.pyplot as plt, logging, numpy as np
 logging.getLogger().setLevel(logging.CRITICAL)
 sys.path.append('code/utilities')
 import sim_methods as sm
@@ -73,14 +73,14 @@ def gen_plots(results,labels,output_path):
         num_types = len(types_key)
     
         # Get wages
-        wage_key = results[i]['ot']['wage_key']
-        wage_sec = results[i]['ot']['wage_sec']
+        wage_key = np.log(results[i]['ot']['wage_key'])
+        wage_sec = np.log(results[i]['ot']['wage_sec'])
     
         # Wages
         if i < len(labels)-1:
             wage_lab = ["_Hidden","_Hidden"]
         elif i==len(labels)-1:
-            wage_lab = ["key","secondary"]
+            wage_lab = ["k","s"]
             
         axes[0,0].plot(types_key,wage_key,color=colors[i],label=wage_lab[0])
         axes[0,0].plot(types_sec,wage_sec,linestyle="dotted",color=colors[i],label=wage_lab[1])
