@@ -35,7 +35,7 @@ for i in c_vals:
     all_results_grid.append(sim_results_grid)
 
 # Generate the plots
-rmm.gen_plots(all_results_grid,labels=["c=0.01","c=1.5","c=3"],output_path = os.path.join(os.getcwd(),'data', 'output','grid_plot_linear.png'))
+rmm.gen_plots(all_results_grid,labels=["c=0.01","c=1.5","c=3",],output_path = os.path.join(os.getcwd(),'data', 'output','grid_plot_linear.png'))
 # TODO: Write the results to disk
 #rmm.save_results(all_results_grid,labels=["c=0.01","c=1.5","c=3"],output_path = os.path.join(os.getcwd(),'data', 'output','worker_summary.csv'))
 

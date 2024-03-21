@@ -20,11 +20,11 @@ import sim_methods as sm
 
 ## PERFORM SIMULATION
 
-def model_sim(size,dist,dist_params,revenue_params):
+def model_sim(size,dist,dist_params,revenue_params,tolerance=0.01):
     
     # Set the config file
     
-    config = sm.modify_config(size, dist, dist_params, revenue_params)
+    config = sm.modify_config(size, dist, dist_params, revenue_params,tolerance)
     
     #Display to the user the simulation being run
     sm.sim_params(config)
@@ -88,7 +88,6 @@ def gen_plots(results,labels,output_path):
         axes[0,0].set_title("Wages by type")
         axes[0,0].set_xlabel('Skill level')
         axes[0,0].set_ylabel('Wage')
-
 
         # Separating function
         wage_differential = [[wage_key[k]-wage_sec[s] for s in range(num_types)] for k in range(num_types)]

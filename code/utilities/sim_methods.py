@@ -49,6 +49,7 @@ def modify_config(size,dist,dist_params,revenue_params,tol=0.01,adj_wage=True):
     config['revenue']['exponents']['m'] = revenue_params['m']
     
     # Tolerance and adj_wage 
+    config['tolerance'] = tol
     
     # for now take these as fixed
     
