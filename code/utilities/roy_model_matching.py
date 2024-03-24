@@ -11,10 +11,10 @@
 ################################################################################
 
 # Import libraries
-import sys, matplotlib.pyplot as plt, logging, numpy as np
+import sys, matplotlib.pyplot as plt, logging, numpy as np, copy, statistics
 logging.getLogger().setLevel(logging.CRITICAL)
 sys.path.append('code/utilities')
-import sim_methods as sm
+import sim_methods as sm, helper_funs as helpers
 
 ################################################################################
 
@@ -42,18 +42,24 @@ def model_sim(size,dist,dist_params,revenue_params,tolerance=0.01):
 
     ot_results = sm.get_optimal_wages(wages,cost_mat,types,config)
     
+    # Organize firm information (useful for inequality plots later)
+    
+    firms = sm.get_firm_info(ot_results,types,config)
+    
+    # Collect all of the relevant information and store it as a dict
     results = {}
     results['ot'] = ot_results
     results['types'] = types
     results['config'] = config
+    results['firms'] = firms
     
     return results
 
 ###############################################################################
 
-## GENERATE PLOTS
+## GENERATE SEPARATING FUNCTION PLOTS
 
-def gen_plots(results,labels,output_path):
+def plot_sep_fun(results,labels,output_path):
     
     # Put the plots together
     fig, axes = plt.subplots(2,2)
@@ -99,7 +105,7 @@ def gen_plots(results,labels,output_path):
         axes[0,1].set_ylabel('s')
     
         # Matching function
-        matching_fun = [results[i]['ot']['ot_mat'][k].argmax()/(num_types-1) for k in range(num_types)] 
+        matching_fun = [types_sec[results[i]['ot']['ot_mat'][k].argmax()] for k in range(num_types)] 
         axes[1,0].plot(types_key,matching_fun,color=colors[i],label = labels[i])
         axes[1,0].set_title("Matching function")
         axes[1,0].set_xlabel('k')
@@ -130,23 +136,55 @@ def gen_plots(results,labels,output_path):
 
 ###############################################################################
 
-#TODO: add this part
-## GENERATE WORKER DF
-def gen_worker_df(ot_results,worker_df):
+## GENERATE INEQUALITY RESULTS
+def plot_inequality(result1,result2):
     
-    pi_new = ([-x for x in ot_results[1]['u']])
-    w_new = ([-x for x in ot_results[1]['v']])
-    k_types = worker_df['k'].unique()
-    s_types = worker_df['s'].unique()
+    # First look at inequality across firms -- do we see more inequality for more productive firms?
+    firms = result1['firms']
+    firms_random = result2['firms']
     
-    pi_new_df = pd.DataFrame(np.column_stack((k_types,pi_new,)), columns=['k','wage_key_new'])
-    w_new_df = pd.DataFrame(np.column_stack((s_types,w_new)),columns=['s','wage_sec_new'])
+    firm_output = []
+    firm_output_random = []
+    for i in range(len(firms)):
+        
+        firm_output.append(helpers.revenue(firms['k'][i],firms['s'][i],result1['config']))
+        firm_output_random.append(helpers.revenue(firms_random['k'][i],firms_random['s'][i],result2['config']))
+
+    percentile_orig = statistics.quantiles(firm_output,n=100)    
+    percentile_rand = statistics.quantiles(firm_output_random,n=100)    
+    diff = np.subtract(percentile_orig, percentile_rand)
+    plt.plot(diff)
     
-    # Update the wages
-    worker_df_new = worker_df.merge(pi_new_df, on='k', how='left').merge(w_new_df, on='s', how='left')
-    worker_df_new['wage_key'] = worker_df_new['wage_key_new']
-    worker_df_new['wage_sec'] = worker_df_new['wage_sec_new']
-    worker_df_new = worker_df_new.drop('wage_key_new', axis=1).drop("wage_sec_new", axis=1)
+    within_ineq = statistics.quantiles(firms['diff'],n=100)
+    within_ineq_random = statistics.quantiles(firms_random['diff'],n=100)
+    diff_ineq = np.subtract(within_ineq, within_ineq_random)
+    plt.plot(diff_ineq)
+
+    # Next look at inequality within
+
+    return
+
+## RANDOMIZE RESULTS
+# Take results from the full model and randomize either the matching, the worker sorting, or both
+def randomize_results(model_results,randomized):
     
-    return worker_df_new
+    results = copy.deepcopy(model_results)
+    
+    if randomized == "matching":
+        
+        # Randomize the matching fun from the OT problem
+        results['ot']['matching_fun'] = np.random.permutation(results['ot']['matching_fun'])
+        firms_random = sm.get_firm_info(results['ot'],results['types'],results['config'])
+        results['firms'] = firms_random
+        
+    if randomized == "sorting":
+        pass
+
+        
+    if randomized == "all":
+        pass
+        
+    return results
+
+
 

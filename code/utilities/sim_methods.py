@@ -209,14 +209,14 @@ def get_optimal_wages(wages,cost_mat,types,config):
                 results = {}
                 results['wage_key'] = wage_key_adj
                 results['wage_sec'] = wage_sec_adj
-                results['ot_mat'] = ot_results[0]
+                results['matching_fun'] = [types['sec'][ot_results[0][k].argmax()] for k in range(len(types['key']))]
                 results['key_dist'] = key_dist
                 results['sec_dist'] = sec_dist
             elif adj_wage == False:
                 results = {}
                 results['wage_key'] = wage_key
                 results['wage_sec'] = wage_sec
-                results['ot_mat'] = ot_results[0]
+                results['matching_fun'] = [types['sec'][ot_results[0][k].argmax()] for k in range(len(types['key']))]
                 results['key_dist'] = key_dist
                 results['sec_dist'] = sec_dist
             break
@@ -227,3 +227,24 @@ def get_optimal_wages(wages,cost_mat,types,config):
     return results
 
 ###############################################################################
+
+
+## GET FIRM INFO
+# Use wages and matching function to compile firm info into a dataframe
+def get_firm_info(results,types,config):
+    
+    wages = pd.DataFrame(np.column_stack((types['key'],types['sec'],results['wage_key'],results['wage_sec'],
+                             np.log(results['wage_key']),np.log(results['wage_sec']))),columns=['k','s','wage_key','wage_sec','log_wage_key','log_wage_sec'])
+    
+    matching_fun = pd.DataFrame(np.column_stack((types['key'],results['matching_fun'])),
+                                columns=['k','s'])
+   
+    match_wages_s = matching_fun.merge(wages[['s','wage_sec']], on = 's', how = 'left')
+    
+    firms = pd.DataFrame(np.column_stack((matching_fun,results['wage_key'],match_wages_s['wage_sec'],
+                                          np.log(results['wage_key']),np.log(match_wages_s['wage_sec']),np.log(results['wage_key'])-np.log(match_wages_s['wage_sec']))),
+                                         columns=['k','s','wage_key','wage_sec','log_wage_key','log_wage_sec','diff'])
+    
+
+    
+    return firms

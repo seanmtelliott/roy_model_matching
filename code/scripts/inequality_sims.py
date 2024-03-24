@@ -29,9 +29,21 @@ os.chdir('../..')
 sys.path.append("code/utilities")
 import roy_model_matching as rmm
 
-# The random economy
+# First simulate the full model
 
 size = 1000
 dist = "lognormal"
 dist_params = {'mean': 0.5,'variance': 1,'correlation': 0.5}
 revenue_params = {'a':3,'b':1,'c':1,'n':1,'m':1}
+
+full_model_sim = rmm.model_sim(size,dist,dist_params,revenue_params)
+
+# Match them randomly
+
+random_matching = rmm.randomize_results(full_model_sim,randomized = "matching")
+
+rmm.plot_inequality(full_model_sim,random_matching)
+
+# Assign them to roles randomly and match them randomly
+
+#random_economy = rmm.randomize_results(full_model_sim,randomized = "all")
