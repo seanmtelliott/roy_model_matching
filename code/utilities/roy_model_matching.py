@@ -62,7 +62,15 @@ def model_sim(size,dist,dist_params,revenue_params,tolerance=0.01):
 def plot_sep_fun(results,labels,output_path):
     
     # Put the plots together
-    fig, axes = plt.subplots(2,2)
+   # fig, axes = plt.subplots(2,2)
+    
+    fig = plt.figure(figsize=(5.5, 3.5), layout="constrained")
+    spec = fig.add_gridspec(ncols=2, nrows=2)
+    gs = fig.add_gridspec(2, 2)
+    ax1 = fig.add_subplot(gs[0, 0])
+    ax2 = fig.add_subplot(gs[0, 1])
+    ax3 = fig.add_subplot(gs[1, :])
+    
     
     # TODO: generalize this for different number of labels (only handles 3 and 5 at the moment)
     # Specify some colours
@@ -88,42 +96,42 @@ def plot_sep_fun(results,labels,output_path):
         elif i==len(labels)-1:
             wage_lab = ["k","s"]
             
-        axes[0,0].plot(types_key,wage_key,color=colors[i],label=wage_lab[0])
-        axes[0,0].plot(types_sec,wage_sec,linestyle="dotted",color=colors[i],label=wage_lab[1])
-        axes[0,0].legend(loc='upper left')
-        axes[0,0].set_title("Wages by type")
-        axes[0,0].set_xlabel('Skill level')
-        axes[0,0].set_ylabel('Wage')
+        ax1.plot(types_key,wage_key,color=colors[i],label=wage_lab[0])
+        ax1.plot(types_sec,wage_sec,linestyle="dotted",color=colors[i],label=wage_lab[1])
+        ax1.legend(loc='lower right',fontsize="7",ncol=2)
+        ax1.set_title("Ln wage by type")
+        ax1.set_xlabel('Skill level')
+        ax1.set_ylabel('Ln wage')
 
         # Separating function
-        wage_differential = [[wage_key[k]-wage_sec[s] for s in range(num_types)] for k in range(num_types)]
+        #wage_differential = [[wage_key[k]-wage_sec[s] for s in range(num_types)] for k in range(num_types)]
         wage_differential_abs = [[abs(wage_key[k]-wage_sec[s]) for s in range(num_types)] for k in range(num_types)]
         sep_function = [wage_differential_abs[k].index(min(wage_differential_abs[k]))/(num_types-1) for k in range(num_types)]
-        axes[0,1].plot(types_key,sep_function,color=colors[i],label = labels[i])
-        axes[0,1].set_title("Separating function")
-        axes[0,1].set_xlabel('k')
-        axes[0,1].set_ylabel('s')
+        ax3.plot(types_key,sep_function,color=colors[i],label = labels[i])
+        ax3.set_title("Separating function")
+        ax3.set_xlabel('k')
+        ax3.set_ylabel('s')
     
         # Matching function
-        matching_fun = [types_sec[results[i]['ot']['ot_mat'][k].argmax()] for k in range(num_types)] 
-        axes[1,0].plot(types_key,matching_fun,color=colors[i],label = labels[i])
-        axes[1,0].set_title("Matching function")
-        axes[1,0].set_xlabel('k')
-        axes[1,0].set_ylabel('s')
+        matching_fun = results[i]['ot']['matching_fun']
+        ax2.plot(types_key,matching_fun,color=colors[i],label = labels[i])
+        ax2.set_title("Matching function")
+        ax2.set_xlabel('k')
+        ax2.set_ylabel('s')
     
         # Wage inequality
-        ineq_function = [wage_differential[k][int(matching_fun[k]*(num_types-1))] for k in range(num_types)]
-        axes[1,1].plot(types_key,ineq_function,color=colors[i],label = labels[i])
-        axes[1,1].set_title("Wage inequality in matches")
-        axes[1,1].set_xlabel('k')
-        axes[1,1].set_ylabel('Wage difference')
+        # ineq_function = [wage_differential[k][int(matching_fun[k]*(num_types-1))] for k in range(num_types)]
+        # axes[1,1].plot(types_key,ineq_function,color=colors[i],label = labels[i])
+        # axes[1,1].set_title("Wage inequality in matches")
+        # axes[1,1].set_xlabel('k')
+        # axes[1,1].set_ylabel('Wage difference')
         
     lines_labels = [fig.axes[1].get_legend_handles_labels()]
     lines, labels = [sum(lol, []) for lol in zip(*lines_labels)]
     # Position the legend differently depending on how many labels we have 
     # TODO: generalize this also
     if len(labels) == 3:
-        fig.legend(lines, labels, loc="lower center",ncol=(len(labels)),  prop = { "size": 7.5 })
+        fig.legend(lines, labels, bbox_to_anchor=(0.25, -0.45, 0.5, 0.5),ncol=(len(labels)),  prop = { "size": 7.5 })
     if len(labels) == 5:
         fig.legend(lines, labels, bbox_to_anchor=(0.44, -0.45, 0.5, 0.5),ncol=(len(labels)),  prop = { "size": 7.5 })
 
@@ -136,55 +144,86 @@ def plot_sep_fun(results,labels,output_path):
 
 ###############################################################################
 
-## GENERATE INEQUALITY RESULTS
-def plot_inequality(result1,result2):
-    
-    # First look at inequality across firms -- do we see more inequality for more productive firms?
-    firms = result1['firms']
-    firms_random = result2['firms']
-    
-    firm_output = []
-    firm_output_random = []
-    for i in range(len(firms)):
-        
-        firm_output.append(helpers.revenue(firms['k'][i],firms['s'][i],result1['config']))
-        firm_output_random.append(helpers.revenue(firms_random['k'][i],firms_random['s'][i],result2['config']))
-
-    percentile_orig = statistics.quantiles(firm_output,n=100)    
-    percentile_rand = statistics.quantiles(firm_output_random,n=100)    
-    diff = np.subtract(percentile_orig, percentile_rand)
-    plt.plot(diff)
-    
-    within_ineq = statistics.quantiles(firms['diff'],n=100)
-    within_ineq_random = statistics.quantiles(firms_random['diff'],n=100)
-    diff_ineq = np.subtract(within_ineq, within_ineq_random)
-    plt.plot(diff_ineq)
-
-    # Next look at inequality within
-
-    return
 
 ## RANDOMIZE RESULTS
-# Take results from the full model and randomize either the matching, the worker sorting, or both
-def randomize_results(model_results,randomized):
+# Generate output identical to that of the model but everything is randomized
+def randomize_results(size,dist,dist_params,revenue_params,tolerance=0.01):
     
-    results = copy.deepcopy(model_results)
+    # Set the config file
+    config = sm.modify_config(size, dist, dist_params, revenue_params,tolerance)
     
-    if randomized == "matching":
-        
-        # Randomize the matching fun from the OT problem
-        results['ot']['matching_fun'] = np.random.permutation(results['ot']['matching_fun'])
-        firms_random = sm.get_firm_info(results['ot'],results['types'],results['config'])
-        results['firms'] = firms_random
-        
-    if randomized == "sorting":
-        pass
+    #Display to the user the simulation being run
+    sm.sim_params(config)
+    
+    # Get type information
+    types = sm.gen_workers(config)
 
-        
-    if randomized == "all":
-        pass
-        
+    # Get wage info (here it is just their marginal contribution to revenue)
+    wages = sm.set_init_wage(types.copy(),config,random=True)
+    
+    # Randomize the matching (just sort the sec skills randomly and they match to key role monotonically)
+    matching_fun = np.random.permutation(types['sec'])
+    
+    # Format this like the OT results would be 
+    ot_like_results = {}
+    ot_like_results['wage_key']=wages['key']
+    ot_like_results['wage_sec']=wages['sec']
+    ot_like_results['matching_fun']=matching_fun
+    
+    # Get firm info
+    firms = sm.get_firm_info(ot_like_results,types,config)
+    
+    results = {}
+    results['config'] = config
+    results['firms'] = firms
+    results['ot'] = ot_like_results
+    results['types'] = types
+    
     return results
+
+###############################################################################
+
+
+## GENERATE INEQUALITY RESULTS
+# Results is a dictionary containing model output objects, wage inequality comparisons are made across these model results
+# We can compute three different forms of inequality:
+#   1. within firms (difference between pair worker wages)
+#   2. across firms (difference between average output by firm)
+#   3. across individuals (do they high-skill individuals earn comparatively more under sorting/matching?)
+def plot_inequality(results,labels,output_path):
+          
+    # Inequality within firms
+        
+    diff1 = statistics.quantiles(results['linear']['firms']['diff'],n=200)
+    diff2 = statistics.quantiles(results['nonlinear']['firms']['diff'],n=200)
+    
+    # Inequality across firms
+    
+    output1 = statistics.quantiles(np.add(results['linear']['firms']['log_wage_key'],results['linear']['firms']['log_wage_sec']),n=200)
+    output2 = statistics.quantiles(np.add(results['nonlinear']['firms']['log_wage_key'],results['nonlinear']['firms']['log_wage_sec']),n=200)
+    
+    # Income inequality
+    
+    key1 = statistics.quantiles(results['linear']['firms']['log_wage_key'],n=200)
+    key2 = statistics.quantiles(results['nonlinear']['firms']['log_wage_key'],n=200)
+    
+    sec1 = statistics.quantiles(results['linear']['firms']['log_wage_sec'],n=200)
+    sec2 = statistics.quantiles(results['nonlinear']['firms']['log_wage_sec'],n=200)
+    
+    # Put the plot together and write it to the output path
+    ticks = np.arange(199)/2
+    
+    plt.plot(ticks,np.subtract(diff2,diff1),label = "Within Firm", color="g")
+    plt.plot(ticks,np.subtract(output2,output1), label = "Across Firm", color="r")
+    plt.plot(ticks,np.subtract(key2,key1), label = "Workers (Key)", color = "royalblue")
+    plt.plot(ticks,np.subtract(sec2,sec1), label = "Workers (Secondary)", color = "royalblue", linestyle="dotted")
+    plt.legend(loc="upper left")
+    plt.xlabel("Percentile")
+    plt.ylabel("Diff. of natural log")
+    plt.savefig(output_path)
+    
+    return
+
 
 
 

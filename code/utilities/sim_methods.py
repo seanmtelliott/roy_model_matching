@@ -151,17 +151,31 @@ def cost_matrix(types,config):
 
 ## SET INITIAL WAGES
 # The wages need to be set in some way for the first iteration -- this could be done any way, really.
-def set_init_wage(types,config):
+# The random flag is used to determine wages in the random assignment/matching case 
+def set_init_wage(types,config,random=False):
     
-    key_types = np.unique(types['key'])
-    sec_types = np.unique(types['sec'])
+    if random==False:
     
-    wage_key = [helpers.revenue(key_types[n],key_types[n],config)/2 for n in range(len(key_types))]
-    wage_sec = helpers.f_transform(wage_key,key_types,sec_types,config, role="s")
+        key_types = np.unique(types['key'])
+        sec_types = np.unique(types['sec'])
     
-    wages = {}
-    wages['key'] = wage_key
-    wages['sec'] = wage_sec
+        wage_key = [helpers.revenue(key_types[n],key_types[n],config)/2 for n in range(len(key_types))]
+        wage_sec = helpers.f_transform(wage_key,key_types,sec_types,config, role="s")
+    
+        wages = {}
+        wages['key'] = wage_key
+        wages['sec'] = wage_sec
+        
+    elif random==True:
+        
+        key_types = np.unique(types['key'])
+        sec_types = np.unique(types['sec'])
+        wage_key = key_types * config['revenue']['coefficients']['a']
+        wage_sec = sec_types * config['revenue']['coefficients']['b']
+        
+        wages = {}
+        wages['key'] = wage_key
+        wages['sec'] = wage_sec
     
     return wages
 

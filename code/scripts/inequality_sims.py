@@ -1,19 +1,9 @@
 ## Sean Elliott - March 2024
 # 
-# This script will produce simulation results to compare levels of inequality across different economies.
-# First, we start with a completely random economy. Workers are assigned skills, and then they
-# are placed into jobs at random, where wages are simply determined by the zero profit condition
-#
-# Second, we simulate a roy economy where workers choose their roles based on prevailing wages
-# the goal here is to show that worker sorting will increase inequality
-#
-# Finally, we add the full model which includes matching and the non-linear separation function
-# we want to see what happens to wage inequality once we incorporate the full specification
-# 
-# Skills will be lognormal and we use the revenue function F(k,s) = ak + bs + cks
-# Wages are given by pi(k) = p_k * k and w(s) = p_s * s in the first two cases
-# and are optimally determined by the OT problem in the 3rd case
-
+# Here we want to see how inequality changes when we incorporate different features of the model.
+# We can see what happens as we allow workers to interact with one another in production
+# That is, what happens when we introduce the non-linearity in the separating function?
+# The goal is to show that this roughly produces similar results to Bloom et al. (2019)
 
 # Import libraries
 
@@ -29,21 +19,73 @@ os.chdir('../..')
 sys.path.append("code/utilities")
 import roy_model_matching as rmm
 
-# First simulate the full model
+### Set rho = 0.5
 
+# Set the parameters
 size = 1000
 dist = "lognormal"
-dist_params = {'mean': 0.5,'variance': 1,'correlation': 0.5}
-revenue_params = {'a':3,'b':1,'c':1,'n':1,'m':1}
+dist_params = {'mean': 0.5,'variance': 1,'correlation': 0.25}
 
-full_model_sim = rmm.model_sim(size,dist,dist_params,revenue_params)
+## MODEL w/ linear phi
+#Run the model with c=0 or c very close to 0
+revenue_params = {'a':3,'b':1,'c':0.01,'n':1,'m':1}
+linear_sep_50 = rmm.model_sim(size,dist,dist_params,revenue_params,tolerance=0.001)
 
-# Match them randomly
+# MODEL w/ non-linear phi
+#Set c s.t. we get non-linear phi (here I am choosing c=2, same as previous simulations)
 
-random_matching = rmm.randomize_results(full_model_sim,randomized = "matching")
+revenue_params = {'a':3,'b':1,'c':2,'n':1,'m':1}
+nonlinear_sep_50 = rmm.model_sim(size,dist,dist_params,revenue_params,tolerance=0.001)
 
-rmm.plot_inequality(full_model_sim,random_matching)
+inequality_sims_50 = {}
+inequality_sims_50['linear'] = linear_sep_50
+inequality_sims_50['nonlinear'] = nonlinear_sep_50
 
-# Assign them to roles randomly and match them randomly
+rmm.plot_inequality(inequality_sims_50,labels=["Linear","Non-linear"],
+                    output_path = os.path.join(os.getcwd(),'data', 'output','ineq_sep_plots','inequality_rho_test.png'))
 
-#random_economy = rmm.randomize_results(full_model_sim,randomized = "all")
+### Set rho = 0.05 -- these don't change much so probably can only just show the rho=0.5 
+
+# # Set the parameters
+# dist_params = {'mean': 0.5,'variance': 1,'correlation': 0.05}
+
+# ## MODEL w/ linear phi
+# #Run the model with c=0 or c very close to 0
+# revenue_params = {'a':3,'b':1,'c':0.01,'n':1,'m':1}
+# linear_sep_05 = rmm.model_sim(size,dist,dist_params,revenue_params,tolerance=0.001)
+
+# # MODEL w/ non-linear phi
+# #Set c s.t. we get non-linear phi (here I am choosing c=2, same as previous simulations)
+
+# revenue_params = {'a':3,'b':1,'c':2,'n':1,'m':1}
+# nonlinear_sep_05 = rmm.model_sim(size,dist,dist_params,revenue_params,tolerance=0.001)
+
+# inequality_sims_05 = {}
+# inequality_sims_05['linear'] = linear_sep_05
+# inequality_sims_05['nonlinear'] = nonlinear_sep_05
+
+# rmm.plot_inequality(inequality_sims_05,labels=["Random","Linear","Non-linear"],
+#                     output_path = os.path.join(os.getcwd(),'data', 'output','ineq_sep_plots','inequality_rho_0_05.png'))
+
+# ### Set rho = 0.95
+
+# # Set the parameters
+# dist_params = {'mean': 0.5,'variance': 1,'correlation': 0.95}
+
+# ## MODEL w/ linear phi
+# #Run the model with c=0 or c very close to 0
+# revenue_params = {'a':3,'b':1,'c':0.01,'n':1,'m':1}
+# linear_sep_95 = rmm.model_sim(size,dist,dist_params,revenue_params,tolerance=0.001)
+
+# # MODEL w/ non-linear phi
+# #Set c s.t. we get non-linear phi (here I am choosing c=2, same as previous simulations)
+
+# revenue_params = {'a':3,'b':1,'c':2,'n':1,'m':1}
+# nonlinear_sep_95 = rmm.model_sim(size,dist,dist_params,revenue_params,tolerance=0.001)
+
+# inequality_sims_95 = {}
+# inequality_sims_95['linear'] = linear_sep_95
+# inequality_sims_95['nonlinear'] = nonlinear_sep_95
+
+# rmm.plot_inequality(inequality_sims_95,labels=["Random","Linear","Non-linear"],
+#                     output_path = os.path.join(os.getcwd(),'data', 'output','ineq_sep_plots','inequality_rho_0_95.png'))
