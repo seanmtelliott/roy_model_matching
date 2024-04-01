@@ -191,32 +191,36 @@ def randomize_results(size,dist,dist_params,revenue_params,tolerance=0.01):
 #   2. across firms (difference between average output by firm)
 #   3. across individuals (do they high-skill individuals earn comparatively more under sorting/matching?)
 def plot_inequality(results,labels,output_path):
+    
+    # Get the scenario names
+    scen1 = labels[0]
+    scen2 = labels[1]
           
+    # Need to weight everything by the counts of individuals in the generated sample
+    weighted_firm1 = sm.get_pop_weights(results[scen1])
+    weighted_firm2 = sm.get_pop_weights(results[scen2])
+    
     # Inequality within firms
         
-    diff1 = statistics.quantiles(results['linear']['firms']['diff'],n=200)
-    diff2 = statistics.quantiles(results['nonlinear']['firms']['diff'],n=200)
+    within1 = statistics.quantiles(weighted_firm1['diff'],n=200)
+    within2 = statistics.quantiles(weighted_firm2['diff'],n=200)
     
     # Inequality across firms
     
-    output1 = statistics.quantiles(np.add(results['linear']['firms']['log_wage_key'],results['linear']['firms']['log_wage_sec']),n=200)
-    output2 = statistics.quantiles(np.add(results['nonlinear']['firms']['log_wage_key'],results['nonlinear']['firms']['log_wage_sec']),n=200)
+    output1 = statistics.quantiles(weighted_firm1['output'],n=200)
+    output2 = statistics.quantiles(weighted_firm2['output'],n=200)
     
     # Income inequality
     
-    key1 = statistics.quantiles(results['linear']['firms']['log_wage_key'],n=200)
-    key2 = statistics.quantiles(results['nonlinear']['firms']['log_wage_key'],n=200)
-    
-    sec1 = statistics.quantiles(results['linear']['firms']['log_wage_sec'],n=200)
-    sec2 = statistics.quantiles(results['nonlinear']['firms']['log_wage_sec'],n=200)
+    wage1 = statistics.quantiles(np.array(weighted_firm1['log_wage_key'],weighted_firm1['log_wage_sec']),n=200)
+    wage2 = statistics.quantiles(np.array(weighted_firm2['log_wage_key'],weighted_firm2['log_wage_sec']),n=200)
     
     # Put the plot together and write it to the output path
     ticks = np.arange(199)/2
     
-    plt.plot(ticks,np.subtract(diff2,diff1),label = "Within Firm", color="g")
-    plt.plot(ticks,np.subtract(output2,output1), label = "Across Firm", color="r")
-    plt.plot(ticks,np.subtract(key2,key1), label = "Workers (Key)", color = "royalblue")
-    plt.plot(ticks,np.subtract(sec2,sec1), label = "Workers (Secondary)", color = "royalblue", linestyle="dotted")
+    plt.plot(ticks,np.subtract(within2,within1),label = "Within Firm", color="g")
+    plt.plot(ticks,np.subtract(output2,output1), label = "Firms", color="r")
+    plt.plot(ticks,np.subtract(wage2,wage1), label = "Individuals", color = "royalblue")
     plt.legend(loc="upper left")
     plt.xlabel("Percentile")
     plt.ylabel("Diff. of natural log")

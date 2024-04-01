@@ -24,25 +24,22 @@ import roy_model_matching as rmm
 # Set the parameters
 size = 1000
 dist = "lognormal"
-dist_params = {'mean': 0.5,'variance': 1,'correlation': 0.25}
+dist_params = {'mean': 0,'variance': 1,'correlation': 0.5}
 
-## MODEL w/ linear phi
-#Run the model with c=0 or c very close to 0
-revenue_params = {'a':3,'b':1,'c':0.01,'n':1,'m':1}
-linear_sep_50 = rmm.model_sim(size,dist,dist_params,revenue_params,tolerance=0.001)
+## First set of parameters
+revenue_params = {'a':0.55,'b':0.45,'c':0.01,'n':1,'m':1}
+scenario1 = rmm.model_sim(size,dist,dist_params,revenue_params,tolerance=0.001)
 
-# MODEL w/ non-linear phi
-#Set c s.t. we get non-linear phi (here I am choosing c=2, same as previous simulations)
+## Second set of parameters
+revenue_params = {'a':0.9,'b':0.1,'c':0.5,'n':1,'m':1}
+scenario2 = rmm.model_sim(size,dist,dist_params,revenue_params,tolerance=0.005)
 
-revenue_params = {'a':3,'b':1,'c':2,'n':1,'m':1}
-nonlinear_sep_50 = rmm.model_sim(size,dist,dist_params,revenue_params,tolerance=0.001)
+inequality_sims = {}
+inequality_sims['scenario1'] = scenario1
+inequality_sims['scenario2'] = scenario2
 
-inequality_sims_50 = {}
-inequality_sims_50['linear'] = linear_sep_50
-inequality_sims_50['nonlinear'] = nonlinear_sep_50
-
-rmm.plot_inequality(inequality_sims_50,labels=["Linear","Non-linear"],
-                    output_path = os.path.join(os.getcwd(),'data', 'output','ineq_sep_plots','inequality_rho_test.png'))
+rmm.plot_inequality(inequality_sims,labels=["scenario1","scenario2"],
+                    output_path = os.path.join(os.getcwd(),'data', 'output','test_plots','inequality_test_new.png'))
 
 ### Set rho = 0.05 -- these don't change much so probably can only just show the rho=0.5 
 

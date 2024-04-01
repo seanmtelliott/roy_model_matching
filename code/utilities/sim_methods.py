@@ -226,6 +226,7 @@ def get_optimal_wages(wages,cost_mat,types,config):
                 results['matching_fun'] = [types['sec'][ot_results[0][k].argmax()] for k in range(len(types['key']))]
                 results['key_dist'] = key_dist
                 results['sec_dist'] = sec_dist
+                results['ot_mat'] = ot_results[0]
             elif adj_wage == False:
                 results = {}
                 results['wage_key'] = wage_key
@@ -233,6 +234,7 @@ def get_optimal_wages(wages,cost_mat,types,config):
                 results['matching_fun'] = [types['sec'][ot_results[0][k].argmax()] for k in range(len(types['key']))]
                 results['key_dist'] = key_dist
                 results['sec_dist'] = sec_dist
+                results['ot_mat'] = ot_results[0]
             break
         elif convg_check == 0:
             print("Iteration",iterations,": Not converged, difference is", abs_diff)
@@ -262,3 +264,39 @@ def get_firm_info(results,types,config):
 
     
     return firms
+
+## GET POP WEIGHTS
+# Need to combine the firm info with info about number of each type to determine weights in the pop
+def get_pop_weights(sim_results):
+
+    ot_mat = np.floor(sim_results['ot']['ot_mat'] * len(sim_results['types']['workers']))
+    firms = sim_results['firms']
+    
+    sec_wage = firms[['s','wage_sec','log_wage_sec']].copy()
+    sec_wage.drop_duplicates(subset=['s'], keep="first",inplace=True)
+    
+    match_count = []
+    for i in range(len(ot_mat[0])):
+        key_type = sim_results['types']['key'][i]
+        for j in range(len(ot_mat[0])):
+            sec_type = sim_results['types']['key'][j]
+            count = ot_mat[i][j]
+            match_count.append([key_type,sec_type,count])
+
+    match_count = np.array(match_count)
+    rows=np.where(match_count[:,2]!=0)
+    match_count = pd.DataFrame(match_count[rows],columns=['k','s','times'])
+    
+    match_count = match_count.merge(firms[['k','wage_key','log_wage_key']], on = 'k',how='left')
+    match_count = match_count.merge(sec_wage,on = "s",how = 'left')
+    expanded_matches = match_count.loc[match_count.index.repeat(match_count.times)].reset_index(drop=True)
+    
+    output = []
+    for i in range(len(expanded_matches)):
+        output.append(helpers.revenue(expanded_matches['k'][i], expanded_matches['s'][i], sim_results['config']))
+    
+    expanded_matches['output'] = np.log(output)
+    expanded_matches['diff'] = expanded_matches['wage_key'] - expanded_matches['wage_sec']
+    
+    return expanded_matches
+
