@@ -100,7 +100,7 @@ def gen_workers(config):
         
         # Generate lognormal skills and then only sample those for which both (k,s) < 1
         
-        mu = np.log([LN_mean, LN_mean])
+        mu = [LN_mean, LN_mean]
         cov = np.array([[LN_var, LN_corr], [LN_corr, LN_var]])
         mvn = np.random.multivariate_normal(mu, cov, size=1000000)
         mvln = np.exp(mvn)
