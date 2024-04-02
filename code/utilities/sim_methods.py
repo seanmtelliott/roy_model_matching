@@ -272,7 +272,9 @@ def get_pop_weights(sim_results):
     ot_mat = np.floor(sim_results['ot']['ot_mat'] * len(sim_results['types']['workers']))
     firms = sim_results['firms']
     
-    sec_wage = firms[['s','wage_sec','log_wage_sec']].copy()
+    sec_wage = pd.DataFrame(np.column_stack((sim_results['types']['sec'],
+                                             sim_results['ot']['wage_sec'],np.log(sim_results['ot']['wage_sec']))),
+                            columns=["s","wage_sec","log_wage_sec"])
     sec_wage.drop_duplicates(subset=['s'], keep="first",inplace=True)
     
     match_count = []
@@ -293,10 +295,12 @@ def get_pop_weights(sim_results):
     
     output = []
     for i in range(len(expanded_matches)):
-        output.append(helpers.revenue(expanded_matches['k'][i], expanded_matches['s'][i], sim_results['config']))
+        output.append(helpers.revenue(expanded_matches['k'][i], expanded_matches['s'][i], sim_results['config'])/2)
     
-    expanded_matches['output'] = np.log(output)
-    expanded_matches['diff'] = expanded_matches['wage_key'] - expanded_matches['wage_sec']
+    expanded_matches['firm_avg'] = (expanded_matches['log_wage_key'] + expanded_matches['log_wage_sec'])/2
+    expanded_matches['output_avg'] = np.log(output)
+    expanded_matches['resid_key'] = expanded_matches['log_wage_key'] - expanded_matches['firm_avg']
+    expanded_matches['resid_sec'] = expanded_matches['log_wage_sec'] - expanded_matches['firm_avg']
     
     return expanded_matches
 

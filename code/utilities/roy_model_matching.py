@@ -202,13 +202,13 @@ def plot_inequality(results,labels,output_path):
     
     # Inequality within firms
         
-    within1 = statistics.quantiles(weighted_firm1['diff'],n=200)
-    within2 = statistics.quantiles(weighted_firm2['diff'],n=200)
+    within1 = statistics.quantiles(np.array(weighted_firm1['resid_key'],weighted_firm1['resid_sec']),n=200)
+    within2 = statistics.quantiles(np.array(weighted_firm2['resid_key'],weighted_firm2['resid_sec']),n=200)
     
     # Inequality across firms
     
-    output1 = statistics.quantiles(weighted_firm1['output'],n=200)
-    output2 = statistics.quantiles(weighted_firm2['output'],n=200)
+    output1 = statistics.quantiles(weighted_firm1['output_avg'],n=200)
+    output2 = statistics.quantiles(weighted_firm2['output_avg'],n=200)
     
     # Income inequality
     
