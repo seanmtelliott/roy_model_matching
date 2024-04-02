@@ -31,7 +31,8 @@ revenue_params = {'a':0.55,'b':0.45,'c':0.01,'n':1,'m':1}
 scenario1 = rmm.model_sim(size,dist,dist_params,revenue_params,tolerance=0.001)
 
 ## Second set of parameters
-revenue_params = {'a':0.9,'b':0.1,'c':0.5,'n':1,'m':1}
+dist_params = {'mean': 0,'variance': 1,'correlation': 0.5}
+revenue_params = {'a':0.7,'b':0.3,'c':0.5,'n':1,'m':1}
 scenario2 = rmm.model_sim(size,dist,dist_params,revenue_params,tolerance=0.005)
 
 inequality_sims = {}

@@ -200,27 +200,28 @@ def plot_inequality(results,labels,output_path):
     weighted_firm1 = sm.get_pop_weights(results[scen1])
     weighted_firm2 = sm.get_pop_weights(results[scen2])
     
-    # Inequality within firms
-        
-    within1 = statistics.quantiles(np.array(weighted_firm1['resid_key'],weighted_firm1['resid_sec']),n=200)
-    within2 = statistics.quantiles(np.array(weighted_firm2['resid_key'],weighted_firm2['resid_sec']),n=200)
     
-    # Inequality across firms
+    # Individuals
+
+    ind1 = sm.get_percentile_avg(weighted_firm1,series="individual")
+    ind2= sm.get_percentile_avg(weighted_firm2,series="individual")
     
-    output1 = statistics.quantiles(weighted_firm1['output_avg'],n=200)
-    output2 = statistics.quantiles(weighted_firm2['output_avg'],n=200)
+    # Firms
     
-    # Income inequality
+    firm1 = sm.get_percentile_avg(weighted_firm1,series="firm")
+    firm2 = sm.get_percentile_avg(weighted_firm2,series="firm")
     
-    wage1 = statistics.quantiles(np.array(weighted_firm1['log_wage_key'],weighted_firm1['log_wage_sec']),n=200)
-    wage2 = statistics.quantiles(np.array(weighted_firm2['log_wage_key'],weighted_firm2['log_wage_sec']),n=200)
+    # Individual/firm
     
+    within1 = sm.get_percentile_avg(weighted_firm1,series="within")
+    within2 = sm.get_percentile_avg(weighted_firm2,series="within")
+
     # Put the plot together and write it to the output path
-    ticks = np.arange(199)/2
+    ticks = np.arange(101)
     
     plt.plot(ticks,np.subtract(within2,within1),label = "Within Firm", color="g")
-    plt.plot(ticks,np.subtract(output2,output1), label = "Firms", color="r")
-    plt.plot(ticks,np.subtract(wage2,wage1), label = "Individuals", color = "royalblue")
+    plt.plot(ticks,np.subtract(firm2,firm1), label = "Firms", color="r")
+    plt.plot(ticks,np.subtract(ind2,ind1), label = "Individuals", color = "royalblue")
     plt.legend(loc="upper left")
     plt.xlabel("Percentile")
     plt.ylabel("Diff. of natural log")
