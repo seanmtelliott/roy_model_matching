@@ -203,21 +203,22 @@ def plot_inequality(results,labels,output_path):
     
     # Individuals
 
-    ind1 = sm.get_percentile_avg(weighted_firm1,series="individual")
-    ind2= sm.get_percentile_avg(weighted_firm2,series="individual")
+    ind1 = statistics.quantiles(np.append(np.array(weighted_firm1['log_wage_sec']),np.array(weighted_firm1['log_wage_key'])),n=200)
+    ind2 = statistics.quantiles(np.append(np.array(weighted_firm2['log_wage_sec']),np.array(weighted_firm2['log_wage_key'])),n=200)
+
     
     # Firms
     
-    firm1 = sm.get_percentile_avg(weighted_firm1,series="firm")
-    firm2 = sm.get_percentile_avg(weighted_firm2,series="firm")
+    firm1 = statistics.quantiles(weighted_firm1['firm_output'],n=200)
+    firm2 = statistics.quantiles(weighted_firm2['firm_output'],n=200)
     
     # Individual/firm
     
-    within1 = sm.get_percentile_avg(weighted_firm1,series="within")
-    within2 = sm.get_percentile_avg(weighted_firm2,series="within")
+    within1 = statistics.quantiles(np.array(weighted_firm1['resid_key'],weighted_firm1['resid_sec']),n=200)
+    within2 = statistics.quantiles(np.array(weighted_firm2['resid_key'],weighted_firm2['resid_sec']),n=200)
 
     # Put the plot together and write it to the output path
-    ticks = np.arange(101)
+    ticks = np.arange(199)/2
     
     plt.plot(ticks,np.subtract(within2,within1),label = "Within Firm", color="g")
     plt.plot(ticks,np.subtract(firm2,firm1), label = "Firms", color="r")
@@ -228,7 +229,6 @@ def plot_inequality(results,labels,output_path):
     plt.savefig(output_path)
     
     return
-
 
 
 

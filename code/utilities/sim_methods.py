@@ -297,42 +297,9 @@ def get_pop_weights(sim_results):
     for i in range(len(expanded_matches)):
         output.append(helpers.revenue(expanded_matches['k'][i], expanded_matches['s'][i], sim_results['config']))
     
-    expanded_matches['firm_avg'] = (expanded_matches['log_wage_key'] + expanded_matches['log_wage_sec'])/2
+    expanded_matches['firm_wages'] = (expanded_matches['log_wage_key'] + expanded_matches['log_wage_sec'])
     expanded_matches['firm_output'] = np.log(output)
-    expanded_matches['resid_key'] = expanded_matches['log_wage_key'] - expanded_matches['firm_avg']
-    expanded_matches['resid_sec'] = expanded_matches['log_wage_sec'] - expanded_matches['firm_avg']
+    expanded_matches['resid_key'] = expanded_matches['log_wage_key'] - expanded_matches['firm_wages']
+    expanded_matches['resid_sec'] = expanded_matches['log_wage_sec'] - expanded_matches['firm_wages']
     
     return expanded_matches
-
-## COMPUTE AVG WITHIN PERCENTILES
-# This is how it is done in the Bloom paper -- trying to replicate that exactly.
-def get_percentile_avg(firms,series):
-    
-    if series == "individual":
-        key_wage = firms['log_wage_key']
-        sec_wage = firms['log_wage_sec']
-        all_wages = pd.DataFrame(pd.concat([key_wage,sec_wage]),columns=["wages"])
-        all_wages['perc_rank'] = all_wages['wages'].rank(pct=True).round(2)
-        percentile_avg_ind = all_wages.groupby(['perc_rank']).mean()
-        return percentile_avg_ind
-    
-    if series == "firm":
-        key_wage = firms['log_wage_key']
-        sec_wage = firms['log_wage_sec']
-        all_wages = pd.DataFrame((key_wage + sec_wage)/2,columns=["avg_wage"])
-        all_wages['perc_rank'] = all_wages['avg_wage'].rank(pct=True).round(2)
-        percentile_avg_firm = all_wages.groupby(['perc_rank']).mean()
-        return percentile_avg_firm
-    
-    if series == "within":
-        key_wage = firms['log_wage_key']
-        sec_wage = firms['log_wage_sec']
-        avg_wage = (key_wage + sec_wage)/2
-        key_wage_resid = key_wage - avg_wage
-        sec_wage_resid = sec_wage - avg_wage
-        all_wages = pd.DataFrame(pd.concat([key_wage_resid,sec_wage_resid]),columns=["wage_resid"])
-        all_wages['perc_rank'] = all_wages['wage_resid'].rank(pct=True).round(2)
-        percentile_avg_within = all_wages.groupby(['perc_rank']).mean()
-        return percentile_avg_within
-
-    return 
