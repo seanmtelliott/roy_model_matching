@@ -32,7 +32,7 @@ scenario1 = rmm.model_sim(size,dist,dist_params,revenue_params,tolerance=0.001)
 
 ## Second set of parameters
 dist_params = {'mean': 0,'variance': 1,'correlation': 0.5}
-revenue_params = {'a':0.8,'b':0.2,'c':0.5,'n':1.2,'m':0.5}
+revenue_params = {'a':1.6,'b':0.4,'c':0.15,'n':2,'m':1}
 scenario2 = rmm.model_sim(size,dist,dist_params,revenue_params,tolerance=0.001)
 
 inequality_sims = {}
@@ -40,4 +40,4 @@ inequality_sims['scenario1'] = scenario1
 inequality_sims['scenario2'] = scenario2
 
 rmm.plot_inequality(inequality_sims,labels=["scenario1","scenario2"],
-                    output_path = os.path.join(os.getcwd(),'data', 'output','test_plots','inequality_test.png'))
+                    output_path = os.path.join(os.getcwd(),'data', 'output','test_plots','inequality_1983_2013_match.png'))
