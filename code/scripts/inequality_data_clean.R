@@ -40,3 +40,5 @@ year_compare_wide <- year_sub2 %>%
   select(c(percentile,ind_ineq,firm_ineq,within_ineq))  %>%
   rowwise() %>%
   mutate(percentile = as.numeric(strsplit(percentile,"p")[[1]][2]))
+
+write_csv(year_compare_wide,file = file.path(input_dir,"bloom_data_1983_2013.csv"))
