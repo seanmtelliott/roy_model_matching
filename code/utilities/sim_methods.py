@@ -100,7 +100,7 @@ def gen_workers(config):
         
         # Generate lognormal skills and then only sample those for which both (k,s) < 1
         
-        mu = np.log([LN_mean, LN_mean])
+        mu = [LN_mean, LN_mean]
         cov = np.array([[LN_var, LN_corr], [LN_corr, LN_var]])
         mvn = np.random.multivariate_normal(mu, cov, size=1000000)
         mvln = np.exp(mvn)
@@ -151,17 +151,31 @@ def cost_matrix(types,config):
 
 ## SET INITIAL WAGES
 # The wages need to be set in some way for the first iteration -- this could be done any way, really.
-def set_init_wage(types,config):
+# The random flag is used to determine wages in the random assignment/matching case 
+def set_init_wage(types,config,random=False):
     
-    key_types = np.unique(types['key'])
-    sec_types = np.unique(types['sec'])
+    if random==False:
     
-    wage_key = [helpers.revenue(key_types[n],key_types[n],config)/2 for n in range(len(key_types))]
-    wage_sec = helpers.f_transform(wage_key,key_types,sec_types,config, role="s")
+        key_types = np.unique(types['key'])
+        sec_types = np.unique(types['sec'])
     
-    wages = {}
-    wages['key'] = wage_key
-    wages['sec'] = wage_sec
+        wage_key = [helpers.revenue(key_types[n],key_types[n],config)/2 for n in range(len(key_types))]
+        wage_sec = helpers.f_transform(wage_key,key_types,sec_types,config, role="s")
+    
+        wages = {}
+        wages['key'] = wage_key
+        wages['sec'] = wage_sec
+        
+    elif random==True:
+        
+        key_types = np.unique(types['key'])
+        sec_types = np.unique(types['sec'])
+        wage_key = key_types * config['revenue']['coefficients']['a']
+        wage_sec = sec_types * config['revenue']['coefficients']['b']
+        
+        wages = {}
+        wages['key'] = wage_key
+        wages['sec'] = wage_sec
     
     return wages
 
@@ -209,16 +223,18 @@ def get_optimal_wages(wages,cost_mat,types,config):
                 results = {}
                 results['wage_key'] = wage_key_adj
                 results['wage_sec'] = wage_sec_adj
-                results['ot_mat'] = ot_results[0]
+                results['matching_fun'] = [types['sec'][ot_results[0][k].argmax()] for k in range(len(types['key']))]
                 results['key_dist'] = key_dist
                 results['sec_dist'] = sec_dist
+                results['ot_mat'] = ot_results[0]
             elif adj_wage == False:
                 results = {}
                 results['wage_key'] = wage_key
                 results['wage_sec'] = wage_sec
-                results['ot_mat'] = ot_results[0]
+                results['matching_fun'] = [types['sec'][ot_results[0][k].argmax()] for k in range(len(types['key']))]
                 results['key_dist'] = key_dist
                 results['sec_dist'] = sec_dist
+                results['ot_mat'] = ot_results[0]
             break
         elif convg_check == 0:
             print("Iteration",iterations,": Not converged, difference is", abs_diff)
@@ -227,3 +243,63 @@ def get_optimal_wages(wages,cost_mat,types,config):
     return results
 
 ###############################################################################
+
+
+## GET FIRM INFO
+# Use wages and matching function to compile firm info into a dataframe
+def get_firm_info(results,types,config):
+    
+    wages = pd.DataFrame(np.column_stack((types['key'],types['sec'],results['wage_key'],results['wage_sec'],
+                             np.log(results['wage_key']),np.log(results['wage_sec']))),columns=['k','s','wage_key','wage_sec','log_wage_key','log_wage_sec'])
+    
+    matching_fun = pd.DataFrame(np.column_stack((types['key'],results['matching_fun'])),
+                                columns=['k','s'])
+   
+    match_wages_s = matching_fun.merge(wages[['s','wage_sec']], on = 's', how = 'left')
+    
+    firms = pd.DataFrame(np.column_stack((matching_fun,results['wage_key'],match_wages_s['wage_sec'],
+                                          np.log(results['wage_key']),np.log(match_wages_s['wage_sec']),np.log(results['wage_key'])-np.log(match_wages_s['wage_sec']))),
+                                         columns=['k','s','wage_key','wage_sec','log_wage_key','log_wage_sec','diff'])
+    
+
+    
+    return firms
+
+## GET POP WEIGHTS
+# Need to combine the firm info with info about number of each type to determine weights in the pop
+def get_pop_weights(sim_results):
+
+    ot_mat = np.floor(sim_results['ot']['ot_mat'] * len(sim_results['types']['workers']))
+    firms = sim_results['firms']
+    
+    sec_wage = pd.DataFrame(np.column_stack((sim_results['types']['sec'],
+                                             sim_results['ot']['wage_sec'],np.log(sim_results['ot']['wage_sec']))),
+                            columns=["s","wage_sec","log_wage_sec"])
+    sec_wage.drop_duplicates(subset=['s'], keep="first",inplace=True)
+    
+    match_count = []
+    for i in range(len(ot_mat[0])):
+        key_type = sim_results['types']['key'][i]
+        for j in range(len(ot_mat[0])):
+            sec_type = sim_results['types']['key'][j]
+            count = ot_mat[i][j]
+            match_count.append([key_type,sec_type,count])
+
+    match_count = np.array(match_count)
+    rows=np.where(match_count[:,2]!=0)
+    match_count = pd.DataFrame(match_count[rows],columns=['k','s','times'])
+    
+    match_count = match_count.merge(firms[['k','wage_key','log_wage_key']], on = 'k',how='left')
+    match_count = match_count.merge(sec_wage,on = "s",how = 'left')
+    expanded_matches = match_count.loc[match_count.index.repeat(match_count.times)].reset_index(drop=True)
+    
+    output = []
+    for i in range(len(expanded_matches)):
+        output.append(helpers.revenue(expanded_matches['k'][i], expanded_matches['s'][i], sim_results['config']))
+    
+    expanded_matches['firm_wages'] = (expanded_matches['log_wage_key'] + expanded_matches['log_wage_sec'])
+    expanded_matches['firm_output'] = np.log(output)
+    expanded_matches['resid_key'] = expanded_matches['log_wage_key'] - expanded_matches['firm_wages']
+    expanded_matches['resid_sec'] = expanded_matches['log_wage_sec'] - expanded_matches['firm_wages']
+    
+    return expanded_matches
