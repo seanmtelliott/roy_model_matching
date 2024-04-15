@@ -223,7 +223,7 @@ def plot_inequality(results,labels,output_path):
     plt.plot(ticks,np.subtract(within2,within1),label = "Within Firm", color="g")
     plt.plot(ticks,np.subtract(firm2,firm1), label = "Firms", color="r")
     plt.plot(ticks,np.subtract(ind2,ind1), label = "Individuals", color = "royalblue")
-    plt.legend(loc="upper left")
+    plt.legend(loc="upper right")
     plt.xlabel("Percentile")
     plt.ylabel("Diff. of natural log")
     plt.savefig(output_path)

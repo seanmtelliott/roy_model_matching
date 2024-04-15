@@ -22,7 +22,9 @@ def revenue(k,s,config):
     
     c = config['revenue']['coefficients']['c']
     
-    rev = a*k**n + b*s**m + c*k*s + 2 #TODO: Need to add this constant to ensure positive wages, is there another fix? 
+    cons = config['revenue']['coefficients']['cons'] 
+    
+    rev = a*k**n + b*s**m + c*k*s + cons #TODO: Need to add this constant to ensure positive wages, is there another fix? 
     
     return rev
 

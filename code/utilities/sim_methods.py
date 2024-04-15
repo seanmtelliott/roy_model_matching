@@ -45,6 +45,7 @@ def modify_config(size,dist,dist_params,revenue_params,tol=0.01,adj_wage=True):
     config['revenue']['coefficients']['a'] = revenue_params['a']
     config['revenue']['coefficients']['b'] = revenue_params['b']
     config['revenue']['coefficients']['c'] = revenue_params['c']
+    config['revenue']['coefficients']['cons'] = revenue_params['cons']
     config['revenue']['exponents']['n'] = revenue_params['n']
     config['revenue']['exponents']['m'] = revenue_params['m']
     
