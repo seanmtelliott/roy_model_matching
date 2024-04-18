@@ -23,17 +23,35 @@ import roy_model_matching as rmm
 ### Set rho = 0.5
 
 # Set the parameters
-size = 1000
-dist = "lognormal"
+# size = 1000
+# dist = "lognormal"
 
-## First set of parameters
-dist_params = {'mean': 0,'variance': 1,'correlation': 0.05}
-revenue_params = {'a':0.75,'b':0.25,'c':1.75,'n':1,'m':1,'cons':2}
+# ## First set of parameters
+# dist_params = {'mean': 0.5,'variance': 1,'correlation': 0.5}
+# revenue_params = {'a':0.75,'b':0.25,'c':0,'n':1,'m':1,'cons':2}
+# scenario1 = rmm.model_sim(size,dist,dist_params,revenue_params,tolerance=0.01)
+
+# ## Second set of parameters
+# dist_params = {'mean': 0.5,'variance': 1,'correlation': 0.5}
+# revenue_params = {'a':1.5,'b':1.25,'c':0,'n':0.5,'m':0.5,'cons':2.5}
+# scenario2 = rmm.model_sim(size,dist,dist_params,revenue_params,tolerance=0.01)
+
+# Try grid
+size = 1000
+dist = "grid"
+dist_params = None
+
+# First set of params
+revenue_params = {'a':0.75,'b':0.5,'c':0.75,'n':1,'m':2,'cons':1.75}
 scenario1 = rmm.model_sim(size,dist,dist_params,revenue_params,tolerance=0.001)
 
-## Second set of parameters
-dist_params = {'mean': 0.5,'variance': 1,'correlation': 0.9}
-revenue_params = {'a':2.5,'b':0.25,'c':0.5,'n':2,'m':2,'cons':4}
+# Try lognormal for second sim
+size = 1000
+dist = "lognormal"
+dist_params = {'mean': 0.5,'variance': 1,'correlation': 0.75}
+
+# First set of parameters
+revenue_params = {'a':0.75,'b':0.5,'c':0.3,'n':1,'m':2,'cons':3}
 scenario2 = rmm.model_sim(size,dist,dist_params,revenue_params,tolerance=0.001)
 
 inequality_sims = {}
