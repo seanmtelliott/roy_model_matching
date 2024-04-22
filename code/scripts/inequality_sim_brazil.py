@@ -42,20 +42,20 @@ dist = "grid"
 dist_params = None
 
 # First set of params
-revenue_params = {'a':2,'b':0.5,'c':0.15,'n':2,'m':2,'cons':2}
+revenue_params = {'a':2.65,'b':1.15,'c':0,'n':2,'m':2,'cons':2}
 scenario1 = rmm.model_sim(size,dist,dist_params,revenue_params,tolerance=0.001)
 
 # Try lognormal for second sim
 size = 1000
 dist = "lognormal"
-dist_params = {'mean': 0.5,'variance': 1,'correlation': 0.15}
+dist_params = {'mean': 0.75,'variance': 1,'correlation': 0.15}
 
 # First set of parameters
-revenue_params = {'a':1.5,'b':0.5,'c':0,'n':2,'m':2,'cons':2.25}
+revenue_params = {'a':2.35,'b':1.4,'c':-0.5,'n':2,'m':2,'cons':2.2}
 scenario2 = rmm.model_sim(size,dist,dist_params,revenue_params,tolerance=0.001)
 
 inequality_sims = {}
 inequality_sims['scenario1'] = scenario1
 inequality_sims['scenario2'] = scenario2
 
-rmm.plot_inequality(inequality_sims,labels=["scenario1","scenario2"],output_path = os.path.join(os.getcwd(),'data', 'output','brazil_sim','test.png'))
+rmm.plot_inequality(inequality_sims,labels=["scenario1","scenario2"],output_path = os.path.join(os.getcwd(),'data', 'output','brazil_sim','brazil_ineq.png'))
