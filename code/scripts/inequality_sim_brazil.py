@@ -59,3 +59,5 @@ inequality_sims['scenario1'] = scenario1
 inequality_sims['scenario2'] = scenario2
 
 rmm.plot_inequality(inequality_sims,labels=["scenario1","scenario2"],output_path = os.path.join(os.getcwd(),'data', 'output','brazil_sim','brazil_ineq.png'))
+
+rmm.plot_ineq_cross_sect(scenario2,output_path = os.path.join(os.getcwd(),'data', 'output','brazil_ineq_cross_sect.png'))

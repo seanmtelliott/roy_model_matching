@@ -27,12 +27,12 @@ dist = "lognormal"
 dist_params = {'mean': 0,'variance': 1,'correlation': 0.5}
 
 ## First set of parameters
-revenue_params = {'a':0.55,'b':0.45,'c':0.01,'n':1,'m':1}
+revenue_params = {'a':0.55,'b':0.45,'c':0.01,'n':1,'m':1,'cons':2}
 scenario1 = rmm.model_sim(size,dist,dist_params,revenue_params,tolerance=0.001)
 
 ## Second set of parameters
 dist_params = {'mean': 0,'variance': 1,'correlation': 0.5}
-revenue_params = {'a':1.6,'b':0.4,'c':0.15,'n':2,'m':1}
+revenue_params = {'a':1.6,'b':0.4,'c':0.15,'n':2,'m':1,'cons':2}
 scenario2 = rmm.model_sim(size,dist,dist_params,revenue_params,tolerance=0.001)
 
 inequality_sims = {}
@@ -41,3 +41,7 @@ inequality_sims['scenario2'] = scenario2
 
 rmm.plot_inequality(inequality_sims,labels=["scenario1","scenario2"],
                     output_path = os.path.join(os.getcwd(),'data', 'output','test_plots','inequality_1983_2013_match.png'))
+
+## Plot cross-sectional inequality
+
+rmm.plot_ineq_cross_sect(scenario2,output_path = os.path.join(os.getcwd(),'data', 'output','US_ineq_cross_sect.png'))
