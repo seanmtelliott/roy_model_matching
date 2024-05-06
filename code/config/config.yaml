@@ -6,7 +6,8 @@ size:
 distribution:
     distribution_type:      # options are: grid, lognormal
     parameters:     # leave blank if grid, must be specified for a lognormal (symmetric) distribution
-        mean:       # a single value
+        mean_k:       # a single value
+        mean_s:       # a single value
         variance:   # a single value
         correlation:     # a single value
 

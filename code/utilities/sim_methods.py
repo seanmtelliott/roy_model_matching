@@ -36,7 +36,8 @@ def modify_config(size,dist,dist_params,revenue_params,tol=0.01,adj_wage=True):
         config['distribution']['parameters']['correlation'] = 'None'
     elif dist == "lognormal":
         config['distribution']['distribution_type'] = 'lognormal'
-        config['distribution']['parameters']['mean'] = dist_params['mean']
+        config['distribution']['parameters']['mean_k'] = dist_params['mean_k']
+        config['distribution']['parameters']['mean_s'] = dist_params['mean_s']
         config['distribution']['parameters']['variance'] = dist_params['variance']
         config['distribution']['parameters']['correlation'] = dist_params['correlation']
         pass
@@ -64,7 +65,8 @@ def modify_config(size,dist,dist_params,revenue_params,tol=0.01,adj_wage=True):
 def sim_params(config):
     
     print("Running simulation with", config['size']['num_types']*config['size']['num_types'], "workers")
-    print("Skills are distributed as",config['distribution']['distribution_type'],"with mean",config['distribution']['parameters']['mean'],
+    print("Skills are distributed as",config['distribution']['distribution_type'],"with k role mean",config['distribution']['parameters']['mean_k'],
+          "with s role mean",config['distribution']['parameters']['mean_s'],
           "variance",config['distribution']['parameters']['variance'],"and correlation",config['distribution']['parameters']['correlation'])
     print("The revenue function is: F(k,s)=",config['revenue']['coefficients']['a'],"k^",config['revenue']['exponents']['n'],"+",
          config['revenue']['coefficients']['b'],"s^",config['revenue']['exponents']['m'],"+",
@@ -95,13 +97,14 @@ def gen_workers(config):
         types['key'] = key_types
         types['sec'] = sec_types
     if(distribution == "lognormal"):
-        LN_mean = config['distribution']['parameters']['mean'] 
+        LN_mean_k = config['distribution']['parameters']['mean_k'] 
+        LN_mean_s = config['distribution']['parameters']['mean_s'] 
         LN_var = config['distribution']['parameters']['variance']
         LN_corr = config['distribution']['parameters']['correlation']
         
         # Generate lognormal skills and then only sample those for which both (k,s) < 1
         
-        mu = [LN_mean, LN_mean]
+        mu = [LN_mean_k, LN_mean_s]
         cov = np.array([[LN_var, LN_corr], [LN_corr, LN_var]])
         mvn = np.random.multivariate_normal(mu, cov, size=1000000)
         mvln = np.exp(mvn)
