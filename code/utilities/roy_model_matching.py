@@ -223,12 +223,21 @@ def plot_inequality(results,labels,output_path):
     plt.plot(ticks,np.subtract(within2,within1),label = "Within Firm", color="g")
     plt.plot(ticks,np.subtract(firm2,firm1), label = "Firms", color="r")
     plt.plot(ticks,np.subtract(ind2,ind1), label = "Individuals", color = "royalblue")
-    plt.legend(loc="upper left")
+    plt.legend(loc="upper right")
     plt.xlabel("Percentile")
     plt.ylabel("Diff. of natural log")
     plt.savefig(output_path)
     
     return
 
+def plot_ineq_cross_sect(results,output_path): 
 
-
+    weighted_firm = sm.get_pop_weights(results)
+    weighted_firm['rank'] = np.arange(len(weighted_firm))/len(weighted_firm)
+    weighted_firm['ineq'] = weighted_firm['log_wage_key'] - weighted_firm['log_wage_sec']
+    plt.plot( weighted_firm['rank'],weighted_firm['ineq'])
+    plt.ylabel("Diff. of log wages of key/sec")
+    plt.xlabel("Percentile")
+    plt.savefig(output_path)
+        
+    return
