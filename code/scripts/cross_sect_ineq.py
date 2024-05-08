@@ -26,7 +26,7 @@ size = 1000
 dist = "lognormal"
 dist_params = {'mean_k': 0.5,'mean_s': 0.5,'variance': 1,'correlation': 0}
 
-revenue_params = {'a':1,'b':0.25,'c':1,'n':2,'m':1,'cons':2}
+revenue_params = {'a':1.1,'b':1,'c':0.5,'n':1,'m':1,'cons':2}
 scenario1 = rmm.model_sim(size,dist,dist_params,revenue_params,tolerance=0.001)
 
 rmm.plot_ineq_cross_sect(scenario1,output_path = os.path.join(os.getcwd(),'docs', 'cs_ineq_sims','rev_func_ineq.png'))
@@ -35,9 +35,9 @@ rmm.plot_ineq_cross_sect(scenario1,output_path = os.path.join(os.getcwd(),'docs'
 
 size = 1000
 dist = "lognormal"
-dist_params = {'mean_k': 1,'mean_s': -1,'variance': 1,'correlation': 0}
+dist_params = {'mean_k': 1.1,'mean_s': 1,'variance': 1,'correlation': 0}
 
-revenue_params = {'a':0.5,'b':0.5,'c':0.15,'n':1,'m':1,'cons':2}
+revenue_params = {'a':1,'b':1,'c':0.5,'n':1,'m':1,'cons':2}
 scenario2 = rmm.model_sim(size,dist,dist_params,revenue_params,tolerance=0.001)
 
 rmm.plot_ineq_cross_sect(scenario2,output_path = os.path.join(os.getcwd(),'docs', 'cs_ineq_sims','skill_dist_ineq_neg.png'))
@@ -46,9 +46,9 @@ rmm.plot_ineq_cross_sect(scenario2,output_path = os.path.join(os.getcwd(),'docs'
 
 size = 1000
 dist = "lognormal"
-dist_params = {'mean_k': -1,'mean_s': 1,'variance': 1,'correlation': 0}
+dist_params = {'mean_k': 1,'mean_s': 1.1,'variance': 1,'correlation': 0}
 
-revenue_params = {'a':0.5,'b':0.5,'c':0.15,'n':1,'m':1,'cons':2}
+revenue_params = {'a':1,'b':1,'c':0.5,'n':1,'m':1,'cons':2}
 scenario3 = rmm.model_sim(size,dist,dist_params,revenue_params,tolerance=0.001)
 
 rmm.plot_ineq_cross_sect(scenario3,output_path = os.path.join(os.getcwd(),'docs', 'cs_ineq_sims','skill_dist_ineq_pos.png'))

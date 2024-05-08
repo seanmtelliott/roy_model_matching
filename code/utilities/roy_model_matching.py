@@ -234,10 +234,12 @@ def plot_ineq_cross_sect(results,output_path):
 
     weighted_firm = sm.get_pop_weights(results)
     weighted_firm['rank'] = np.arange(len(weighted_firm))/len(weighted_firm)
+    weighted_firm = weighted_firm[weighted_firm['rank'] > 0.02]
     weighted_firm['ineq'] = weighted_firm['log_wage_key'] - weighted_firm['log_wage_sec']
     plt.plot( weighted_firm['rank'],weighted_firm['ineq'])
     plt.ylabel("Diff. of log wages of key/sec")
     plt.xlabel("Percentile")
     plt.savefig(output_path)
+    plt.close()
         
     return
