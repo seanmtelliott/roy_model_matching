@@ -11,10 +11,11 @@
 ################################################################################
 
 # Import libraries
-import sys, matplotlib.pyplot as plt, logging, numpy as np, copy, statistics
+import sys, matplotlib.pyplot as plt, logging, numpy as np, copy, statistics, math
 logging.getLogger().setLevel(logging.CRITICAL)
 sys.path.append('code/utilities')
 import sim_methods as sm, helper_funs as helpers
+from scipy.interpolate import splrep, BSpline
 
 ################################################################################
 
@@ -232,14 +233,26 @@ def plot_inequality(results,labels,output_path):
 
 def plot_ineq_cross_sect(results,output_path): 
 
+    # Calculate firm inequality by output quantile
+    
     weighted_firm = sm.get_pop_weights(results)
-    weighted_firm['rank'] = np.arange(len(weighted_firm))/len(weighted_firm)
-    weighted_firm = weighted_firm[weighted_firm['rank'] > 0.02]
     weighted_firm['ineq'] = weighted_firm['log_wage_key'] - weighted_firm['log_wage_sec']
-    plt.plot( weighted_firm['rank'],weighted_firm['ineq'])
+    sorted_firm = weighted_firm.sort_values(by="firm_output")
+    sorted_firm['rank'] = np.arange(len(weighted_firm))
+    sorted_quantiles = np.ceil(statistics.quantiles(sorted_firm['rank'],n=200))
+    ineq = weighted_firm['ineq'][sorted_quantiles]
+    ticks = np.arange(len(ineq))/len(ineq)
+
+    # Exclude the first 10 observations
+    ineq = ineq[10:]
+    ticks =  ticks[10:]
+    
+    # Plot
+    plt.plot( ticks,ineq)
     plt.ylabel("Diff. of log wages of key/sec")
     plt.xlabel("Percentile")
     plt.savefig(output_path)
     plt.close()
+
         
     return

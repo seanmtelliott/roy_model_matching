@@ -20,35 +20,48 @@ os.chdir('../..')
 sys.path.append("code/utilities")
 import roy_model_matching as rmm
 
-# Scenario 1
+# # Scenario 1
+# # Here the skill dist is equal and a > b
+# size = 1000
+# dist = "lognormal"
+# dist_params = {'mean_k': 0.5,'mean_s': 0.5,'variance': 1,'correlation': 0}
 
-size = 1000
-dist = "lognormal"
-dist_params = {'mean_k': 0.5,'mean_s': 0.5,'variance': 1,'correlation': 0}
+# revenue_params = {'a':1.1,'b':1,'c':0.5,'n':1,'m':1,'cons':2}
+# scenario1 = rmm.model_sim(size,dist,dist_params,revenue_params,tolerance=0.001)
 
-revenue_params = {'a':1.1,'b':1,'c':0.5,'n':1,'m':1,'cons':2}
-scenario1 = rmm.model_sim(size,dist,dist_params,revenue_params,tolerance=0.001)
+# rmm.plot_ineq_cross_sect(scenario1,output_path = os.path.join(os.getcwd(),'docs', 'cs_ineq_sims','rev_func_ineq.png'))
 
-rmm.plot_ineq_cross_sect(scenario1,output_path = os.path.join(os.getcwd(),'docs', 'cs_ineq_sims','rev_func_ineq.png'))
+# # Scenario 3
+# # Now we set mu_s < mu_s but keep the revenue function the same
+# size = 1000
+# dist = "lognormal"
+# dist_params = {'mean_k': 1,'mean_s': 1.1,'variance': 1,'correlation': 0}
+
+# revenue_params = {'a':1,'b':1,'c':0.5,'n':1,'m':1,'cons':2}
+# scenario3 = rmm.model_sim(size,dist,dist_params,revenue_params,tolerance=0.001)
+
+# rmm.plot_ineq_cross_sect(scenario3,output_path = os.path.join(os.getcwd(),'docs', 'cs_ineq_sims','skill_dist_ineq_pos.png'))
+
+###########################################################################################################################
 
 # Scenario 2
-
+# Now we set mu_k > mu_s but keep the revenue function the same
 size = 1000
 dist = "lognormal"
 dist_params = {'mean_k': 1.1,'mean_s': 1,'variance': 1,'correlation': 0}
 
 revenue_params = {'a':1,'b':1,'c':0.5,'n':1,'m':1,'cons':2}
-scenario2 = rmm.model_sim(size,dist,dist_params,revenue_params,tolerance=0.001)
+scenario2 = rmm.model_sim(size,dist,dist_params,revenue_params,tolerance=0.0001)
+rmm.plot_ineq_cross_sect(scenario2,output_path = os.path.join(os.getcwd(),'docs', 'cs_ineq_sims','test','comp.png'))
 
-rmm.plot_ineq_cross_sect(scenario2,output_path = os.path.join(os.getcwd(),'docs', 'cs_ineq_sims','skill_dist_ineq_neg.png'))
-
-# Scenario 3
-
+# Scenario 4
+# Redo the mu_k > mu_s case but remove complementarity in the revenue function
 size = 1000
 dist = "lognormal"
-dist_params = {'mean_k': 1,'mean_s': 1.1,'variance': 1,'correlation': 0}
+dist_params = {'mean_k': 1.1,'mean_s': 1,'variance': 1,'correlation': 0}
 
-revenue_params = {'a':1,'b':1,'c':0.5,'n':1,'m':1,'cons':2}
-scenario3 = rmm.model_sim(size,dist,dist_params,revenue_params,tolerance=0.001)
+revenue_params = {'a':1,'b':1,'c':0.000001,'n':1,'m':1,'cons':2}
+scenario4 = rmm.model_sim(size,dist,dist_params,revenue_params,tolerance=0.0001)
+rmm.plot_ineq_cross_sect(scenario4,output_path = os.path.join(os.getcwd(),'docs', 'cs_ineq_sims','test','no_comp.png'))
 
-rmm.plot_ineq_cross_sect(scenario3,output_path = os.path.join(os.getcwd(),'docs', 'cs_ineq_sims','skill_dist_ineq_pos.png'))
+
