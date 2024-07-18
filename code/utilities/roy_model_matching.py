@@ -241,3 +241,87 @@ def plot_ineq_cross_sect(results,output_path):
     plt.savefig(output_path)
         
     return
+
+###############################################################################
+
+
+## GENERATE IDENTIFICATION PLOTS
+# We modify the skill distribution and analyze how the observable wage dist/matching function change and the unobserved separating function
+
+def plot_indentification(results,labels,output_path):
+    
+    fig = plt.figure(figsize=(5.5, 3.5), layout="constrained")
+    gs = fig.add_gridspec(2, 2)
+    ax1 = fig.add_subplot(gs[0, 0])
+    ax2 = fig.add_subplot(gs[0, 1])
+    ax3 = fig.add_subplot(gs[1, 0])
+    ax4 = fig.add_subplot(gs[1,1])
+    
+    if len(labels) == 2:
+        colors = ['grey','brown']
+    if len(labels) == 3:
+        colors = ['grey','brown','k']
+    if len(labels) == 5:
+        colors = ['grey','brown','k','blue','green']
+    
+    for i in range(len(labels)):
+        
+        # Get number of ticks
+        types_key = results[i]['types']['key']
+        types_sec = results[i]['types']['sec']
+        num_types = len(types_key)
+    
+        # Get wages
+        wage_key = np.log(results[i]['ot']['wage_key'])
+        wage_sec = np.log(results[i]['ot']['wage_sec'])
+    
+        # Wages
+        if i < len(labels)-1:
+            wage_lab = ["_Hidden","_Hidden"]
+        elif i==len(labels)-1:
+            wage_lab = ["k","s"]
+            
+        ax1.plot(types_key,wage_key,color=colors[i],label=wage_lab[0])
+        ax1.plot(types_sec,wage_sec,linestyle="dotted",color=colors[i],label=wage_lab[1])
+        ax1.legend(loc='lower right',fontsize="7",ncol=2)
+        ax1.set_title("Ln wage by type")
+        ax1.set_xlabel('Skill level')
+        ax1.set_ylabel('Ln wage')
+
+        # Separating function
+        #wage_differential = [[wage_key[k]-wage_sec[s] for s in range(num_types)] for k in range(num_types)]
+        wage_differential_abs = [[abs(wage_key[k]-wage_sec[s]) for s in range(num_types)] for k in range(num_types)]
+        sep_function = [wage_differential_abs[k].index(min(wage_differential_abs[k]))/(num_types-1) for k in range(num_types)]
+        ax3.plot(types_key,sep_function,color=colors[i],label = labels[i])
+        ax3.set_title("Separating function")
+        ax3.set_xlabel('k')
+        ax3.set_ylabel('s')
+    
+        # Matching function
+        matching_fun = results[i]['ot']['matching_fun']
+        ax2.plot(types_key,matching_fun,color=colors[i],label = labels[i])
+        ax2.set_title("Matching function")
+        ax2.set_xlabel('k')
+        ax2.set_ylabel('s')
+
+        # Matching function
+        matching_fun = results[i]['ot']['matching_fun']
+        ax4.plot(types_key,matching_fun,color=colors[i],label = labels[i])
+        ax4.set_title("Matching function")
+        ax4.set_xlabel('k')
+        ax4.set_ylabel('s')
+        
+    lines_labels = [fig.axes[1].get_legend_handles_labels()]
+    lines, labels = [sum(lol, []) for lol in zip(*lines_labels)]
+    # Position the legend differently depending on how many labels we have 
+    # TODO: generalize this also
+    if len(labels) == 3:
+        fig.legend(lines, labels, bbox_to_anchor=(0.25, -0.45, 0.5, 0.5),ncol=(len(labels)),  prop = { "size": 7.5 })
+    if len(labels) == 5:
+        fig.legend(lines, labels, bbox_to_anchor=(0.44, -0.45, 0.5, 0.5),ncol=(len(labels)),  prop = { "size": 7.5 })
+
+    
+    plt.tight_layout()
+    plt.savefig(output_path)
+
+    return
