@@ -10,7 +10,9 @@
 ################################################################################
 
 # Import libraries
-import sys, matplotlib.pyplot as plt, logging, numpy as np, statistics, sim_methods as sm
+import sys, matplotlib.pyplot as plt, logging, numpy as np, statistics, sim_methods as sm, os
+import seaborn as sns, pandas as pd, matplotlib.image as mpimg
+from scipy.stats import multivariate_normal
 logging.getLogger().setLevel(logging.CRITICAL)
 sys.path.append('code/utilities')
 
@@ -245,14 +247,21 @@ def plot_ineq_cross_sect(results,output_path):
 ## GENERATE IDENTIFICATION PLOTS
 # We modify the skill distribution and analyze how the observable wage dist/matching function change and the unobserved separating function
 
-def plot_indentification(results,labels,output_path):
+def plot_indentification(results,labels,output_path,file_name):
+    
+    for j in range(len(labels)):
+        # Contour plot of skill dist (Need to save these separately)
+        img_name = os.path.join(output_path,'contour'+labels[j]+'.png')
+        worker_sample = pd.DataFrame(results[j]['types']['workers'],columns=['k','s']).sample(n=1000)
+        g1 = sns.jointplot(data=worker_sample,x="k",y="s",kind="kde")
+        g1.savefig(img_name)
     
     fig = plt.figure(figsize=(5.5, 3.5), layout="constrained")
-    gs = fig.add_gridspec(2, 2)
+    gs = fig.add_gridspec(1, 3)
     ax1 = fig.add_subplot(gs[0, 0])
     ax2 = fig.add_subplot(gs[0, 1])
-    ax3 = fig.add_subplot(gs[1, 0])
-    ax4 = fig.add_subplot(gs[1,1])
+    ax3 = fig.add_subplot(gs[0, 2])
+
     
     if len(labels) == 2:
         colors = ['grey','brown']
@@ -262,11 +271,12 @@ def plot_indentification(results,labels,output_path):
         colors = ['grey','brown','k','blue','green']
     
     for i in range(len(labels)):
-        
-        # Get number of ticks
+    
+        # Get types
         types_key = results[i]['types']['key']
         types_sec = results[i]['types']['sec']
         num_types = len(types_key)
+       
     
         # Get wages
         wage_key = np.log(results[i]['ot']['wage_key'])
@@ -277,13 +287,7 @@ def plot_indentification(results,labels,output_path):
             wage_lab = ["_Hidden","_Hidden"]
         elif i==len(labels)-1:
             wage_lab = ["k","s"]
-            
-        ax1.plot(types_key,wage_key,color=colors[i],label=wage_lab[0])
-        ax1.plot(types_sec,wage_sec,linestyle="dotted",color=colors[i],label=wage_lab[1])
-        ax1.legend(loc='lower right',fontsize="7",ncol=2)
-        ax1.set_title("Ln wage by type")
-        ax1.set_xlabel('Skill level')
-        ax1.set_ylabel('Ln wage')
+        
 
         # Separating function
         #wage_differential = [[wage_key[k]-wage_sec[s] for s in range(num_types)] for k in range(num_types)]
@@ -301,12 +305,13 @@ def plot_indentification(results,labels,output_path):
         ax2.set_xlabel('k')
         ax2.set_ylabel('s')
 
-        # Matching function
-        matching_fun = results[i]['ot']['matching_fun']
-        ax4.plot(types_key,matching_fun,color=colors[i],label = labels[i])
-        ax4.set_title("Matching function")
-        ax4.set_xlabel('k')
-        ax4.set_ylabel('s')
+        #Wages
+        ax1.plot(types_key,wage_key,color=colors[i],label=wage_lab[0])
+        ax1.plot(types_sec,wage_sec,linestyle="dotted",color=colors[i],label=wage_lab[1])
+        ax1.legend(loc='lower right',fontsize="7",ncol=2)
+        ax1.set_title("Ln wage by type")
+        ax1.set_xlabel('Skill level')
+        ax1.set_ylabel('Ln wage')
         
     lines_labels = [fig.axes[1].get_legend_handles_labels()]
     lines, labels = [sum(lol, []) for lol in zip(*lines_labels)]
@@ -319,6 +324,33 @@ def plot_indentification(results,labels,output_path):
 
     
     plt.tight_layout()
-    plt.savefig(output_path)
+    plt.savefig(os.path.join(output_path,file_name))
+    
+    fig = plt.figure(figsize=(5.5, 3.5), layout="constrained")
+    gs = fig.add_gridspec(1, 3)
+    ax1 = fig.add_subplot(gs[0, 0])
+    ax2 = fig.add_subplot(gs[0, 1])
+    ax3 = fig.add_subplot(gs[0, 2])
 
+    
+    for i in range(len(labels)):
+
+        weighted_firms = sm.get_pop_weights(results[i])
+
+        
+        # Wages
+        if i < len(labels)-1:
+            wage_lab = ["_Hidden","_Hidden"]
+        elif i==len(labels)-1:
+            wage_lab = ["k","s"]
+        
+        
+        ax1.plot(np.sort(weighted_firms['wage_key']), np.linspace(0, 1, len(weighted_firms['wage_key']), endpoint=False),color=colors[i],label=wage_lab[0])
+        ax1.plot(np.sort(weighted_firms['wage_sec']), np.linspace(0, 1, len(weighted_firms['wage_key']), endpoint=False),color=colors[i],label=wage_lab[1])
+        ax1.legend(loc='lower right',fontsize="7",ncol=2)
+        ax1.set_title("Conditional wage distribution")
+        ax1.set_xlabel('Wage')
+        ax1.set_ylabel('F(y|y>x)')
+        
+        
     return
