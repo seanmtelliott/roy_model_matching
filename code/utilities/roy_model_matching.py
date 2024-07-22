@@ -7,14 +7,12 @@
 # It contains the main functionality:
 # 1. Perform simulation
 # 2. Generate plots based on simulation results
-#TODO: 3. Output the results in a .csv file
 ################################################################################
 
 # Import libraries
-import sys, matplotlib.pyplot as plt, logging, numpy as np, copy, statistics
+import sys, matplotlib.pyplot as plt, logging, numpy as np, statistics, sim_methods as sm
 logging.getLogger().setLevel(logging.CRITICAL)
 sys.path.append('code/utilities')
-import sim_methods as sm, helper_funs as helpers
 
 ################################################################################
 
@@ -65,7 +63,6 @@ def plot_sep_fun(results,labels,output_path):
    # fig, axes = plt.subplots(2,2)
     
     fig = plt.figure(figsize=(5.5, 3.5), layout="constrained")
-    spec = fig.add_gridspec(ncols=2, nrows=2)
     gs = fig.add_gridspec(2, 2)
     ax1 = fig.add_subplot(gs[0, 0])
     ax2 = fig.add_subplot(gs[0, 1])
