@@ -324,7 +324,7 @@ def plot_indentification(results,labels,output_path,file_name):
 
     
     plt.tight_layout()
-    plt.savefig(os.path.join(output_path,file_name))
+    plt.savefig(os.path.join(output_path,file_name[0]))
     
     fig = plt.figure(figsize=(5.5, 3.5), layout="constrained")
     gs = fig.add_gridspec(1, 3)
@@ -345,12 +345,46 @@ def plot_indentification(results,labels,output_path,file_name):
             wage_lab = ["k","s"]
         
         
+        # Conditional wage distribution
+        
         ax1.plot(np.sort(weighted_firms['wage_key']), np.linspace(0, 1, len(weighted_firms['wage_key']), endpoint=False),color=colors[i],label=wage_lab[0])
-        ax1.plot(np.sort(weighted_firms['wage_sec']), np.linspace(0, 1, len(weighted_firms['wage_key']), endpoint=False),color=colors[i],label=wage_lab[1])
+        ax1.plot(np.sort(weighted_firms['wage_sec']), np.linspace(0, 1, len(weighted_firms['wage_key']), endpoint=False),linestyle="dotted",color=colors[i],label=wage_lab[1])
         ax1.legend(loc='lower right',fontsize="7",ncol=2)
-        ax1.set_title("Conditional wage distribution")
+        ax1.set_title("Wage distribution")
         ax1.set_xlabel('Wage')
-        ax1.set_ylabel('F(y|y>x)')
+        ax1.set_ylabel('F(y|x)')
         
+        # Matching function
         
+        wage_key = np.log(results[i]['ot']['wage_key'])
+        wage_sec = np.log(results[i]['ot']['wage_sec'])
+        
+        ax2.plot(results[i]['firms']['wage_key'],results[i]['firms']['wage_sec'],color=colors[i],label = labels[i])
+        ax2.set_title("Observed matches")
+        ax2.set_xlabel('wage k')
+        ax2.set_ylabel('wage s')
+        
+        # Firm revenue
+        
+        weighted_firm = sm.get_pop_weights(results[i])
+        firm_revnue = statistics.quantiles(weighted_firm['firm_output'],n=200)
+        ticks = np.arange(199)/2
+        ax3.plot(ticks,firm_revnue,color=colors[i],label = labels[i])
+        ax3.set_title("Firm revenue")
+        ax3.set_xlabel('Percentile')
+        ax3.set_ylabel('R(k,s)')
+        
+        fig.legend(lines, labels, bbox_to_anchor=(0.25, -0.45, 0.5, 0.5),ncol=(len(labels)),  prop = { "size": 7.5 })
+        
+    lines_labels = [fig.axes[1].get_legend_handles_labels()]
+    lines, labels = [sum(lol, []) for lol in zip(*lines_labels)]
+    # Position the legend differently depending on how many labels we have 
+    # TODO: generalize this also
+    if len(labels) == 3:
+        fig.legend(lines, labels, bbox_to_anchor=(0.25, -0.45, 0.5, 0.5),ncol=(len(labels)),  prop = { "size": 7.5 })
+    if len(labels) == 5:
+        fig.legend(lines, labels, bbox_to_anchor=(0.44, -0.45, 0.5, 0.5),ncol=(len(labels)),  prop = { "size": 7.5 })
+
+    plt.tight_layout()
+    plt.savefig(os.path.join(output_path,file_name[1]))
     return
