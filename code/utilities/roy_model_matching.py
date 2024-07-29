@@ -11,8 +11,7 @@
 
 # Import libraries
 import sys, matplotlib.pyplot as plt, logging, numpy as np, statistics, sim_methods as sm, os
-import seaborn as sns, pandas as pd, matplotlib.image as mpimg
-from scipy.stats import multivariate_normal
+import seaborn as sns, pandas as pd
 logging.getLogger().setLevel(logging.CRITICAL)
 sys.path.append('code/utilities')
 
@@ -254,6 +253,7 @@ def plot_indentification(results,labels,output_path,file_name):
         img_name = os.path.join(output_path,'contour'+labels[j]+'.png')
         worker_sample = pd.DataFrame(results[j]['types']['workers'],columns=['k','s']).sample(n=1000)
         g1 = sns.jointplot(data=worker_sample,x="k",y="s",kind="kde")
+        g1.fig.suptitle(labels[j])
         g1.savefig(img_name)
     
     fig = plt.figure(figsize=(5.5, 3.5), layout="constrained")
@@ -294,14 +294,14 @@ def plot_indentification(results,labels,output_path,file_name):
         wage_differential_abs = [[abs(wage_key[k]-wage_sec[s]) for s in range(num_types)] for k in range(num_types)]
         sep_function = [wage_differential_abs[k].index(min(wage_differential_abs[k]))/(num_types-1) for k in range(num_types)]
         ax3.plot(types_key,sep_function,color=colors[i],label = labels[i])
-        ax3.set_title("Separating function")
+        ax3.set_title("Separating fun")
         ax3.set_xlabel('k')
         ax3.set_ylabel('s')
     
         # Matching function
         matching_fun = results[i]['ot']['matching_fun']
         ax2.plot(types_key,matching_fun,color=colors[i],label = labels[i])
-        ax2.set_title("Matching function")
+        ax2.set_title("Matching fun")
         ax2.set_xlabel('k')
         ax2.set_ylabel('s')
 
