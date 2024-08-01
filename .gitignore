@@ -15,5 +15,5 @@
 *.Rhistory
 *.pyc
 *.csv
-*.tex
+.tex
 sim_testing.py

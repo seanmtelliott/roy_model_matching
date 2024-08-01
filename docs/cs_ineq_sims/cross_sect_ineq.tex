@@ -1,0 +1,93 @@
+%%% Document class (e.g. article, letter, beamer, etc...)
+\documentclass{article}
+%%%
+
+%%% Packages
+\usepackage[round]{natbib} %Allows custom options for bibliography management
+\usepackage{cite} %Adds bibliograhy functionality like \citet
+\usepackage{geometry} %Allows me to set the margins
+\usepackage{amsmath} %Adds additional math-related commands
+\usepackage{amsfonts} %Adds fonts-within-math-mode functionality
+\usepackage{amsthm} %Enables custom theorem environments
+\usepackage{bm} %Adds bold math fonts
+\usepackage{setspace} %Enables \doublespacing command
+\usepackage{parskip} %Removes indentation
+\usepackage{tikz} %Used for formatting plots and figures
+\usepackage{float} %Used to force the position of tables and figures
+\usepackage{graphicx} %For including images
+\usepackage[T1]{fontenc} %Allows for encoding of slavic letters
+\usepackage{lmodern} %Need to load back the original font for when T1 encoding is active
+%%%
+
+%%% Set the margins of the document
+\geometry{
+	left=1in,
+	right=1in,
+	bottom=1in,
+	top=1in,
+}
+%%%
+
+%%% User-defined commands
+
+\DeclareMathOperator*{\argmax}{argmax} % The argmax operator
+
+\newtheorem{assumption}{Assumption} % Treating assumptions like theorems.
+\newtheorem{proposition}{Proposition} % Treating propositions like theorems.
+
+%%%
+
+%%% Title
+\title{Cross-sectional Inequality Simulations}
+\author{}
+\date{}
+%%%
+
+\begin{document}
+	
+	\maketitle
+	\vspace{-2cm}
+	Here we want to replicate the recent results from Bloom et al. (2024) where they observe that productive firms have higher within-firm inequality. To do this we can rank firms by productivity--as measured by total output--and then take the difference of the log wage of the key worker and the log wage of secondary worker. If our model replicates findings from Bloom et al. (2024), this would imply that the difference is increasing in percentiles of the productivity distribution.
+	\section*{Asymmetric revenue function \& equal skills}
+	In this case we specify the revenue function to be such that the key worker's marginal productivity is greater than that of the secondary worker at high skill levels. This produces the desired result as can be seen in Figure 1.
+	\begin{itemize}
+		\item Occupational skills: $(k,s) \sim \text{Lognormal}(\alpha,\Sigma)$ with $\alpha = [0.5,0.5]'$ and $\Sigma = \begin{bmatrix}
+			1 & 0\\
+			0 & 1
+		\end{bmatrix}$
+		\item Revenue function: $F(k,s) = k^2 + 0.25s + ks$
+	\end{itemize}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.75]{rev_func_ineq.png}
+		\caption{Within-firm inequality -- asymmetric revenue function}
+	\end{figure}
+	\section*{Symmetric revenue function \& unequal skills}
+	Here I will show two different cases. In the first case, the key worker is more skilled, on average, than the secondary worker. In the second case this is reversed. When the key worker is more skilled, we actually observe that the difference in wages decreases as firm productivity increases. This pattern is reversed in the case where the average skill level of the secondary worker is higher than that of the key worker. These two results can be seen in Figures 2 and 3, respectively.
+	\newpage
+		\begin{itemize}
+		\item Occupational skills: $(k,s) \sim \text{Lognormal}(\alpha,\Sigma)$ with $\alpha = [0.5,0.25]'$ and $\Sigma = \begin{bmatrix}
+			1 & 0\\
+			0 & 1
+		\end{bmatrix}$
+		\item Revenue function: $F(k,s) = 0.5k + 0.5s + 0.15ks$
+	\end{itemize}
+	\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.75]{skill_dist_ineq_neg.png}
+	\caption{Within-firm inequality -- unequal skills distribution ($\alpha_k > \alpha_s$)}
+	\end{figure}
+		\begin{itemize}
+	\item Occupational skills: $(k,s) \sim \text{Lognormal}(\alpha,\Sigma)$ with $\alpha = [0.25,0.5]'$ and $\Sigma = \begin{bmatrix}
+		1 & 0\\
+		0 & 1
+	\end{bmatrix}$
+	\item Revenue function: $F(k,s) = 0.5k + 0.5s + 0.15ks$
+\end{itemize}
+	\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.75]{skill_dist_ineq_pos.png}
+	\caption{Within-firm inequality -- unequal skills distribution ($\alpha_k < \alpha_s$)}
+\end{figure}
+	
+\end{document}

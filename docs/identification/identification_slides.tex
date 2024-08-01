@@ -1,0 +1,234 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Beamer Presentation
+% LaTeX Template
+% Version 1.0 (10/11/12)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND THEMES
+%----------------------------------------------------------------------------------------
+
+\documentclass{beamer}
+\beamertemplatenavigationsymbolsempty
+\let\oldfootnotesize\footnotesize
+\renewcommand*{\footnotesize}{\oldfootnotesize\tiny}
+\mode<presentation> {
+	
+	% The Beamer class comes with a number of default slide themes
+	% which change the colors and layouts of slides. Below this is a list
+	% of all the themes, uncomment each in turn to see what they look like.
+	
+	%\usetheme{default}
+	%\usetheme{AnnArbor}
+	%\usetheme{Antibes}
+	%\usetheme{Bergen}
+	%\usetheme{Berkeley}
+	%\usetheme{Berlin}
+	\usetheme{Boadilla}
+	%\usetheme{CambridgeUS}
+	%\usetheme{Copenhagen}
+	%\usetheme{Darmstadt}
+	%\usetheme{Dresden}
+	%\usetheme{Frankfurt}
+	%\usetheme{Goettingen}
+	%\usetheme{Hannover}
+	%\usetheme{Ilmenau}
+	%\usetheme{JuanLesPins}
+	%\usetheme{Luebeck}
+	%\usetheme{Madrid}
+	%\usetheme{Malmoe}
+	%\usetheme{Marburg}
+	%\usetheme{Montpellier}
+	%\usetheme{PaloAlto}
+	%\usetheme{Pittsburgh}
+	%\usetheme{Rochester}
+	%\usetheme{Singapore}
+	%\usetheme{Szeged}
+	%\usetheme{Warsaw}
+	
+	% As well as themes, the Beamer class has a number of color themes
+	% for any slide theme. Uncomment each of these in turn to see how it
+	% changes the colors of your current slide theme.
+	
+	%\usecolortheme{albatross}
+	%\usecolortheme{beaver}
+	%\usecolortheme{beetle}
+	%\usecolortheme{crane}
+	%\usecolortheme{dolphin}
+	%\usecolortheme{dove}
+	%\usecolortheme{fly}
+	%\usecolortheme{lily}
+	%\usecolortheme{orchid}
+	%\usecolortheme{rose}
+	%\usecolortheme{seagull}
+	%\usecolortheme{seahorse}
+	%\usecolortheme{whale}
+	%\usecolortheme{wolverine}
+	
+	%\setbeamertemplate{footline} % To remove the footer line in all slides uncomment this line
+	\setbeamertemplate{footline}[page number] % To replace the footer line in all slides with a simple slide count uncomment this line
+	
+	%\setbeamertemplate{navigation symbols}{} % To remove the navigation symbols from the bottom of all slides uncomment this line
+}
+
+%% Packages
+\usepackage[round]{natbib} %Allows custom options for bibliography management
+\usepackage{cite} %Adds bibliograhy functionality like \citet
+\usepackage{amsmath} %Adds additional math-related commands
+\usepackage{amsfonts} %Adds fonts-within-math-mode functionality
+\usepackage{amsthm} %Enables custom theorem environments
+%\usepackage{bm} %Adds bold math fonts
+\usepackage{adjustbox} %Need to adjust the size of tikz diagram
+\usepackage{tikz} %Used for formatting plots and figures
+\usepackage{float} %Used to force the position of tables and figures
+\usepackage{graphicx} %For including images
+\usepackage[T1]{fontenc} %Allows for encoding of slavic letters
+\usepackage{lmodern} %Need to load back the original font for when T1 encoding is active
+%%
+
+
+%%% User-defined commands
+
+\DeclareMathOperator*{\argmax}{argmax} % The argmax operator
+\DeclareMathOperator\supp{supp}
+
+\newtheorem{assumption}{Assumption} % Treating assumptions like theorems.
+\newtheorem{proposition}{Proposition} % Treating propositions like theorems.
+
+
+%%%
+
+\bibliographystyle{apalike}
+% make bibliography entries smaller
+\renewcommand\bibfont{\scriptsize}
+% If you have more than one page of references, you want to tell beamer
+% to put the continuation section label from the second slide onwards
+\setbeamertemplate{frametitle continuation}[from second]
+% Now get rid of all the colours
+\setbeamercolor*{bibliography entry title}{fg=black}
+\setbeamercolor*{bibliography entry author}{fg=black}
+\setbeamercolor*{bibliography entry location}{fg=black}
+\setbeamercolor*{bibliography entry note}{fg=black}
+% and kill the abominable icon
+\setbeamertemplate{bibliography item}{}
+
+
+\title[Identification in a Generalized Roy Model with Matching]{Identification in a Generalized Roy Model with Matching}
+\date{August 2, 2024}
+\author{Sean Elliott}
+\institute{University of Toronto}
+
+\begin{document}
+	
+	
+	
+%	\begin{frame}
+%		\titlepage % Print the title page as the first slide
+%	\end{frame}
+%	
+
+	\begin{frame}{Model preliminaries}
+		
+		\begin{itemize}
+			\item Each individual's skill level is given by the ordered pair $(k,s)$ where $k\in\mathbb{R}_+$ and $s\in\mathbb{R}_+$ represent the managerial and worker skill, respectively. Denote the distribution of skills as $\mathcal{R}\subseteq \mathbb{R}^2_+$.
+			
+			\bigskip
+			
+			\item Firms have a production function $F:\mathbb{R}^2_+ \to \mathbb{R}$ which depends on the type of workers $k$ and $s$ they employ.
+			
+			\bigskip
+			
+			\item Workers choose their role (manager or worker) to maximize their wage and firms choose workers to maximize profits.
+			
+			\bigskip
+			
+			\item The goal is to identify the joint distribution of skills $\mathcal{R}$ and the production function $F(k,s)$ from observed wages and matches.
+
+		\end{itemize}
+		
+
+	\end{frame}
+
+	\begin{frame}{Worker and firm problem}
+		Workers evaluate 
+		\begin{equation*}
+			\max\{\pi(k),w(s)\}
+		\end{equation*}
+		where $\pi(k)$ and $w(s)$ are the wage functions for the managerial and worker role, respectively.
+
+	\bigskip
+	
+	A worker is indifferent between a managerial or worker role if $\pi(k) = w(s)$, or equivalently, if $s=w^{-1}(\pi(k))$.
+	
+	\bigskip
+	
+	Firms choose a worker of each type to maximize profit given by
+	\begin{equation*}
+		\max_{(k,s)\in\supp(\mathcal{R})} F(k,s) - \pi(k) - w(s).
+	\end{equation*}
+	
+	\bigskip
+	
+	We can now define what a competitive equilibrium looks like in this market.
+	
+		\end{frame}
+		
+		
+	\begin{frame}{Competitive equilibrium}
+		
+		\begin{definition}
+			Given a production function $F$ and distribution of skills $\mathcal{R}$, a competitive equilibrium is a pair of wage schedules $\pi$ and $w$ such that
+			\smallskip
+			\begin{itemize}
+				\item Individuals maximize their earnings.
+				 $$ max\{\pi(k),w(s)\} $$
+				\item Firms have free entry and choose a manager and worker to maximize profit --- which is zero in equilibrium.
+				$$ \max_{(k,s)\in\supp(\mathcal{R})} F(k,s) - \pi(k) - w(s) $$
+				\item The labour market clears: each firm employs exactly one $k$-type worker and one $s$-type worker and all workers are employed. 
+			\end{itemize}
+		\end{definition}
+		
+	\end{frame}
+	
+	\begin{frame}{Recasting the model as an optimal transportation problem}
+		We are mapping the distribution of managers to the distribution of workers such that it maximizes the profit of firms and obeys occupational choice constraints for workers.
+		
+		\bigskip
+		
+		This is a special case of the Monge-Kantorovich problem from optimal transportation.
+		
+		\bigskip
+		
+		As in the Roy model, there is complete separation in the labour market defined by the separating function 
+		\begin{equation*}
+			\phi(k) = w^{-1}(\pi(k))
+		\end{equation*}
+		where the key difference in our case is that we do not restrict $\phi$ to be linear.
+		
+		\bigskip
+		
+		 As will be shown later, if we allow interaction between workers in the production function, this generates non-linearity in $\phi$.
+	\end{frame}
+	
+	
+	\begin{frame}{Supplies of managers/workers}
+		We can use the separating function to define the occupational distributions for managers and workers. Suppose the skill distribution $\mathcal{R}$ has density $R$ then the distributions are given by 
+		\begin{equation*}
+			H^\phi(k) = \int_0^k\int_0^{\phi(\tilde{k})} R(s,\tilde{k})dsd\tilde{k}
+		\end{equation*}
+		
+		\begin{equation*}
+			G^\phi(s) = \int_0^s\int_0^{\phi^{-1}(\tilde{s})} R(\tilde{s},k)dkd\tilde{s}
+		\end{equation*}
+	\end{frame}
+	\bibliography{/home/selliott/Research/bib/matching}
+	
+	
+\end{document}
