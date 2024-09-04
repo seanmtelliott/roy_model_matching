@@ -46,6 +46,19 @@ def inv_mills(x):
 
 sqrt = np.emath.sqrt
 
+
+D = norm.ppf(pr_key_sel)
+lD = inv_mills(D)
+lDneg = inv_mills(-D)
+
+tau_k = (skew_key/(lD * (2*lD**2 + 3 * D * lD + D**2 - 1)))**(1/3)
+tau_s = (skew_sec/(lDneg * (2*lDneg**2 - 3 * D * lDneg + D**2 - 1)))**(1/3)
+mu_k = mean_key - tau_k * lD
+mu_s = mean_sec - tau_s * lDneg
+sigma2_k = var_key - tau_k**2 * ((-lD)*D - lD**2)
+sigma2_s = var_sec - tau_s**2 * ((lDneg)*D - lD**2)
+sigma_ks = (-(mu_k**2)+2*mu_k*mu_s - mu_s**2 + sigma2_k*(D**2) + sigma2_s*(D**2))/(2*D**2)
+
 # Solve a system of nonlinear equations
 # x[0] : mu_k
 # x[1] : mu_s
@@ -53,7 +66,7 @@ sqrt = np.emath.sqrt
 # x[3] : sigma2_s
 # x[4] : sigma_ks
 def func(x):
-    D = np.abs((x[0]-x[1])/sqrt(x[2]**2+x[3]**2-2*x[4]))
+    D = norm.ppf(pr_key_sel)
     tau_k = np.abs((x[2]**2-x[4])/sqrt(x[2]**2+x[3]**2-2*x[4]))
     tau_s = np.abs((x[3]**2-x[4])/sqrt(x[2]**2+x[3]**2-2*x[4]))
     return [pr_key_sel - norm.cdf(D),
