@@ -10,6 +10,7 @@
 
 import numpy as np, pandas as pd, sys, itertools, ot, yaml
 sys.path.append('code/utilities')
+from scipy.stats import norm
 import helper_funs as helpers
 
 ###############################################################################
@@ -309,3 +310,6 @@ def get_pop_weights(sim_results):
     expanded_matches['resid_sec'] = expanded_matches['log_wage_sec'] - expanded_matches['firm_wages']
     
     return expanded_matches
+
+def inv_mills(x):
+    return norm.pdf(x)/norm.cdf(x)

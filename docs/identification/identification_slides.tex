@@ -121,23 +121,25 @@
 \setbeamertemplate{bibliography item}{}
 
 
-\title[Identification in a Generalized Roy Model with Matching]{Identification in a Generalized Roy Model with Matching}
-\date{August 2, 2024}
-\author{Sean Elliott}
-\institute{University of Toronto}
+\title[Generalized Roy Model with Matching]{Generalized Roy Model with Matching}
+\date{}
+%\author{Sean Elliott}
+%\institute{University of Toronto}
 
 \begin{document}
 	
 	
 	
-%	\begin{frame}
-%		\titlepage % Print the title page as the first slide
-%	\end{frame}
-%	
+	\begin{frame}
+		\titlepage % Print the title page as the first slide
+	\end{frame}
+	
 
 	\begin{frame}{Model preliminaries}
 		
 		\begin{itemize}
+			\item Consider a universe of competitive firms each comprised of two types of employees---a manager and a worker.
+			\bigskip
 			\item Each individual's skill level is given by the ordered pair $(k,s)$ where $k\in\mathbb{R}_+$ and $s\in\mathbb{R}_+$ represent the managerial and worker skill, respectively. Denote the distribution of skills as $\mathcal{R}\subseteq \mathbb{R}^2_+$.
 			
 			\bigskip
@@ -150,7 +152,7 @@
 			
 			\bigskip
 			
-			\item The goal is to identify the joint distribution of skills $\mathcal{R}$ and the production function $F(k,s)$ from observed wages and matches.
+			\item The goal is to identify the joint distribution of skills $\mathcal{R}$ and the production function $F(k,s)$ from observed wages and manager--worker matches.
 
 		\end{itemize}
 		
@@ -215,7 +217,7 @@
 		
 		\bigskip
 		
-		 As will be shown later, if we allow interaction between workers in the production function, this generates non-linearity in $\phi$.
+		 If we allow interaction between worker skills in the production function, this generates non-linearity in $\phi$.
 	\end{frame}
 	
 	
@@ -354,14 +356,57 @@
 		\begin{theorem}
 			Under the condition of linear separation and log-normal skills, we have the following results from \citet{heckman1990empirical}:
 			\begin{itemize}
-				\item HH (Thm. 4): If we observe wages for both occupations and occupational choice, both $\mathbf{\mu}$ and $\Sigma$, and their subscripts, are identified.
+				\item HH Thm. 4: If we observe wages for both occupations and occupational choice, both $\mathbf{\mu}$ and $\Sigma$, and their subscripts, are identified.
 				\smallskip
-				\item  HH (Thm. 5): If we only observe the aggregate earnings distribution, we can identify both $\mathbf{\mu}$ and $\Sigma$ but not their subscripts.
+				\item  HH Thm. 5: If we only observe the aggregate earnings distribution, we can identify both $\mathbf{\mu}$ and $\Sigma$ but not their subscripts.\footnote{This corresponds to the case where wages in one sector---typically thought of as the household sector---are unobserved.}
 				\smallskip
-				\item HH (Thm. 6): If we observe earnings for one occupation, say $k$, it is possible to identify $\mu_k$, $\sigma_k$, $\frac{\mu_k - \mu_s}{\sigma}$ and $\rho$ where $\sigma = \sqrt{\sigma_k + \sigma_s -2 \sigma_{ks}}$ and $\rho = \frac{\sigma_k - \sigma_{ks}}{\sigma\sqrt{\sigma_k}}$. However, we cannot identify $\mu_s$ and $\sigma$.
+				\item HH Thm. 6: If we observe earnings for one occupation, say $k$, it is possible to identify $\mu_k$, $\sigma_k$, $\frac{\mu_k - \mu_s}{\sigma}$ and $\rho$ where $\sigma = \sqrt{\sigma_k + \sigma_s -2 \sigma_{ks}}$ and $\rho = \frac{\sigma_k - \sigma_{ks}}{\sigma\sqrt{\sigma_k}}$. However, we cannot identify $\mu_s$ and $\sigma$.
 			\end{itemize}
 		\end{theorem}
-		For proofs of the first two see \citet{basu1978identifiability} (or \citet{french2011identification} under slightly different conditions). The third proof can be found in \citet{heckman1990empirical}.
+
+		I will give a rough idea as to how identification works in the case where we observe wages in both occupations, see \citet{basu1978identifiability} and \citet{heckman1990empirical} for proofs of the other two cases.
+		
+	\end{frame}
+	
+	\begin{frame}{Identification of log-normal Roy model}
+		Consider the case where we normalize the skill prices $a$ and $b$ to one. We need to first define a few quantities:	
+			\begin{align*}
+			D &= \frac{\mu_k - \mu_s}{\sqrt{\sigma_k^2 + \sigma_s^2 - 2\sigma_{ks}}},\\
+			\tau_h &= \frac{\sigma_h^2 - \sigma_{ks}}{\sqrt{\sigma_k^2 + \sigma_s^2 - 2\sigma_{ks}}} \text{ for } h \in \{k,s\}\\
+			\lambda(\cdot) &= \frac{\varphi(\cdot)}{\Phi(\cdot)}
+		\end{align*}
+		where $\varphi(\cdot)$ and $\Phi(\cdot)$ are the pdf and cdf, respectively, of the standard normal distribution.\\
+		\vspace{0.2cm}
+		Let $J_i \in \{k,s\}$ be individual $i$'s occupational choice and let $Y_i$ denote individual $i$'s wage.
+	\end{frame}
+	
+	\begin{frame}{Identification of log-normal Roy model}
+		
+		Then from \citet{heckman1990empirical} we have the following properties of normal RVs:
+		\begin{equation*}
+			Pr(J_i = k) = \Phi(D)
+		\end{equation*}
+		\begin{equation*}
+			E(Y_i | J_i = k) = \mu_k + \tau_k \lambda(D)
+		\end{equation*}
+		\begin{equation*}
+			E(Y_i | J_i = s) = \mu_s + \tau_s \lambda(-D)
+		\end{equation*}
+		\begin{equation*}
+			Var(Y_i | J_i = k) = \sigma_k^2 + \tau_k^2(-\lambda(D)D - \lambda^2(D))
+		\end{equation*}
+		\begin{equation*}
+			Var(Y_i | J_i = s) = \sigma_s^2 + \tau_s^2(\lambda(-D)D - \lambda^2(D))
+		\end{equation*}
+		\begin{equation*}
+			E([Y_i - E(Y_i|J_i = k)]^3|J_i = k) = \tau_k^3 \lambda(D)[2\lambda^2(D) + 3 D \lambda(D) + D^2 -1]
+		\end{equation*}
+		\begin{equation*}
+			E([Y_i - E(Y_i|J_i = s)]^3|J_i = s) = \tau_s^3 \lambda(-D)[2\lambda^2(-D) - 3 D \lambda(-D) + D^2 -1].
+		\end{equation*}
+		\vspace{0.1cm}
+		
+		Everything on the LHS of these equations is observable and it is easy to show that $\mu_k$, $\mu_s$, $\sigma_k^2$, $\sigma_s^2$, $\sigma_{ks}$ are identified from these equations. 
 	\end{frame}
 	
 	\begin{frame}{Non-parametric identification}
@@ -375,56 +420,125 @@
 				\smallskip
 				\item Identification at infinity: \citet{heckman1990empirical} \citet{french2011identification}, \citet{d2013another}
 				\smallskip
-				\item Adding a non-pecuniary component: \citet{heckman2007econometric} \citet{d2013inference}, \citet{bayer2011nonparametric}, \citet{lee2023nonparametric}.\footnote{It is worth noting here that additional assumptions need to be made to uncover the skill distribution in this case. In fact, \citet{french2011identification} show that even normality is not sufficient to achieve identification.}
+				\item Adding a non-pecuniary component: \citet{heckman2007econometric} \citet{d2013inference}, \citet{bayer2011nonparametric}, \citet{lee2023nonparametric}.
 				\smallskip
-				\item Exclusion restrictions: \citet{heckman1990empirical}, \citet{buera2006non}, \citet{french2011identification}
-				\smallskip
-				\item Construct bounds on the joint skill distribution:  \citet{mourifie2020sharp}
+				\item Exclusion restrictions: \citet{heckman1990empirical}, \citet{buera2006non}, \citet{french2011identification}, \citet{mourifie2020sharp}
 			\end{itemize}
 		\end{itemize}
 	\end{frame}
 	
-	\begin{frame}{Simulations -- Log-normal skill distribution}
+	\begin{frame}{An alternative approach}
 		\begin{itemize}
-			\item Here I will present some simulations to show how the observed objects (wage and matching functions) change as the skill distribution changes.
+			\item The goal here is to establish identification results for the joint distribution of skills under an alternative set of assumptions.
 			\bigskip
-			\item We will relax the restriction that $\phi$ is linear by using the production function $F(k,s) = 0.75k + 0.25s + ks$.
+			\item Here we assume that:
+			\begin{itemize}
+				\item Workers choose occupations to maximize their wages; 
+				\item Firms choose workers to maximize profits in a competitive market with free entry;
+				\item We can observe wages earned and who is matched with whom.
+			\end{itemize}
 			\bigskip
-			\item  Skills are drawn from a bivariate lognormal distribution $(k,s) \sim LN\left(\begin{bmatrix}
-				\mu_k \\ 
-				\mu_s
-			\end{bmatrix}, 
-			\begin{bmatrix}
-				\sigma^2_{k} & \sigma_{ks} \\
-				\sigma_{ks} & \sigma^2_{s}
-			\end{bmatrix}\right)$ and then truncated so each pair $(k,s)$ lies in the unit square.
+			\item However, we are relaxing the assumption of linear separation of skills in the labour force.
 			\bigskip
-			\item I will show what happens as we adjust the means of both skills, the correlation between the two skills, only the manager skill mean, and only the manager skill variance.
+			\item Furthermore, in our case, we are interested not just in skills but also seeing if we can uncover the production function for firms.\footnote{However, this is likely not possible without additional assumptions---there is a result from optimal transportation which implies that the matching will be the same for all supermodular production functions.}
 		\end{itemize}
-
 	\end{frame}
 	
-	\begin{frame}{Simulations}
-		These cases can be summarized as:
+	\begin{frame}{Non-identification in the case of non-linear separation}
+		Recall that if $F(k,s) = ak + bs$ and $\pi(0)=w(0)=0$, we get wage functions
+		\begin{equation*}
+			\pi(k) = ak
+		\end{equation*}
+		\begin{equation*}
+			w(s) = bs.
+		\end{equation*}
+		However, if we suppose instead that output depends on the interaction of worker skills
+		\begin{equation*}
+			F(k,s)= ak + bs + cks
+		\end{equation*}
+		for some $c\in\mathbb{R}_+$ then it can be shown that the wage functions are
+		\begin{equation*}
+			\pi(k) = ak + c\int_0^k \mu(\tilde{k})d\tilde{k}
+		\end{equation*}
+		\begin{equation*}
+			w(s) = bs + c\int_0^s\mu^{-1}(\tilde{s})d\tilde{s}.
+		\end{equation*}
+		and (it seems that) the identification results established earlier no longer hold even if we assume $(k,s)$ are log normally distributed.
+	
+	\end{frame}
+	
+	\begin{frame}{Consequence of misspecification}
+		Furthermore, we'd like to show that ignoring worker interaction has consequences when estimating parameters of the joint skill distribution of workers. Here I will:
+		\bigskip
+		
 		\begin{enumerate}
-			\item \textbf{Altering the mean -- both roles}: Fix $\Sigma = \begin{bmatrix}
-				1 & 0.5 \\
-				0.5 & 1
-			\end{bmatrix}$ and consider $\mu_k,\mu_s \in \{-3,-2,-1\}$.
-			\item \textbf{Altering the correlation}: Fix $\mu_k = \mu_s = -1$ and consider $\Sigma = \begin{bmatrix}
-				1 & \sigma_{ks} \\
-				\sigma_{ks} & 1
-			\end{bmatrix}$ where $\sigma_{ks}\in\{0.25,0.5,0.75\}$.
-			\item \textbf{Altering the mean -- manager skill only}: Fix $\Sigma = \begin{bmatrix}
-				1 & 0.5 \\
-				0.5 & 1
-			\end{bmatrix}$ and $\mu_s = -1$ and consider $\mu_k \in \{-1.5,-1,-0.5\}$.
-			\item \textbf{Altering the variance -- manager skill only}: Fix $\mu_k = \mu_s = - 1$ and consider $\Sigma = \begin{bmatrix}
-				\sigma^2_k & 0.5 \\
-				0.5 & 1
-			\end{bmatrix}$ with $\sigma^2_k \in \{1,2,3\}$.
+			\item Simulate a log normal skills model with linear separation (i.e.,$c=0$ in the production function).
+			\bigskip
+			\item Get method-of-moments estimates for $\mu_k$, $\mu_s$, $\sigma_k^2$, $\sigma_s^2$, $\sigma_{ks}$ using the conditional moments listed above.
+			\bigskip
+			\item Do the same procedure where instead I assume that there is non-linear separation and firms match workers to maximize profits (i.e., solve the OT problem to get wages).
+			\bigskip
+			\item Show that the same method-of-moments estimation procedure leads to incorrect parameter estimates for the skill distribution. 
 		\end{enumerate}
 	\end{frame}
+	
+	\begin{frame}{Distribution of estimated $\mu$ with $c=0$}
+		\begin{center}
+			\includegraphics[scale=0.75]{c0_mean}\\
+			
+			Estimated means from a simulated Roy economy with \textcolor{blue}{$\mu_s = 0.5$} and \textcolor{red}{$\mu_k = 0.75$} and linear skill separation.
+		\end{center}
+	\end{frame}
+	
+	\begin{frame}{Distribution of estimated $\mu$ with $c\neq 0$}
+				\begin{center}
+			\includegraphics[scale=0.75]{c1_mean}\\
+			
+			Estimated means from a simulated Roy economy with \textcolor{blue}{$\mu_s = 0.5$} and \textcolor{red}{$\mu_k = 0.75$} and non-linear skill separation. 
+		\end{center}
+	\end{frame}
+	
+%	\begin{frame}{Simulations -- Log-normal skill distribution}
+%		\begin{itemize}
+%			\item Here I will present some simulations to show how the observed objects (wage and matching functions) change as the skill distribution changes.
+%			\bigskip
+%			\item We will relax the restriction that $\phi$ is linear by using the production function $F(k,s) = 0.75k + 0.25s + ks$.
+%			\bigskip
+%			\item  Skills are drawn from a bivariate lognormal distribution $(k,s) \sim LN\left(\begin{bmatrix}
+%				\mu_k \\ 
+%				\mu_s
+%			\end{bmatrix}, 
+%			\begin{bmatrix}
+%				\sigma^2_{k} & \sigma_{ks} \\
+%				\sigma_{ks} & \sigma^2_{s}
+%			\end{bmatrix}\right)$ and then truncated so each pair $(k,s)$ lies in the unit square.
+%			\bigskip
+%			\item I will show what happens as we adjust the means of both skills, the correlation between the two skills, only the manager skill mean, and only the manager skill variance.
+%		\end{itemize}
+%
+%	\end{frame}
+%	
+%	\begin{frame}{Simulations}
+%		These cases can be summarized as:
+%		\begin{enumerate}
+%			\item \textbf{Altering the mean -- both roles}: Fix $\Sigma = \begin{bmatrix}
+%				1 & 0.5 \\
+%				0.5 & 1
+%			\end{bmatrix}$ and consider $\mu_k,\mu_s \in \{-3,-2,-1\}$.
+%			\item \textbf{Altering the correlation}: Fix $\mu_k = \mu_s = -1$ and consider $\Sigma = \begin{bmatrix}
+%				1 & \sigma_{ks} \\
+%				\sigma_{ks} & 1
+%			\end{bmatrix}$ where $\sigma_{ks}\in\{0.25,0.5,0.75\}$.
+%			\item \textbf{Altering the mean -- manager skill only}: Fix $\Sigma = \begin{bmatrix}
+%				1 & 0.5 \\
+%				0.5 & 1
+%			\end{bmatrix}$ and $\mu_s = -1$ and consider $\mu_k \in \{-1.5,-1,-0.5\}$.
+%			\item \textbf{Altering the variance -- manager skill only}: Fix $\mu_k = \mu_s = - 1$ and consider $\Sigma = \begin{bmatrix}
+%				\sigma^2_k & 0.5 \\
+%				0.5 & 1
+%			\end{bmatrix}$ with $\sigma^2_k \in \{1,2,3\}$.
+%		\end{enumerate}
+%	\end{frame}
 	
 %	\begin{frame}{\small Changing $\mu_k$ and $\mu_s$}
 %		\includegraphics[width=.3\textwidth]{symmetric/contourmu=-3}\hfill

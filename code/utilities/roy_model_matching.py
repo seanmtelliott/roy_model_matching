@@ -10,8 +10,9 @@
 ################################################################################
 
 # Import libraries
-import sys, matplotlib.pyplot as plt, logging, numpy as np, statistics, sim_methods as sm, os
+import sys, matplotlib.pyplot as plt, logging, numpy as np, statistics, sim_methods as sm, os, statistics as stats
 import seaborn as sns, pandas as pd
+from scipy.stats import norm
 logging.getLogger().setLevel(logging.CRITICAL)
 sys.path.append('code/utilities')
 
@@ -388,3 +389,38 @@ def plot_indentification(results,labels,output_path,file_name):
     plt.tight_layout()
     plt.savefig(os.path.join(output_path,file_name[1]))
     return
+
+def get_estimated_moments(results):
+    
+    weighted_firm = sm.get_pop_weights(results)
+    
+    pr_key_sel = 0.5
+
+    mean_key = stats.mean(weighted_firm['log_wage_key'])
+    mean_sec = stats.mean(weighted_firm['log_wage_sec'])
+
+    var_key = stats.variance(weighted_firm['log_wage_key'])
+    var_sec = stats.variance(weighted_firm['log_wage_sec'])
+
+    weighted_firm["mean_dev3_key"] = (weighted_firm['log_wage_key']-mean_key)**3
+    weighted_firm["mean_dev3_sec"]  = (weighted_firm['log_wage_sec']-mean_sec)**3
+
+    skew_key = stats.mean(weighted_firm["mean_dev3_key"])
+    skew_sec =  stats.mean(weighted_firm["mean_dev3_sec"])
+
+    D = norm.ppf(pr_key_sel)
+    lD = sm.inv_mills(D)
+    lDneg = sm.inv_mills(-D)
+
+    tau_k3 = (skew_key/(lD * (2*lD**2 + 3 * D * lD + D**2 - 1)))
+    tau_k = np.sign(tau_k3) * (np.abs(tau_k3)) ** (1 / 3)
+    tau_s3 = (skew_sec/(lDneg * (2*lDneg**2 - 3 * D * lDneg + D**2 - 1)))
+    tau_s = np.sign(tau_s3) * (np.abs(tau_s3)) ** (1 / 3)
+    mu_k = mean_key - tau_k * lD
+    mu_s = mean_sec - tau_s * lDneg
+    sigma2_k = var_key - tau_k**2 * ((-lD)*D - lD**2)
+    sigma2_s = var_sec - tau_s**2 * ((lDneg)*D - lDneg**2)
+    #sigma_ks = (-(mu_k**2)+2*mu_k*mu_s - mu_s**2 + sigma2_k*(D**2) + sigma2_s*(D**2))/(2*D**2)
+
+    mean = [mu_k,mu_s]
+    return mean
