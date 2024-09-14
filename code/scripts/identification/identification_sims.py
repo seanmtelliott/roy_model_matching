@@ -14,7 +14,7 @@ os.chdir('../../../')
 
 sys.path.append("code/utilities")
 import roy_model_matching as rmm
-import statistics as stats, pandas as pd, matplotlib as plt
+import statistics as stats, pandas as pd, matplotlib.pyplot as plt
 
 # Set the fixed parameters
 size = 1000
