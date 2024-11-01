@@ -1,0 +1,123 @@
+%%% Document class (e.g. article, letter, beamer, etc...)
+\documentclass{article}
+%%%
+
+%%% Packages
+\usepackage[round]{natbib} %Allows custom options for bibliography management
+\usepackage{cite} %Adds bibliograhy functionality like \citet
+\usepackage{geometry} %Allows me to set the margins
+\usepackage{amsmath} %Adds additional math-related commands
+\usepackage{amsfonts} %Adds fonts-within-math-mode functionality
+\usepackage{amsthm} %Enables custom theorem environments
+\usepackage{bm} %Adds bold math fonts
+\usepackage{setspace} %Enables \doublespacing command
+\usepackage{parskip} %Removes indentation
+\usepackage{tikz} %Used for formatting plots and figures
+\usepackage{float} %Used to force the position of tables and figures
+\usepackage{graphicx} %For including images
+\usepackage[T1]{fontenc} %Allows for encoding of slavic letters
+\usepackage{lmodern} %Need to load back the original font for when T1 encoding is active
+\usepackage{hyperref} %Add url functionality
+%%%
+
+%%% Set the margins of the document
+\geometry{
+	left=1in,
+	right=1in,
+	bottom=1in,
+	top=1in,
+}
+%%%
+
+%%% User-defined commands
+
+\DeclareMathOperator*{\argmax}{argmax} % The argmax operator
+
+\newtheorem{assumption}{Assumption} % Treating assumptions like theorems.
+\newtheorem{proposition}{Proposition} % Treating propositions like theorems.
+
+%%%
+
+%%% Title
+\title{Separating function simulations}
+\author{}
+\date{}
+%%%
+
+\begin{document}
+	%\maketitle
+	%\doublespacing
+	%\interfootnotelinepenalty=10000
+	
+	\section{Square grid skills}
+	
+	Using the revenue function from the paper $F(k,s) = ak^2 + bs^2 + cks$ where $a=3,b=1$ and $c \in \{0.01,0.5,2\}$.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.75]{grid_plot_paper.png}
+		\caption{Simulation for $F(k,s) = 3k^2 + s^2 + cks$ with $c\in\{0.01,0.5,2\}$ -- Square grid skills}
+	\end{figure}
+	
+	Notice something strange is occurring here: $\phi$ becomes more linear as $c$ increases.\\
+	
+	This is due to $F$ being quadratic in $k$ and $s$. If we instead use the revenue function $F(k,s) = 3k + s + cks$ then we get what we should expect.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.75]{grid_plot_linear_ks.png}
+		\caption{Simulation for $F(k,s) = 3k + s + cks$ with $c\in\{0.01,0.5,2\}$ -- Square grid skills}
+	\end{figure}
+	
+	Now we can see that $\phi$ is indeed linear, or very close to being linear, when $c=0.01$ and there is a bit of non-linearity when $c=2$.\\
+	
+	\section{Lognormal skills}
+	What if we tune the simulation to be similar to that of Heckman and Honore? That is we have skills distributed as $(k,s) \sim \text{Lognormal}[\mathbf{\alpha},\Sigma]$ restricted to the unit square with $\Sigma = \begin{bmatrix}
+		\sigma_{11} & \sigma_{12} \\
+		\sigma_{21} & \sigma_{22}
+	\end{bmatrix}$ where we impose that $\sigma_{11} > \sigma_{12}$. We can fix $\sigma_{11}=1$ and change $\sigma_{12}<1$ (i.e. the correlation, $\rho_{k,s}$) to get different simulation results.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.75]{ln_plot_rho0_05.png}
+		\caption{Simulation for $F(k,s) = 3k + s + cks$ with $c\in\{0.01,0.5,2\}$ -- Lognormal ($\rho_{k,s}=0.05$)}
+	\end{figure}
+	
+	We get a similar result to the grid case, with a bit more non-linearity visible in $\phi$ when $c$ large. Then increasing $\rho_{k,s}$ we get:
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.75]{ln_plot_rho0_5.png}
+		\caption{Simulation for $F(k,s) = 3k + s + cks$ with $c\in\{0.01,0.5,2\}$ -- Lognormal ($\rho_{k,s}=0.5$)}
+	\end{figure}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.75]{ln_plot_rho0_95.png}
+		\caption{Simulation for $F(k,s) = 3k + s + cks$ with $c\in\{0.01,0.5,2\}$ -- Lognormal ($\rho_{k,s}=0.95$)}
+	\end{figure}
+	
+	Again, we get similar results with the most non-linearity visible in $\phi$ in the case where $\rho_{k,s} = 0.95$ and $c=2$. 
+	
+	\section{Inequality}
+	
+	This is a figure from Song et al.(2019)\footnote{Song, Jae, David J. Price, Fatih Guvenen, Nicholas Bloom, and Till Von Wachter. "Firming up inequality." The Quarterly Journal of Economics 134, no. 1 (2019): 1-50.}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.55]{bloom_ineq.png}
+	\end{figure}
+	
+	Each point compares percentiles of the earnings distribution between 2012 and 1982. If we look at the blue line labelled ``"Individuals'', the height of the line at $x=50$ represents the difference in log earnings between the 50th percentile worker in 2012 and the 50th percentile worker in 1982. The line being upward sloping implies that the rich are getting richer, so to speak.\\
+	
+	What can we say with our model? We can produce a similar plot as the one above by running the simulation under two different scenarios and then comparing the percentiles of the earnings distributions across these two simulations. In the first scenario, consider $F(k,s) = ak + bs + cks$ with $c$ close to zero. That is, $\phi$ is approximately linear. In the second scenario, we allow $\phi$ to be non-linear by setting $c>0$. In both cases we set $(k,s) \sim \text{Lognormal}[\mathbf{\alpha},\Sigma]$ as above with $\rho_{k,s} = 0.5$.
+	
+		\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.75]{inequality_rho_0_5_final.png}
+		\caption{Impact of non-linear labour market separation on income inequality}
+	\end{figure}
+
+	I have colour-coded it to coincide with the results from the Bloom paper. We can see that this is somewhat comparable to the figure above -- I am in the process of making adjustments to try and get something a little nicer.
+	
+\end{document}

@@ -10,6 +10,7 @@
 
 import numpy as np, pandas as pd, sys, itertools, ot, yaml
 sys.path.append('code/utilities')
+from scipy.stats import norm
 import helper_funs as helpers
 
 ###############################################################################
@@ -36,8 +37,10 @@ def modify_config(size,dist,dist_params,revenue_params,tol=0.01,adj_wage=True):
         config['distribution']['parameters']['correlation'] = 'None'
     elif dist == "lognormal":
         config['distribution']['distribution_type'] = 'lognormal'
-        config['distribution']['parameters']['mean'] = dist_params['mean']
-        config['distribution']['parameters']['variance'] = dist_params['variance']
+        config['distribution']['parameters']['mean_k'] = dist_params['mean_k']
+        config['distribution']['parameters']['mean_s'] = dist_params['mean_s']
+        config['distribution']['parameters']['variance_k'] = dist_params['variance_k']
+        config['distribution']['parameters']['variance_s'] = dist_params['variance_s']
         config['distribution']['parameters']['correlation'] = dist_params['correlation']
         pass
     
@@ -64,8 +67,9 @@ def modify_config(size,dist,dist_params,revenue_params,tol=0.01,adj_wage=True):
 def sim_params(config):
     
     print("Running simulation with", config['size']['num_types']*config['size']['num_types'], "workers")
-    print("Skills are distributed as",config['distribution']['distribution_type'],"with mean",config['distribution']['parameters']['mean'],
-          "variance",config['distribution']['parameters']['variance'],"and correlation",config['distribution']['parameters']['correlation'])
+    print("Skills are distributed as",config['distribution']['distribution_type'],"with means",config['distribution']['parameters']['mean_k'],"and",
+          config['distribution']['parameters']['mean_s'], "variances",config['distribution']['parameters']['variance_k'],"and",
+          config['distribution']['parameters']['variance_s'],"and correlation",config['distribution']['parameters']['correlation'])
     print("The revenue function is: F(k,s)=",config['revenue']['coefficients']['a'],"k^",config['revenue']['exponents']['n'],"+",
          config['revenue']['coefficients']['b'],"s^",config['revenue']['exponents']['m'],"+",
          config['revenue']['coefficients']['c'],"ks",sep='')
@@ -95,14 +99,16 @@ def gen_workers(config):
         types['key'] = key_types
         types['sec'] = sec_types
     if(distribution == "lognormal"):
-        LN_mean = config['distribution']['parameters']['mean'] 
-        LN_var = config['distribution']['parameters']['variance']
+        LN_mean_k = config['distribution']['parameters']['mean_k'] 
+        LN_mean_s = config['distribution']['parameters']['mean_s'] 
+        LN_var_k = config['distribution']['parameters']['variance_k']
+        LN_var_s = config['distribution']['parameters']['variance_s']
         LN_corr = config['distribution']['parameters']['correlation']
         
         # Generate lognormal skills and then only sample those for which both (k,s) < 1
         
-        mu = [LN_mean, LN_mean]
-        cov = np.array([[LN_var, LN_corr], [LN_corr, LN_var]])
+        mu = [LN_mean_k, LN_mean_s]
+        cov = np.array([[LN_var_k, LN_corr], [LN_corr, LN_var_s]])
         mvn = np.random.multivariate_normal(mu, cov, size=1000000)
         mvln = np.exp(mvn)
         mvn_samples_trunc = mvln[(mvln < 1).all(axis=1)]
@@ -304,3 +310,6 @@ def get_pop_weights(sim_results):
     expanded_matches['resid_sec'] = expanded_matches['log_wage_sec'] - expanded_matches['firm_wages']
     
     return expanded_matches
+
+def inv_mills(x):
+    return norm.pdf(x)/norm.cdf(x)

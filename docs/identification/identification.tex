@@ -1,0 +1,123 @@
+%%% Document class (e.g. article, letter, beamer, etc...)
+\documentclass{article}
+%%%
+
+%%% Packages
+\usepackage[round]{natbib} %Allows custom options for bibliography management
+\usepackage{cite} %Adds bibliograhy functionality like \citet
+\usepackage{geometry} %Allows me to set the margins
+\usepackage{amsmath} %Adds additional math-related commands
+\usepackage{amsfonts} %Adds fonts-within-math-mode functionality
+\usepackage{amsthm} %Enables custom theorem environments
+\usepackage{bm} %Adds bold math fonts
+\usepackage{setspace} %Enables \doublespacing command
+\usepackage{parskip} %Removes indentation
+\usepackage{tikz} %Used for formatting plots and figures
+\usepackage{float} %Used to force the position of tables and figures
+\usepackage{graphicx} %For including images
+\usepackage[T1]{fontenc} %Allows for encoding of slavic letters
+\usepackage{lmodern} %Need to load back the original font for when T1 encoding is active
+%%%
+
+%%% Set the margins of the document
+\geometry{
+	left=1in,
+	right=1in,
+	bottom=1in,
+	top=1in,
+}
+%%%
+
+%%% User-defined commands
+
+\DeclareMathOperator*{\argmax}{argmax} % The argmax operator
+
+\newtheorem{assumption}{Assumption} % Treating assumptions like theorems.
+\newtheorem{proposition}{Proposition} % Treating propositions like theorems.
+\newtheorem{theorem}{Theorem}
+%%%
+
+%%% Title
+\title{Roy Model with Matching -- Identification}
+\author{}
+\date{}
+%%%
+
+\begin{document}
+
+\maketitle
+\vspace{-2cm}
+
+\section{Overview}
+
+The goal of this analysis is to determine if the addition of matching to the Roy model allows us to get additional identification results compared to \citet{heckman1990empirical}. First I will compare and contrast the model of \citet{heckman1990empirical} to the framework of \citet{mak2024occupational} and our paper. Then, I will discuss the identification theorems in \citet{heckman1990empirical} and explore how they can be extended to our case. This is goal is to do this both theoretically and with simulations.
+
+
+\section{Model preliminaries}
+
+\subsection{Occupational choice}
+
+
+Agents possess both a managerial skill $k$ and a worker skill $s$ such that $(s,k) \in \mathbb{R}^2_+$ with distribution $F(k,s)$ and density $f(k,s)$. There is are wage functions given by $\pi(k)$ and $w(s)$. In the model of \citet{heckman1990empirical} these are given as $\pi(k) = p_k k$ and $w(s) = p_s s$ -- we make no such assumption here. An agent of type $(k,s)$ will choose their occupation according to 
+\begin{equation*}
+	\max\{\pi(k),w(s)\}.
+\end{equation*}
+That is, if $\pi(k) > w(s)$, the worker will choose the managerial role over the worker role. In difference occurs when $s=w^{-1}(\pi(k))$ which leads to the separating function
+\begin{equation*}
+	\phi(k) = w^{-1}(\pi(k)).
+\end{equation*}
+In \citet{heckman1990empirical}, $\phi$ is assumed to be linear, $\phi(k) = \frac{p_k k}{p_s} $. The population supply of managers and workers is given by
+\begin{equation*}
+	H(k) = \int_0^k\int_0^{\phi(u)} f(u,v) dv du
+\end{equation*}
+and
+\begin{equation*}
+	G(s) = \int_0^s\int_0^{\phi^{-1}(v)} f(u,v) du dv,
+\end{equation*}
+respectively. 
+
+\subsection{Matching}
+
+At this stage \citet{mak2024occupational} departs from \citet{heckman1990empirical} by introducing a firm which employs exactly one manager and one worker to produce a single good with per-unit price of 1. The firm has a revenue function $R(k,s)$ which is strictly increasing in $k$ and $s$ and is twice continuously differentiable. Additionally, assume that
+\begin{enumerate}
+	\item $R$ is strictly supermodular in $k$ and $s$ -- i.e., the cross-partials are positive;
+	\item $R(0,0) = R(k,0) = R(0,s) \; \forall \; k,s$.
+\end{enumerate}
+
+Firms are also maximizers and choose workers according to 
+\begin{equation*}
+	\max_{\tilde{k},\tilde{s}\in\mathbb{R}_+} R(\tilde{k},\tilde{s}) - \pi(\tilde{k}) - w(\tilde{s}).
+\end{equation*}
+There is PAM between managers and workers implying that the matching function $s=\mu(k)$ is strictly increasing and solves $\pi(k) + w(\mu(k)) = R(k,\mu(k))$. Market clearing implies that $H(k) = G(\mu(k))$.
+
+\section{Identification}
+
+Suppose skills $(k,s)$ are drawn from some distribution with mean $\bm{\mu} = [\mu_k,\mu_s]'$ and variance $\bm{\Sigma} = \begin{bmatrix}
+	\sigma_k & \sigma_{ks} \\
+	\sigma_{ks} & \sigma_s
+\end{bmatrix}$. If we consider the model with only occupational choice and no matching and further suppose that $(k,s)$ are lognormally distributed, then we have the following results from \citet{heckman1990empirical}:
+
+\begin{enumerate}
+	\item[HH.1] Both $\bm{\mu}$ and $\bm{\Sigma}$ can be identified from cross-sectional data on wages in each role and occupational choices. (HH, Thm. 4)
+	\item[HH.2]  If we only observe a cross-section of aggregate earnings distribution (i.e., we don't know the earnings distribution for each role or how many workers chose each role), it is still possible to identify $\mu_k$, $\mu_s$, $\sigma_k$ and $\sigma_s$, but it is not possible to assign them to a particular sector. However, the covariance $\sigma_{ks}$ is uniquely identified. (HH, Thm. 5)
+	\item[HH.3]  Even if we only have a cross-sectional earnings distribution for one role, say $k$, it is still possible to identify $\mu_k$, $\sigma_k$, $\frac{\mu_k - \mu_s}{\sigma}$ and $\rho$ where $\sigma = \sqrt{\sigma_k + \sigma_s -2 \sigma_{ks}}$ and $\rho = \frac{\sigma_k - \sigma_{ks}}{\sigma\sqrt{\sigma_k}}$. However, we cannot identify $\mu_2$ and $\sigma$. (HH, Thm. 6)
+\end{enumerate}
+
+Next, we adapt these theorems to the model with occupational choice and matching as outlined above. 
+
+\begin{theorem} (Generalization of HH.1)
+	Assume that $(k,s) \sim \text{LN}(\bm{\mu},\bm{\Sigma})$ and that we can observe wages for each role and who is matched with whom. Under these conditions, it is possible to identify both $\bm{\mu}$ and $\bm{\Sigma}$.
+\end{theorem}
+
+\begin{proof}
+	content...
+\end{proof}
+
+
+
+
+
+\bibliographystyle{plainnat}
+\bibliography{/home/selliott/Research/bib/matching}
+	
+\end{document}
