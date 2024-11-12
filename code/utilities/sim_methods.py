@@ -110,16 +110,17 @@ def gen_workers(config):
         mu = [LN_mean_k, LN_mean_s]
         cov = np.array([[LN_var_k, LN_corr], [LN_corr, LN_var_s]])
         mvn = np.random.multivariate_normal(mu, cov, size=1000000)
-        mvln = np.exp(mvn)
-        mvn_samples_trunc = mvln[(mvln < 1).all(axis=1)]
+        #mvln = np.exp(mvn)
+        #mvn_samples_trunc = mvln[(mvln < 10).all(axis=1)]
         
         # Need to bin them into discrete chunks (take the hundreths place -- could change later)
         
-        mvn_samples_trunc = mvn_samples_trunc.round(decimals=3)
-        mvn_samples_trunc = mvn_samples_trunc[(mvn_samples_trunc > 0).all(axis=1)] #taking (0,1)
+        mvn = mvn.round(decimals=1)
+        mvn_trunc = mvn[(mvn > -5).all(axis=1)] #taking (0,1)
+        mvn_trunc = mvn_trunc[(mvn_trunc < 5).all(axis=1)]
 
         # Sort them
-        mvn_samples_sorted = np.array(sorted(sorted(mvn_samples_trunc,key=lambda e:e[1]),key=lambda e:e[0]))
+        mvn_samples_sorted = np.array(sorted(sorted(mvn_trunc,key=lambda e:e[1]),key=lambda e:e[0])) + 5
         
         types = {}
         types['workers'] = mvn_samples_sorted

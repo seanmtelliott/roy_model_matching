@@ -396,14 +396,14 @@ def get_estimated_moments(results):
     
     pr_key_sel = 0.5
 
-    mean_key = stats.mean(weighted_firm['log_wage_key'])
-    mean_sec = stats.mean(weighted_firm['log_wage_sec'])
+    mean_key = stats.mean(weighted_firm['wage_key'])
+    mean_sec = stats.mean(weighted_firm['wage_sec'])
 
-    var_key = stats.variance(weighted_firm['log_wage_key'])
-    var_sec = stats.variance(weighted_firm['log_wage_sec'])
+    var_key = stats.variance(weighted_firm['wage_key'])
+    var_sec = stats.variance(weighted_firm['wage_sec'])
 
-    weighted_firm["mean_dev3_key"] = (weighted_firm['log_wage_key']-mean_key)**3
-    weighted_firm["mean_dev3_sec"]  = (weighted_firm['log_wage_sec']-mean_sec)**3
+    weighted_firm["mean_dev3_key"] = (weighted_firm['wage_key']-mean_key)**3
+    weighted_firm["mean_dev3_sec"]  = (weighted_firm['wage_sec']-mean_sec)**3
 
     skew_key = stats.mean(weighted_firm["mean_dev3_key"])
     skew_sec =  stats.mean(weighted_firm["mean_dev3_sec"])
