@@ -309,6 +309,7 @@ def get_pop_weights(sim_results):
     expanded_matches['firm_output'] = np.log(output)
     expanded_matches['resid_key'] = expanded_matches['log_wage_key'] - expanded_matches['firm_wages']
     expanded_matches['resid_sec'] = expanded_matches['log_wage_sec'] - expanded_matches['firm_wages']
+    expanded_matches = expanded_matches.dropna()    
     
     return expanded_matches
 

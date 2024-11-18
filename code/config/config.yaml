@@ -25,4 +25,4 @@ revenue:
     
 # Misc parameters (leave these as default for now)
 tolerance: 0.01
-adj_wage: True
+adj_wage: False
