@@ -207,11 +207,11 @@ as it implies the matching function is known and will be the identity map
 	\begin{equation*}
 		\pi(k) = k + \int_0^k\mu(\tilde{k})d\tilde{k} \text{ and } w(s) = s + \int_0^s\mu^{-1}(\tilde{s})d\tilde{s}.
 	\end{equation*}
- 	In particular, we have that
+ 	Since the matching function is known this case, we can say that
 	\begin{equation*}
 		\pi(k) = k + \int_0^k\tilde{k}d\tilde{k} = k +\frac{k^2}{2}
 	\end{equation*}
-	and 
+	is the manager's wage and the worker's wage is 
 	\begin{equation*}
 		w(s) = s + \frac{s^2}{2}
 	\end{equation*}
@@ -225,7 +225,7 @@ Parametric identification comes from the fact that the wages are linear function
 
 \vspace{0.2cm}
 
-That is, occupational choice is given by
+That is, occupational choice for individual $i$ is given by
 \begin{equation*}
 Pr(J_i = k)=	Pr[\pi(k)>w(s)] = Pr(k>s) = \frac{\mu_k - \mu_s}{\sqrt{\sigma_k^2 + \sigma_s^2 - 2\sigma_{ks}}}.
 \end{equation*}
@@ -248,7 +248,7 @@ Let $Y_i$ denote the wage for individual $i$.
 
 \vspace{0.25cm}
 
-However, even though $k$ and $s$ are normally distributed, the observed wages are not and thus we cannot use any of the nice features of the normal distribution to establish identification.
+However, even though $k$ and $s$ are normally distributed, the wages are not. $\pi(k)=k+k^2/2$
 
 \vspace{0.5cm}
 
@@ -352,12 +352,14 @@ Therefore, it is worth asking: is the parametric case is interesting? It is a st
 		\begin{itemize}
 		\item Case I: The 20 $k_H$ workers all match with the $(k_L,s_H)$ workers and there are 10 $(k_L,s_H)$ types leftover who will match with $(k_L,s_L)$ types. 
 		\begin{itemize}
-			\item In the 20 $k_H \to s_H$ matches, I can't say anything about the $k$-type's $s$ type.
+			\item In the 20 $k_H,s_H$ matches, I can't say anything about the $k$-role's $s$ type.
 		\end{itemize}
+		\smallskip
 		\item Case II: There will be 20 $k_H$ and $s_H$ matches, and the remaining $k_H$ workers will match with an $(k_L,s_L)$ individual.
 		\begin{itemize}
-			\item In the 20 $k_H \to s_H$ matches, I can't say anything about the $k$-type's $s$ type.
+			\item In the 20 $k_H,s_H$ matches, I can't say anything about the $k$-role's $s$ type.
 		\end{itemize}
+		\smallskip
 		\item There will always be leftover $(k_L,s_L)$ types who self-match, but I don't know how they determine which worker is $k$ and which is $s$---assume this is random, I suppose.
 	\end{itemize}
 \end{frame}
@@ -365,12 +367,12 @@ Therefore, it is worth asking: is the parametric case is interesting? It is a st
 \begin{frame}{Lack of identification in the $2\times 2$ model with matching}
 	\begin{itemize}
 		\item If matching doesn't introduce changes in occupational choice, it does not give us any additional information about the agents.
-		\bigskip
+		\smallskip
 		\item This outcome is identical to the case without matching since workers simply take prevailing wages as given, decide which role to choose, and then they are paired in firms to maximize output.
-		\bigskip
+		\smallskip
 		\item This is also true in the full version of the model with continuous types where the social planner solves an optimal transportation problem.
-		\bigskip
-		\item In fact, this is exactly how we solve the OT problem: Find wages such that half choose to be managers, half choose to be workers, and then solve the OT problem to get the matching.
+		\smallskip
+		\item In fact, this is exactly how we solve the OT problem: Set wages such that half choose to be managers, half choose to be workers, and then solve the OT problem to get the matching.\footnote{Theorem 1 in the paper essentially says this.}
 
 	\end{itemize}
 \end{frame}

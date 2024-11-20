@@ -1,0 +1,7 @@
+- write the restrictions on the vector of joint probability
+- get the identified set for that vector
+- do matching and HH show why they are the same
+- if i get a negative result, HH should imply the matching
+- what exactly is leading to the negative result
+- discrete and continuous give a different result
+
