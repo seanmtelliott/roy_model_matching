@@ -23,7 +23,7 @@ import roy_model_matching as rmm
 # Truncated lognormal (i.e. lognormal on [0,1])
 size = 1000
 dist = "lognormal"
-dist_params = {'mean': 0.5,'variance': 1,'correlation': 0.05}
+dist_params = {'mean_k': 1,'mean_s': 0.5,'variance_k': 2,'variance_s':2,'correlation': 0}
 c_vals = [0.01,0.5,2]
 tol_val = 0.001
 
