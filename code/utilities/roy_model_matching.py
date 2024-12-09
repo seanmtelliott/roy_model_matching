@@ -424,3 +424,16 @@ def get_estimated_moments(results):
 
     mean = [mu_k,mu_s]
     return mean
+
+def potential_earnings(results):
+    
+    workers = pd.DataFrame(results["types"]["workers"],columns=["k","s"])
+    pi_fun = results["firms"][["k","wage_key"]]
+    w_fun = results["firms"][["s","wage_sec"]].drop_duplicates()
+    workers_comb = workers.merge(pi_fun,on="k",how="left").merge(w_fun,on="s",how="left")
+    workers_comb["D"] = np.where(workers_comb["wage_key"]>workers_comb["wage_sec"],1,0)
+    
+    matching_fun = pd.DataFrame(np.column_stack([results["firms"]["k"],results["firms"]["s"]]),columns=["k","mu_k"])
+    
+    
+    

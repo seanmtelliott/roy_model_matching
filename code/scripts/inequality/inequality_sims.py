@@ -12,7 +12,7 @@ import sys, os
 # Set working directory to be root directory of the repository
 
 os.chdir(os.path.dirname(__file__))
-os.chdir('../..')
+os.chdir('../../..')
 
 # Import the "package"
 
@@ -24,14 +24,14 @@ import roy_model_matching as rmm
 # Set the parameters
 size = 1000
 dist = "lognormal"
-dist_params = {'mean': 0,'variance': 1,'correlation': 0.5}
+dist_params = {'mean_k': 0, 'mean_s': 0,'variance_k': 1,'variance_s': 1,'correlation': 0}
 
 ## First set of parameters
 revenue_params = {'a':0.55,'b':0.45,'c':0.01,'n':1,'m':1,'cons':2}
 scenario1 = rmm.model_sim(size,dist,dist_params,revenue_params,tolerance=0.001)
 
 ## Second set of parameters
-dist_params = {'mean': 0,'variance': 1,'correlation': 0.5}
+dist_params = {'mean_k': 0, 'mean_s': 0,'variance_k': 1,'variance_s': 1,'correlation': 0.5}
 revenue_params = {'a':1.6,'b':0.4,'c':0.15,'n':2,'m':1,'cons':2}
 scenario2 = rmm.model_sim(size,dist,dist_params,revenue_params,tolerance=0.001)
 
