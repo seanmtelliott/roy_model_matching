@@ -425,15 +425,32 @@ def get_estimated_moments(results):
     mean = [mu_k,mu_s]
     return mean
 
-def potential_earnings(results):
+def potential_earnings(workers):
     
-    workers = pd.DataFrame(results["types"]["workers"],columns=["k","s"])
-    pi_fun = results["firms"][["k","wage_key"]]
-    w_fun = results["firms"][["s","wage_sec"]].drop_duplicates()
-    workers_comb = workers.merge(pi_fun,on="k",how="left").merge(w_fun,on="s",how="left")
-    workers_comb["D"] = np.where(workers_comb["wage_key"]>workers_comb["wage_sec"],1,0)
+    key_workers = workers[workers['role_sel_key']==1]
+    key_workers.insert(loc=0, column="worker_num", value=key_workers.reset_index().index)
+    sec_workers = workers[workers['role_sel_sec']==1]
+    sec_workers.insert(loc=0, column="worker_num", value=sec_workers.reset_index().index)
+    total = len(key_workers)
+    match_list = []
     
-    matching_fun = pd.DataFrame(np.column_stack([results["firms"]["k"],results["firms"]["s"]]),columns=["k","mu_k"])
+    for i in range(len(key_workers)):
+        if i % 1000 == 0:
+            print(round((i/total)*100,ndigits=2),"%")
+        
+        key_worker = key_workers[0:1]
+        worker_match = float(key_worker["s_match"].iloc[0])
+        sec_match = sec_workers[sec_workers["s"]==worker_match]
+        if len(sec_match)>0:
+            sec_match = sec_workers[sec_workers["s"]==worker_match].sample(n=1)
+            match = key_worker.merge(sec_match,left_on="s_match",right_on="s",suffixes=("_k","_s"))
+            match_list.append(match)
+            key_workers = key_workers.drop(key_workers.index[0])
+            sec_workers = sec_workers.drop(sec_match.index)
+        
+        if len(sec_match)==0:
+            key_workers = key_workers.drop(key_workers.index[0])
     
+    match_all = pd.concat(match_list)
     
-    
+    return match_all

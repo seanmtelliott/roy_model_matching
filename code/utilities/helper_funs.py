@@ -81,7 +81,7 @@ def worker_choice(adj_factor,N_type,wage_key,wage_sec,types,perform_check,config
     if perform_check == 0:
         key_dist = np.array(worker_wages.groupby(['k'])['role_sel_key'].agg('sum'))
         sec_dist = np.array(worker_wages.groupby(['s'])['role_sel_sec'].agg('sum'))
-        return key_dist,sec_dist
+        return key_dist,sec_dist,worker_wages
       
 ###############################################################################
 
@@ -94,8 +94,10 @@ def mass_balance(wage_k,wage_s,types,N,config):
     wage_key_adj = [x + adj_factor for x in wage_k]
     wage_sec_adj = [x - adj_factor for x in wage_s]
     
+    
+    
     # Adjust wages and get the marginal skill distributions
-    key_count, sec_count = worker_choice(adj_factor,N,wage_k,wage_s,types,0,config)
+    key_count, sec_count, workers = worker_choice(adj_factor,N,wage_k,wage_s,types,0,config)
     
     # Adjust the zero values to ensure convergence
     non_zero_key = list(filter(lambda x: x > 0, key_count))
@@ -108,7 +110,7 @@ def mass_balance(wage_k,wage_s,types,N,config):
     key_count_norm = [i/sum(key_count) for i in key_count]
     sec_count_norm = [i/sum(sec_count) for i in sec_count]
 
-    return key_count_norm, sec_count_norm, wage_key_adj, wage_sec_adj
+    return key_count, sec_count, key_count_norm, sec_count_norm, wage_key_adj, wage_sec_adj, workers
 ###############################################################################
 
 ## CONVERGENCE CHECK

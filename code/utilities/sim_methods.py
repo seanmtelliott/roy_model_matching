@@ -211,14 +211,18 @@ def get_optimal_wages(wages,cost_mat,types,config):
     
         ## Step 1: Induce a half cut of the workers and collect the marginal skill distributions
     
-        key_count, sec_count, key_dist, sec_dist, wage_key_adj, wage_sec_adj = helpers.mass_balance(wage_key_old.copy(),wage_sec_old.copy(),types,N_types,config)
+        key_count, sec_count, key_dist, sec_dist, wage_key_adj, wage_sec_adj, workers = helpers.mass_balance(wage_key_old.copy(),wage_sec_old.copy(),types,N_types,config)
     
         ## Step 2: OT problem
 
         ot_results = ot.lp.emd(key_dist,sec_dist, cost_mat, log=True)
         wage_key = ([-x for x in ot_results[1]['u']])
-        wage_sec = ([-x for x in ot_results[1]['v']])
-
+        wage_sec = ([-x for x in ot_results[1]['v']]) 
+        matching_fun = [types['sec'][ot_results[0][k].argmax()] for k in range(len(types['key']))]
+        matching_fun_k = pd.DataFrame(np.column_stack((types['key'],matching_fun)),
+                                    columns=['k','s'])
+        workers = workers.merge(matching_fun_k,on="k",how="left",suffixes=("","_match"))
+        
         ## Step 3: Check for convergence in key-wage function
 
         convg_check, abs_diff = helpers.convergence_check(wage_key_old,wage_key,tol)
@@ -230,12 +234,13 @@ def get_optimal_wages(wages,cost_mat,types,config):
                 results = {}
                 results['wage_key'] = wage_key_adj
                 results['wage_sec'] = wage_sec_adj
-                results['matching_fun'] = [types['sec'][ot_results[0][k].argmax()] for k in range(len(types['key']))]
+                results['matching_fun'] = matching_fun
                 results['key_dist'] = key_dist
                 results['sec_dist'] = sec_dist
                 results['ot_mat'] = ot_results[0]
                 results['key_count'] = key_count
                 results['sec_count'] = sec_count
+                results['workers'] = workers
             elif adj_wage == False:
                 results = {}
                 results['wage_key'] = wage_key
@@ -246,6 +251,7 @@ def get_optimal_wages(wages,cost_mat,types,config):
                 results['ot_mat'] = ot_results[0]
                 results['key_count'] = key_count
                 results['sec_count'] = sec_count
+                results['workers'] = workers
             break
         elif convg_check == 0:
             print("Iteration",iterations,": Not converged, difference is", abs_diff)
