@@ -35,6 +35,7 @@
 \newtheorem{assumption}{Assumption} % Treating assumptions like theorems.
 \newtheorem{proposition}{Proposition} % Treating propositions like theorems.
 \newtheorem{definition}{Definition} % Treating propositions like theorems.
+\newtheorem{claim}{Claim}
 
 %%%
 
@@ -55,7 +56,7 @@ In this document I will outline a Roy model where workers match with one another
 
 \section{Some preliminaries}
 
-Here I'll consider a model of occupational choice \citep{roy1951some} which is augmented to allow for workers match in firms as pairs. A competitive equilibrium in this environment are a pair of earnings schedules---one for each occupation---such that, given a labour force and a firm production function, workers choose the occupation which maximizes their wage, firms choose workers to maximize profits, and the labour market clears. As such, before I expound the model, it is worth making a distinction between worker skills and wages. In the classical Roy model \citep{heckman1990empirical}, skills and log wages can be treated as equivalent. However, in this environment, there is a mapping between skills and wages, but they cannot be replaced with one another without an appropriate transformation. 
+Here I'll consider a model of occupational choice \citep{roy1951some} which is augmented to allow for workers match in firms as pairs. A competitive equilibrium in this environment are a pair of earnings schedules---one for each occupation---such that, given a distribution of workers and a firm production function, workers choose the occupation which maximizes their wage, firms choose workers to maximize profits, and the labour market clears. As such, before I expound the model, it is worth making a distinction between worker skills and wages. In the classical Roy model \citep{heckman1990empirical}, skills and log wages can be treated as equivalent. However, introducing a firm and workers matching, skills and wages cannot be replaced with one another without an appropriate transformation. Additionally, the wage functions are unknown ex ante and determined in equilibrium.
 
 Assume that each worker's skills are drawn from an exogenously given distribution $F\in \Delta(\Theta)$ where $\Theta \subseteq \mathbb{R}_+^2$ and $\Delta(X)$ denotes the set of continuous probability distributions with support on $X$. In the classical Roy model $F$ is assumed to be the log-normal distribution and the wage functions for each occupation are assumed to be known. Suppose that an individual $i$ can choose between occupation $k$ or occupation $s$ where they earn $\pi_i$ or $w_i$, respectively. Let 
 \begin{equation}
@@ -99,9 +100,9 @@ with $\begin{bmatrix}
 	\sigma_\pi^2 & \sigma_{\pi w}\\
 	\sigma_{\pi w} & \sigma_w^2 
 \end{bmatrix}
-\end{pmatrix}$. If, for each $i$, we observe $(Y_i,D_i)$ then, using properties of normal random variables, \citet{heckman1990empirical} show that it is possible to uncover $\mu_\pi$, $\mu_w$, $\sigma_\pi^2$ $\sigma_{\pi w}$, $\sigma_{\pi w}$, and $\sigma_w^2$.\footnote{I included this derivation in the Appendix.}
+\end{pmatrix}$. If, for each $i=1,\cdots, N$, we observe $(Y_i,D_i)$ then, using properties of normal random variables, \citet{heckman1990empirical} show that it is possible to uncover $\mu_\pi$, $\mu_w$, $\sigma_\pi^2$ $\sigma_{\pi w}$, $\sigma_{\pi w}$, and $\sigma_w^2$.\footnote{I show how this works in the Appendix.}
 
-There are two interesting things to note about the model I have described thus far. The first thing is that potential earnings $E_i = (\pi_i,w_i)$ depend exclusively on the exogenously-given distribution of worker skills. The second point of note is that if we drop the assumption that skills are normally distributed then this distribution is no longer identified from observations $(Y_i,D_i)$. In fact, as \citet{heckman1990empirical} explain, given a cross-section of data on earnings and occupational choice, an econometrician would be unable to distinguish a model with positively (or negatively) correlated skills from one in which skills are independent. A key distinction between the classical Roy model and the Roy model with matching is that potential earnings $E_i$ are endogenous objects determined in equilibrium. However, as \citet{heckman1985heterogeneity} observe, endogenizing wages isn't enough to obtain identification of the unconditional skill distribution---which in their case is analogous to potential earnings. To solve this problem, they assume skills are normally distributed. The goal in the analysis presented here will be to introduce matching and try to identify the unconditional distribution of potential earnings without any parametric assumptions on the distribution of skills.
+There are two interesting things to note about the model I have described thus far. The first thing is that potential earnings $(\pi_i,w_i)$ only depend on the exogenously-given distribution of worker skills. The second point of note is that if we exclude the assumption of normally distributed skills, then the distribution of potential earnings is no longer identified from the data $(Y_i,D_i)_{i=1}^N$. In fact, as \citet{heckman1990empirical} explain, given a cross-section of data on earnings and occupational choice, an econometrician would be unable to distinguish a model with positively (or negatively) correlated skills from one in which skills are independent. A key distinction between the classical Roy model and the Roy model with matching is that potential earnings $(\pi_i,w_i)$ are endogenous objects determined in equilibrium. However, as \citet{heckman1985heterogeneity} observe, endogenizing wages isn't enough to obtain identification of the unconditional skill distribution. To solve this problem, they assume skills are normally distributed. The goal in the analysis presented here will be to introduce matching to the classical Roy model and see if it is possible to identify the unconditional distribution of potential earnings without any parametric assumptions on the distribution of skills.
 
 \section{Roy model with matching}
 
@@ -115,10 +116,90 @@ Consider a firm which employs exactly one $k$-type worker and exactly one $s$-ty
 where free entry implies that profits are zero.
 
 \begin{definition}{Competitive equilibrium}
-	In this 
+	
+	
+ Given a distribution of skills $F\in \Delta(\Theta)$ and a revenue function $R: \Theta \to \mathbb{R}_+$, a competitive equilibrium is a set of earning's schedules $\pi : \mathbb{R}_+ \to \mathbb{R}_+$ and $w:\mathbb{R}_+ \to \mathbb{R}_+$ such that
+ \begin{enumerate}
+ 	\item Workers choose their occupations according to Equation (\ref{eqn:occ_choice}).
+ 	\item Firms choose workers according to the profit maximization condition in Equation (\ref{eqn:firm_prob}).
+ 	\item The labour market clears. This means that the endogenous supply of $k$-type workers is equal to the demand for $k$-type workers and the endogenous supply of $s$-type workers is equal to the demand for $s$-type workers.
+ \end{enumerate}
 \end{definition}
+An implication of the market clearing mechanism and the fact that firms employ one worker of each type is that the earnings schedule must be such that exactly one half of workers choose the $k$ role and exactly one half choose the $s$ role. This places a restriction on the distribution of potential earnings which does not exist in the classical Roy model. 
 
+\subsection{Earnings in the model}
 
+Here I will describe how potential earnings are determined endogenously in the model. As in \citet{mak2025occupational}, the competitive equilibrium is implemented by a social planner who seeks to minimize the social cost of employing a worker of type $(k^*,s^*)$. This is the dual of the primal revenue-maximization problem and we know from the theory of optimal transportation [see e.g. \citet{mccann2010optimal} or \citet{galichon2018optimal}] that the solution to the primal problem is equal to that of the dual. Let $\psi:\Theta \to \mathbb{R}$ be the social cost function. We can write the social planner's dual problem as
+\begin{equation*}
+	\min_{\tilde{\psi},\tilde{\pi},\tilde{w}} \int_0^\infty \int_0^\infty \tilde{\psi}(k^*,s^*) dF(k^*,s^*)
+\end{equation*}
+such that
+\begin{align*}
+	\tilde{\pi}(k^*) + \tilde{w}(s^*) &\leq R(k^*,s^*),\\
+	\tilde{\pi}(k^*) &\leq \tilde{\psi}(k^*,s^*), \text{ and}\\
+   \tilde{w}(s^*) &\leq\tilde{\psi}(k^*,s^*).
+\end{align*}
+
+Another way to think of the problem is by using Proposition 4 in \citet{mak2025occupational}. The social cost of hiring a worker of type $(k^*,s^*)$ is simply $\psi(k^*,s^*) = \max\{\tilde{\pi}(k^*),\tilde{w}(s^*)\}$. Thus, we can rewrite the objective function of dual problem as
+\begin{equation*}
+	\min_{\tilde{\pi},\tilde{w}} \int_0^\infty \int_0^\infty \max\{\tilde{\pi}(k^*),\tilde{w}(s^*)\} dF(k^*,s^*).
+\end{equation*}
+As such, it is clear that for an individual $i$, their potential earnings $(\pi_i,w_i)$ depend not only on their skill level but also on the solution to the optimization problem the social planner faces. This is different than the model in Section 2 where an individual's potential earnings depends only on their randomly-drawn skill level given in Equations (\ref{eqn:pi_simple}) and (\ref{eqn:w_simple}).
+
+Let $E \in \Delta(\Theta)$ be the distribution of potential earnings in the population. Proposition 5 in \citet{mak2025occupational} tells us that if we observe a mass of firms where the $k$-type worker earns $\pi^*$ and the $s$-type worker earns $w^*$, it must be that
+\begin{equation}
+	\int_0^{\pi^*} E(\pi^*,\tilde{w}) d\tilde{w} = \int_0^{w^*} E(\tilde{\pi},w^*) d \tilde{\pi}.
+	\label{eqn:prop5}
+\end{equation}
+Intuitively, this is because each firm employs exactly two workers (bilateral matching) and each of these workers chooses their role optimally (occupational choice). While this fact is interesting, it doesn't depend on the fact that wages are determined endogenously. In fact, Equation (\ref{eqn:prop5}) would hold even if the matching was random and wages were exogenously given so long as it was bilateral and workers chose occupations according to Equation (\ref{eqn:occ_choice}).\footnote{Suppose Equation (\ref{eqn:prop5}) doesn't hold and there is a mass of firms where $\int_0^{\pi^*} E(\pi^*,\tilde{w}) d\tilde{w} > \int_0^{w^*} E(\tilde{\pi},w^*) d \tilde{\pi}$. Since the quantity on the LHS is increasing in the upper limit of integration, this implies there is an $\epsilon > 0$ such that $\int_0^{\pi^*-\epsilon} E(\pi^*,\tilde{w}) d\tilde{w} = \int_0^{w^*} E(\tilde{\pi},w^*) d \tilde{\pi}$. Thus since the matching is bilateral, there must be a mass $\int_{\pi^*-\epsilon}^{\pi^*} E(\pi^*,\tilde{w}) d\tilde{w}$ of unmatched workers, which is a contradiction. } In that sense, this result alone doesn't provide anything useful when trying to solve the identification problem. However, what is useful to us is that in the case where a social planner implements the competitive equilibrium, wages must be such that the market clears. I'm going to illustrate what I mean with a simple example.
+
+\subsection{The 2$\times$2 model}
+
+Consider a simplified setting where skills are discrete and the skill space is $\Theta = K \times S$ with $K=\{k_L,k_H\}$ and $S=\{s_L,s_H\}$. I'm going to introduce a few assumptions.
+
+\begin{assumption}
+	There is a finite and discrete number of workers $N$ with both the distribution of skills and potential wages being given exogenously.
+\end{assumption} 
+
+\begin{assumption}
+	Without loss of generality, suppose that the wage functions $\pi:K\to\mathbb{R}_+$ and $w:S\to\mathbb{R}_+$ are such that $\pi(k_H) > w(s_H) > \pi(k_L) > w(s_L)$.
+	\label{ass:mono}
+\end{assumption}
+
+For now, we will shut down matching and simply assume that workers choose their occupation to maximize their wage. We can establish a basic non-identification result in this setting.
+
+\begin{claim}{Lack of identification---2$\times$2 without matching}
+	
+	In the 2$\times$2 setting described above, we cannot fully identify the underlying distribution of skills.
+\end{claim}
+\begin{proof}
+\begin{table}[H]
+	\centering
+	\begin{tabular}{l|ll}
+		& $s_H$        & $s_L$        \\ \hline
+		$k_H$ & $n(k_H,s_H)$ & $n(k_H,s_L)$ \\
+		$k_L$ & $n(k_L,s_H)$ & $n(k_L,s_L)$
+		
+	\end{tabular}
+	\caption{Distribution of types}
+	\label{tab:2by2counts}
+\end{table}
+Let $n(k,s)$ be the count of type $(k,s)\in \Theta$ individuals in the population---this is the object we want to uncover. Under Assumption \ref{ass:mono} where we can observe occupational choice and earnings, we can say the following:
+\begin{enumerate}
+	\item If an individual chooses $s$ and is paid $w(s_H)$, their $k$ type must be $k_L$ since if it were $k_H$ they would have chosen the $k$ role instead. This implies that $n(k_L,s_H)$ is identified from the number of $s_H$ types observed in the population.
+	\item If a worker chooses $k$ and is paid $\pi(k_L)$, they are necessarily also type $s_L$ for the same reason as above. This implies $n(k_L,s_L)$ is identified from the number of $k_L$ workers in the population. Thus we have the bottom row of Table \ref{tab:2by2counts}.
+	\item No worker will choose $s_L$ since it is the worst option regardless of a worker's $k$ type.
+	\item If $k$ is chosen and they earn $\pi(k_H)$, this implies they could be either $s_L$ or $s_H$ since $k_H$ is strictly preferred to both. As such we know the sum of the top row of Table \ref{tab:2by2counts} $n(k_H)=\sum_{\tilde{s}\in S}n(k_H,\tilde{s})$ but we cannot identify the counts separately.
+\end{enumerate}
+\end{proof}
+The result above is a special case of the well-known Roy model identification problem which stems from workers selecting into the role in which they earn the most. Even with an extremely simplified skill space, the problem persists.
+\newpage
 \bibliographystyle{plainnat}
 \bibliography{/home/selliott/Research/bib/matching}
+
+\newpage
+\setcounter{section}{0}
+\renewcommand{\thesection}{\Alph{section}}
+\section{Appendix}
+\subsection{Roy model identification with normally distributed skills}
 \end{document}
