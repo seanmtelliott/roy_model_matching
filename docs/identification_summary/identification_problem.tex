@@ -100,7 +100,7 @@ with $\begin{bmatrix}
 	\sigma_\pi^2 & \sigma_{\pi w}\\
 	\sigma_{\pi w} & \sigma_w^2 
 \end{bmatrix}
-\end{pmatrix}$. If, for each $i=1,\cdots, N$, we observe $(Y_i,D_i)$ then, using properties of normal random variables, \citet{heckman1990empirical} show that it is possible to uncover $\mu_\pi$, $\mu_w$, $\sigma_\pi^2$ $\sigma_{\pi w}$, $\sigma_{\pi w}$, and $\sigma_w^2$.\footnote{I show how this works in the Appendix.}
+\end{pmatrix}$. If, for each $i=1,\cdots, N$, we observe $(Y_i,D_i)$ then, using properties of normal random variables, \citet{heckman1990empirical} show that it is possible to uncover $\mu_\pi$, $\mu_w$, $\sigma_\pi^2$, $\sigma_w^2$, and $\sigma_{\pi w}$.\footnote{I show how this works in the Appendix.}
 
 There are two interesting things to note about the model I have described thus far. The first thing is that potential earnings $(\pi_i,w_i)$ only depend on the exogenously-given distribution of worker skills. The second point of note is that if we exclude the assumption of normally distributed skills, then the distribution of potential earnings is no longer identified from the data $(Y_i,D_i)_{i=1}^N$. In fact, as \citet{heckman1990empirical} explain, given a cross-section of data on earnings and occupational choice, an econometrician would be unable to distinguish a model with positively (or negatively) correlated skills from one in which skills are independent. A key distinction between the classical Roy model and the Roy model with matching is that potential earnings $(\pi_i,w_i)$ are endogenous objects determined in equilibrium. However, as \citet{heckman1985heterogeneity} observe, endogenizing wages isn't enough to obtain identification of the unconditional skill distribution. To solve this problem, they assume skills are normally distributed. The goal in the analysis presented here will be to introduce matching to the classical Roy model and see if it is possible to identify the unconditional distribution of potential earnings without any parametric assumptions on the distribution of skills.
 
@@ -129,7 +129,7 @@ An implication of the market clearing mechanism and the fact that firms employ o
 
 \subsection{Earnings in the model}
 
-Here I will describe how potential earnings are determined endogenously in the model. As in \citet{mak2025occupational}, the competitive equilibrium is implemented by a social planner who seeks to minimize the social cost of employing a worker of type $(k^*,s^*)$. This is the dual of the primal revenue-maximization problem and we know from the theory of optimal transportation [see e.g. \citet{mccann2010optimal} or \citet{galichon2018optimal}] that the solution to the primal problem is equal to that of the dual. Let $\psi:\Theta \to \mathbb{R}$ be the social cost function. We can write the social planner's dual problem as
+Here I will describe how potential earnings are determined endogenously in the model. As in \citet{mak2025occupational}, the competitive equilibrium is implemented by a social planner who seeks to minimize the social cost of employing a worker of type $(k^*,s^*)$. This is the dual of the revenue maximization problem and we know from the theory of optimal transportation [see e.g. \citet{mccann2010optimal} or \citet{galichon2018optimal}] that the solution to the primal problem is equal to that of the dual. Let $\psi:\Theta \to \mathbb{R}$ be the social cost function. We can write the social planner's dual problem as
 \begin{equation*}
 	\min_{\tilde{\psi},\tilde{\pi},\tilde{w}} \int_0^\infty \int_0^\infty \tilde{\psi}(k^*,s^*) dF(k^*,s^*)
 \end{equation*}
@@ -140,38 +140,40 @@ such that
    \tilde{w}(s^*) &\leq\tilde{\psi}(k^*,s^*).
 \end{align*}
 
-Another way to think of the problem is by using Proposition 4 in \citet{mak2025occupational}. The social cost of hiring a worker of type $(k^*,s^*)$ is simply $\psi(k^*,s^*) = \max\{\tilde{\pi}(k^*),\tilde{w}(s^*)\}$. Thus, we can rewrite the objective function of dual problem as
-\begin{equation*}
+Another way to think of the problem is by using Proposition 4 in \citet{mak2025occupational}. Given the worker's occupational choice problem, the social cost of hiring a worker of type $(k^*,s^*)$ is simply $\psi(k^*,s^*) = \max\{\tilde{\pi}(k^*),\tilde{w}(s^*)\}$. Thus, we can rewrite the objective function of dual problem as
+\begin{equation}
 	\min_{\tilde{\pi},\tilde{w}} \int_0^\infty \int_0^\infty \max\{\tilde{\pi}(k^*),\tilde{w}(s^*)\} dF(k^*,s^*).
-\end{equation*}
-As such, it is clear that for an individual $i$, their potential earnings $(\pi_i,w_i)$ depend not only on their skill level but also on the solution to the optimization problem the social planner faces. This is different than the model in Section 2 where an individual's potential earnings depends only on their randomly-drawn skill level given in Equations (\ref{eqn:pi_simple}) and (\ref{eqn:w_simple}).
+	\label{eqn:spp}
+\end{equation}
+As such, it is clear that for an individual $i$, their potential earnings $(\pi_i,w_i)$ depend not only on their skill level $(k_i,s_i)$ but also on the solution to the optimization problem the social planner faces. That is, two earnings schedules $\pi$ and $w$ which are determined by Equation (\ref{eqn:spp}). This is in contrast to the model in Section 2 where an individual's potential earnings depends only on their randomly-drawn skill level given in Equations (\ref{eqn:pi_simple}) and (\ref{eqn:w_simple}).
 
 Let $E \in \Delta(\Theta)$ be the distribution of potential earnings in the population. Proposition 5 in \citet{mak2025occupational} tells us that if we observe a mass of firms where the $k$-type worker earns $\pi^*$ and the $s$-type worker earns $w^*$, it must be that
 \begin{equation}
 	\int_0^{\pi^*} E(\pi^*,\tilde{w}) d\tilde{w} = \int_0^{w^*} E(\tilde{\pi},w^*) d \tilde{\pi}.
 	\label{eqn:prop5}
 \end{equation}
-Intuitively, this is because each firm employs exactly two workers (bilateral matching) and each of these workers chooses their role optimally (occupational choice). While this fact is interesting, it doesn't depend on the fact that wages are determined endogenously. In fact, Equation (\ref{eqn:prop5}) would hold even if the matching was random and wages were exogenously given so long as it was bilateral and workers chose occupations according to Equation (\ref{eqn:occ_choice}).\footnote{Suppose Equation (\ref{eqn:prop5}) doesn't hold and there is a mass of firms where $\int_0^{\pi^*} E(\pi^*,\tilde{w}) d\tilde{w} > \int_0^{w^*} E(\tilde{\pi},w^*) d \tilde{\pi}$. Since the quantity on the LHS is increasing in the upper limit of integration, this implies there is an $\epsilon > 0$ such that $\int_0^{\pi^*-\epsilon} E(\pi^*,\tilde{w}) d\tilde{w} = \int_0^{w^*} E(\tilde{\pi},w^*) d \tilde{\pi}$. Thus since the matching is bilateral, there must be a mass $\int_{\pi^*-\epsilon}^{\pi^*} E(\pi^*,\tilde{w}) d\tilde{w}$ of unmatched workers, which is a contradiction. } In that sense, this result alone doesn't provide anything useful when trying to solve the identification problem. However, what is useful to us is that in the case where a social planner implements the competitive equilibrium, wages must be such that the market clears. I'm going to illustrate what I mean with a simple example.
+Intuitively, this is because each firm employs exactly two workers (bilateral matching) and each of these workers chooses their role optimally (occupational choice). While this fact is interesting, it doesn't depend on the fact that wages are determined endogenously. In fact, Equation (\ref{eqn:prop5}) would hold even if the matching was random and wages were exogenously given so long as the matching was bilateral and workers chose occupations according to Equation (\ref{eqn:occ_choice}).\footnote{Suppose Equation (\ref{eqn:prop5}) doesn't hold and there is a mass of firms whose employees earn $(\pi^*,w^*)$ where $\int_0^{\pi^*} E(\pi^*,\tilde{w}) d\tilde{w} > \int_0^{w^*} E(\tilde{\pi},w^*) d \tilde{\pi}$. Since the quantity on the LHS is increasing in the upper limit of integration, this implies we can find an $\epsilon > 0$ such that $\int_0^{\pi^*-\epsilon} E(\pi^*,\tilde{w}) d\tilde{w} = \int_0^{w^*} E(\tilde{\pi},w^*) d \tilde{\pi}$. Thus, since the matching is bilateral, there must be a mass $\int_{\pi^*-\epsilon}^{\pi^*} E(\pi^*,\tilde{w}) d\tilde{w}$ of unmatched workers, which is a contradiction. } In that sense, this result alone doesn't provide anything useful when trying to solve the identification problem. However, what is useful to us is that, in the case where a social planner implements the competitive equilibrium, wages must be such that the market clears. I'm going to illustrate this why this is helpful using an example with a simplified 2$\times$2 skill space.
 
 \subsection{The 2$\times$2 model}
 
-Consider a simplified setting where skills are discrete and the skill space is $\Theta = K \times S$ with $K=\{k_L,k_H\}$ and $S=\{s_L,s_H\}$. I'm going to introduce a few assumptions.
+Consider a setting where skills are discrete and the skill space is $\Theta = K \times S$ with $K=\{k_L,k_H\}$ and $S=\{s_L,s_H\}$. Each worker $i=1,\cdots,N$ is randomly endowed with an ordered pair of skills $(k_i,s_i)\in\Theta$. I'll consider a series of different forms of the model to illustrate how the identification problem changes as we introduce more structure. First, I'll consider the classical Roy model in this simplified 2$\times$2 setting. Next, I'll consider what happens when we introduce random matching but exclude the possibility of wages
 
-\begin{assumption}
-	There is a finite and discrete number of workers $N$ with both the distribution of skills and potential wages being given exogenously.
-\end{assumption} 
+\subsubsection{Roy model without matching}
 
-\begin{assumption}
-	Without loss of generality, suppose that the wage functions $\pi:K\to\mathbb{R}_+$ and $w:S\to\mathbb{R}_+$ are such that $\pi(k_H) > w(s_H) > \pi(k_L) > w(s_L)$.
+This is the classical Roy model where the distribution of skills is given exogenously and potential earnings depend only on the skill level of the worker. The only thing I will impose is a monotonicity assumption on the earnings. This is just to focus the problem---a different ordering would produce analogous results.
+
+\begin{assumption}(Monotonicity)
+	Without loss of generality, suppose that the wage functions $\pi:K\to\mathbb{R}_+$ and $w:S\to\mathbb{R}_+$ are fixed such that $\pi(k_H) > w(s_H) > \pi(k_L) > w(s_L)$.
 	\label{ass:mono}
 \end{assumption}
 
 For now, we will shut down matching and simply assume that workers choose their occupation to maximize their wage. We can establish a basic non-identification result in this setting.
 
-\begin{claim}{Lack of identification---2$\times$2 without matching}
+\begin{proposition}{Lack of identification---2$\times$2 without matching}
 	
 	In the 2$\times$2 setting described above, we cannot fully identify the underlying distribution of skills.
-\end{claim}
+	\label{prop:identnomatch}
+\end{proposition}
 \begin{proof}
 \begin{table}[H]
 	\centering
@@ -181,10 +183,10 @@ For now, we will shut down matching and simply assume that workers choose their 
 		$k_L$ & $n(k_L,s_H)$ & $n(k_L,s_L)$
 		
 	\end{tabular}
-	\caption{Distribution of types}
+	\caption{Distribution of skills}
 	\label{tab:2by2counts}
 \end{table}
-Let $n(k,s)$ be the count of type $(k,s)\in \Theta$ individuals in the population---this is the object we want to uncover. Under Assumption \ref{ass:mono} where we can observe occupational choice and earnings, we can say the following:
+Let $n(k,s)$ be the count of type $(k,s)\in \Theta$ individuals in the population---this is the object we want to uncover. Equipped with Assumption \ref{ass:mono} and the ability to observe occupational choice and realized earnings, we can say the following:
 \begin{enumerate}
 	\item If an individual chooses $s$ and is paid $w(s_H)$, their $k$ type must be $k_L$ since if it were $k_H$ they would have chosen the $k$ role instead. This implies that $n(k_L,s_H)$ is identified from the number of $s_H$ types observed in the population.
 	\item If a worker chooses $k$ and is paid $\pi(k_L)$, they are necessarily also type $s_L$ for the same reason as above. This implies $n(k_L,s_L)$ is identified from the number of $k_L$ workers in the population. Thus we have the bottom row of Table \ref{tab:2by2counts}.
@@ -192,7 +194,70 @@ Let $n(k,s)$ be the count of type $(k,s)\in \Theta$ individuals in the populatio
 	\item If $k$ is chosen and they earn $\pi(k_H)$, this implies they could be either $s_L$ or $s_H$ since $k_H$ is strictly preferred to both. As such we know the sum of the top row of Table \ref{tab:2by2counts} $n(k_H)=\sum_{\tilde{s}\in S}n(k_H,\tilde{s})$ but we cannot identify the counts separately.
 \end{enumerate}
 \end{proof}
-The result above is a special case of the well-known Roy model identification problem which stems from workers selecting into the role in which they earn the most. Even with an extremely simplified skill space, the problem persists.
+The result above is a special case of the well-known Roy model identification problem which stems from workers selecting into the role in which they earn the most. Even with an extremely simplified skill space, the problem persists. 
+
+\subsubsection{Roy model with random matching}
+
+For now, suppose that there is no social planner. Instead, each worker $i$ chooses their occupations according to $\max\{\pi_i,w_i\}$ and then they are paired randomly. Two workers can only be paired with one another if they are opposite types. From Proposition \ref{prop:identnomatch} we know that the number of $k$-type workers is $n(k) = n(k_H,s_H) + n(k_H,s_L) + n(k_L,s_H)$. Similarly, we also know that the number of $s$-type workers is $n(s)=n(k_L,s_H)$. In this case, we are almost certainly going to have unpaired workers. This is because the market clears if and only if $n(k) = n(s)$. However, given the strict monotonicity of wages (Assumption \ref{ass:mono}) and occupational choice there is no guarantee that this will occur. Instead, if we suppose that the distribution of skills is roughly uniform, it is far more likely to be that $n(k)>n(s)$. The purpose of introducing this case is to motivate why it is useful to introduce matching with firms that optimize. Without wage schedules determined in equilibrium, we are stuck in the classical Roy model world where without additional assumptions, selection will always prevent us from identifying the skill distribution. I'm going to go through this in the next section where first I consider firms which choose workers optimally but wages are fixed and then I'll introduce a mechanism to clear the market.
+
+\subsubsection{Roy model with optimal matching}
+
+Now I'll introduce a firm which chooses workers optimally. I'm going to make a few assumptions about the firm's revenue function and the distribution of workers.
+
+\begin{assumption}(Revenue function)
+	The firm's revenue function $R:\Theta\to\mathbb{R}_+$ is strictly supermodular (i.e., $R(k_H,s_H) + R(k_L,s_L) > R(k_L,s_H) + R(k_H,s_L)$) which will induce positive assortative matching (PAM). 
+	\label{ass:rev}
+\end{assumption}
+
+\begin{assumption}
+	(Talent scarcity) High-skill $k$ types are more scarce than high-skill $s$ types.  That is, the distribution of skills in the population is such that
+	\begin{equation*}
+		n(k_H) < n(s_H).
+	\end{equation*}
+	\label{ass:scarcity}
+\end{assumption}
+
+\begin{assumption}
+	(Positive correlation) If a worker is high/low skill in one occupation they are also more likely to be high/low skill in the other implying that
+	\begin{equation*}
+		\sum_{\tau\in\{L,H\}}n(k_\tau,s_\tau) > \sum_{\tau\in\{L,H\}}n(k_\tau,k_{\sim \tau})
+	\end{equation*}
+	where $\sim \tau = L$ if $\tau = H$ and vice versa. 
+	\label{ass:correl}
+\end{assumption}
+
+For the sake of illustration, first suppose that wages are fixed according to the order given in Assumption \ref{ass:mono}. The purpose of this is to show that matching alone doesn't provide any identification power. This result is summarized in the following proposition.
+\begin{proposition}{Lack of identification---2$\times$2 with matching and fixed wages}
+	
+	Under Assumptions \ref{ass:mono}--\ref{ass:correl} we cannot identify the distribution of skills from data on occupational choice, earnings, and who is matched with whom. 
+	\label{prop:noidentmatch}
+\end{proposition}
+\begin{proof}
+	Due to PAM (Assumption \ref{ass:rev}), firms will want to match $k_H$ types with $s_H$ types workers and $k_L$ types with $s_L$ types. However, from Assumption \ref{ass:scarcity} we know that there are fewer $k_H$ types than $s_H$ types implying that we can't simply pair these workers up. Furthermore, under the prevailing wage structure stated in Assumption \ref{ass:mono}, a worker who is $k_H$ will always choose the $k$ role. That is, the supply of $s_H$ workers is only those who are also type $k_L$ as established in Proposition \ref{prop:identnomatch}. Therefore, we can consider the three exhaustive cases regarding $n(k_H)$ and I'll show that the non-identification result established earlier continues to hold. 
+	\begin{itemize}
+		\item Case I: $n(k_H) < n(k_L,s_H)$
+		
+		In this scenario, all of the $k_H$ workers will match with $(k_L,s_H)$ types. There are leftover $(k_L,s_H)$ types who will match with $(k_L,s_L)$ types as these individuals will choose $k_L$ due to Assumption \ref{ass:mono}. Let $\mu(k^*,s^*)$ denote the observed number of matches between a type $k^*$ and a type $s^*$ individual. We know that $\mu(k_L,s_H) = n(k_L,s_H)-n(k_H)$ which gives us $n(k_L,s_H)$ since we know that $\mu(k_H,s_H) = n(k_H)$. However, we also know that $n(k_H) = n(k_H,s_H) + n(k_H,s_L)$ implying that within the set of $(k_H,s_H)$ matches, we are unable to infer the $k$-type worker's $s$ type. We can also figure out $n(k_L,s_L)$ from $\mu(k_L,s_H)$ and the number of individuals who are unmatched. 
+		
+		\item Case II: $n(k_H) > n(k_L,s_H)$
+		
+		Now all of the $n(k_L,s_H)$ workers will match with $n(k_H)$ workers, but instead we will have an excess of $k_H$ types. These workers will match with $(k_L,s_L)$ types. As before, we know $\mu(k_H,s_H)=n(k_L,s_H)$ and $n(k_H) = \mu(k_H,s_H) + \mu(k_H,s_L)$ but we can't say anything about the $k_H$ types $s$ type. We can get $n(k_L,s_L)$ from summing $\mu(k_H,s_L)$ and the number of unmatched individuals.
+		
+		\item Case III: $n(k_H) = n(k_L,s_H)$
+		
+		Finally, in this case $\mu(k_H,s_H) = n(k_H) = n(k_L,s_H)$ and again, we don't know anything about the $k$-type worker's $s$ type. All of the $(k_L,s_L)$ types remain unmatched since they all choose to be the $k$ role. Again, all we can identify is $n(k_H)$, $n(k_L,s_H)$, and $n(k_L,s_L)$.
+	\end{itemize}
+	
+	Thus, in each case we have an identical result to Proposition \ref{prop:identnomatch}. We can identify $n(k_L,s_H)$ and $n(k_L,s_L)$ but all we know about the remaining workers is that $n(k_H)=\sum_{\tilde{s}\in S}n(k_H,\tilde{s})$
+	
+\end{proof}
+
+Proposition \ref{prop:noidentmatch} highlights what happens if we do not consider a competitive equilibrium. Of course, it leads to some very unrealistic results. For example, in each case there are always leftover $(k_L,s_L)$ workers. Assuming that unmatched workers produce nothing, this is inefficient in the sense that total output could increase if we could entice some of these workers to switch from choosing the $k$ role to the $s$ role. One way to do this, which is not necessarily optimal, is to set $\pi(k_L) = w(s_L)$. In this case, $(k_L,s_L)$ workers would be indifferent between the two roles and we could pair them up such that all individuals in the labour force are employed by firms.
+
+\subsubsection{Roy model with optimal matching and equilibrium wages}
+
+
+
 \newpage
 \bibliographystyle{plainnat}
 \bibliography{/home/selliott/Research/bib/matching}
@@ -200,6 +265,75 @@ The result above is a special case of the well-known Roy model identification pr
 \newpage
 \setcounter{section}{0}
 \renewcommand{\thesection}{\Alph{section}}
+\counterwithin*{equation}{section}
+\renewcommand\theequation{\thesection\arabic{equation}}
 \section{Appendix}
 \subsection{Roy model identification with normally distributed skills}
+
+In this section I will describe the simple case where we assume that skills are normally distributed. See either \citet{heckman1990empirical} or \citet{french2011identification} for more details. In this case wages are given by
+\begin{equation}
+	\pi_i = \mu_\pi + \varepsilon_{\pi_i}
+	\label{eqn:pi_simple_app}
+\end{equation}
+\begin{equation}
+	w_i = \mu_w + \varepsilon_{w_i}
+	\label{eqn:w_simple_app}
+\end{equation}
+with $\begin{bmatrix}
+	\varepsilon_{\pi_i}\\
+	\varepsilon_{w_i}
+\end{bmatrix} \sim N \begin{pmatrix}
+	\begin{bmatrix}
+		0\\
+		0
+	\end{bmatrix},
+	\begin{bmatrix}
+		\sigma_\pi^2 & \sigma_{\pi w}\\
+		\sigma_{\pi w} & \sigma_w^2 
+	\end{bmatrix}
+\end{pmatrix}$.
+
+Let
+\begin{equation*}
+	\lambda(\cdot) = \frac{\phi(\cdot)}{\Phi(\cdot)}
+\end{equation*}
+where $\phi$ and $\Phi$ are the standard normal pdf and cdf, respectively. Define 
+	\begin{equation*}
+	c = \frac{\mu_\pi - \mu_w}{\sqrt{\sigma_\pi^2 + \sigma_w^2 - 2\sigma_{\pi w}}}
+\end{equation*} and for each $j\in\{\pi,w\}$ define
+\begin{equation*}
+	\kappa_j = \frac{\sigma^2_j-\sigma_{\pi w}}{\sqrt{\sigma_\pi^2+\sigma_w^2-2\sigma_{\pi w}}}.
+\end{equation*}
+We know from \citet{heckman1990empirical} the following properties of normal random variables:
+\begin{equation}
+	Pr(D_i = 1) = \Phi(c)
+	\label{eqn:appoccchoice}
+\end{equation}
+\begin{equation}
+	E(Y_i | D_i = 1) = \mu_\pi + \kappa_\pi \lambda(c)
+	\label{eqn:meand1}
+\end{equation}
+\begin{equation}
+	E(Y_i | D_i = 0) = \mu_w + \kappa_w \lambda(-c)
+	\label{eqn:meand0}
+\end{equation}
+\begin{equation}
+	Var(Y_i | D_i = 1) = \sigma_\pi^2 + \kappa_\pi^2(-\lambda(c)c - \lambda^2(c))
+	\label{eqn:vard1}
+\end{equation}
+\begin{equation}
+	Var(Y_i | D_i = 0) = \sigma_w^2 + \kappa_w^2(\lambda(-c)c - \lambda^2(c))
+	\label{eqn:vard0}
+\end{equation}
+\begin{equation}
+	E([Y_i - E(Y_i|D_i = 1)]^3|D_i = 1) = \kappa_\pi^3 \lambda(c)[2\lambda^2(c) + 3 c \lambda(c) + c^2 -1]
+	\label{eqn:skewd1}
+\end{equation}
+\begin{equation}
+	E([Y_i - E(Y_i|D_i = 0)]^3|D_i = 0) = \kappa_w^3 \lambda(-c)[2\lambda^2(-c) - 3 c \lambda(-c) + c^2 -1].
+	\label{eqn:skewd0}
+\end{equation}
+
+We want to use these equations to solve for $\mu_\pi$, $\mu_w$, $\sigma_\pi^2$, $\sigma_w^2$, and $\sigma_{\pi w}$. First note that everything on the LHS of Equations (\ref{eqn:appoccchoice})--(\ref{eqn:skewd0}) is observed. Thus, $c=\Phi^{-1}(Pr(D_i = 1))$ is known which implies that $\lambda(c)$ and $\lambda(-c)$ are known. Thus, immediately we can get $\kappa_\pi^3$ and $ \kappa_w^3$ from Equations (\ref{eqn:skewd1}) and (\ref{eqn:skewd0}) and now the remaining equations (\ref{eqn:meand1}--\ref{eqn:vard0}) give us $\mu_\pi$, $\mu_w$, $\sigma_\pi^2$, and $\sigma_w^2$. Plug these into the expression for $c$ to solve for $\sigma_{\pi w}$. $\qed$
+
 \end{document}
