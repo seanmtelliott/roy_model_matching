@@ -52,11 +52,11 @@
 
 \section{Overview --- REWRITE after}
 
-In this document I will outline a Roy model where workers match with one another in firms in a perfectly competitive environment. First, I will outline the basic Roy model and the identification problem. After the model has been introduced, I will discuss what can be learned empirically (i.e, identified) about the unconditional distribution of worker skills and potential earnings from data on equilibrium wages and who matches with whom. I show that without additional assumptions, the well-known identification problem resulting from workers selecting into occupations [e.g. \citet{heckman1990empirical}, \citet{french2011identification}] persists even once we introduce matching to the classical Roy model \`{a} la \citet{mak2025occupational}.\footnote{See \citet{heckman1990empirical}, \citet{bayer2011nonparametric}, \citet{buera2006non}, or \citet{mourifie2020sharp} for cases where additional assumptions are made to obtain non-parametric identification.} I will then discuss some preliminaries ideas regarding what can be done to address this issue.  
+In this document I will outline a Roy model where workers match with one another in firms in a perfectly competitive environment. First, I will outline the classical \citet{roy1951some} model and the identification problem. After the model has been introduced, I will discuss what can be learned empirically (i.e, identified) about the unconditional distribution of worker skills and potential earnings from data on equilibrium wages and who matches with whom. I show that without additional assumptions, the well-known identification problem resulting from workers selecting into occupations [e.g. \citet{heckman1990empirical}, \citet{french2011identification}] persists even once we introduce matching to the classical Roy model \`{a} la \citet{mak2025occupational}.\footnote{See \citet{heckman1990empirical}, \citet{bayer2011nonparametric}, \citet{buera2006non}, or \citet{mourifie2020sharp} for cases where additional assumptions are made to obtain non-parametric identification.} I will then discuss some preliminaries ideas regarding what can be done to address this issue.  
 
 \section{Some preliminaries}
 
-Here I'll consider a model of occupational choice \citep{roy1951some} which is augmented to allow for workers match in firms as pairs. A competitive equilibrium in this environment are a pair of earnings schedules---one for each occupation---such that, given a distribution of workers and a firm production function, workers choose the occupation which maximizes their wage, firms choose workers to maximize profits, and the labour market clears. As such, before I expound the model, it is worth making a distinction between worker skills and wages. In the classical Roy model \citep{heckman1990empirical}, skills and log wages can be treated as equivalent. However, introducing a firm and workers matching, skills and wages cannot be replaced with one another without an appropriate transformation. Additionally, the wage functions are unknown ex ante and determined in equilibrium.
+Here I'll consider a model of occupational choice which is augmented to allow for workers match in firms as pairs. A competitive equilibrium in this environment are a pair of earnings schedules---one for each occupation---such that, given a distribution of workers and a firm production function, workers choose the occupation which maximizes their wage, firms choose workers to maximize profits, and the labour market clears. As such, before I expound the model, it is worth making a distinction between worker skills and wages. In the classical Roy model \citep{heckman1990empirical}, skills and log wages can be treated as equivalent. However, introducing a firm and workers matching, skills and wages cannot be replaced with one another without an appropriate transformation. Additionally, the wage functions are unknown ex ante and determined in equilibrium.
 
 Assume that each worker's skills are drawn from an exogenously given distribution $F\in \Delta(\Theta)$ where $\Theta \subseteq \mathbb{R}_+^2$ and $\Delta(X)$ denotes the set of continuous probability distributions with support on $X$. In the classical Roy model $F$ is assumed to be the log-normal distribution and the wage functions for each occupation are assumed to be known. Suppose that an individual $i$ can choose between occupation $k$ or occupation $s$ where they earn $\pi_i$ or $w_i$, respectively. Let 
 \begin{equation}
@@ -145,7 +145,7 @@ Another way to think of the problem is by using Proposition 4 in \citet{mak2025o
 	\min_{\tilde{\pi},\tilde{w}} \int_0^\infty \int_0^\infty \max\{\tilde{\pi}(k^*),\tilde{w}(s^*)\} dF(k^*,s^*).
 	\label{eqn:spp}
 \end{equation}
-As such, it is clear that for an individual $i$, their potential earnings $(\pi_i,w_i)$ depend not only on their skill level $(k_i,s_i)$ but also on the solution to the optimization problem the social planner faces. That is, two earnings schedules $\pi$ and $w$ which are determined by Equation (\ref{eqn:spp}). This is in contrast to the model in Section 2 where an individual's potential earnings depends only on their randomly-drawn skill level given in Equations (\ref{eqn:pi_simple}) and (\ref{eqn:w_simple}).
+As such, it is clear that for an individual $i$, their potential earnings $(\pi_i,w_i)$ depend not only on their skill level $(k_i,s_i)$ but also on the solution to the optimization problem the social planner faces. This is in contrast to the model in Section 2 where an individual's potential earnings depends only on their randomly-drawn skill level given in Equations (\ref{eqn:pi_simple}) and (\ref{eqn:w_simple}).
 
 Let $E \in \Delta(\Theta)$ be the distribution of potential earnings in the population. Proposition 5 in \citet{mak2025occupational} tells us that if we observe a mass of firms where the $k$-type worker earns $\pi^*$ and the $s$-type worker earns $w^*$, it must be that
 \begin{equation}
@@ -156,7 +156,7 @@ Intuitively, this is because each firm employs exactly two workers (bilateral ma
 
 \subsection{The 2$\times$2 model}
 
-Consider a setting where skills are discrete and the skill space is $\Theta = K \times S$ with $K=\{k_L,k_H\}$ and $S=\{s_L,s_H\}$. Each worker $i=1,\cdots,N$ is randomly endowed with an ordered pair of skills $(k_i,s_i)\in\Theta$. I'll consider a series of different forms of the model to illustrate how the identification problem changes as we introduce more structure. First, I'll consider the classical Roy model in this simplified 2$\times$2 setting. Next, I'll consider what happens when we introduce random matching but exclude the possibility of wages
+Consider a setting where skills are discrete and the skill space is $\Theta = K \times S$ with $K=\{k_L,k_H\}$ and $S=\{s_L,s_H\}$. Each worker $i=1,\cdots,N$ is randomly endowed with an ordered pair of skills $(k_i,s_i)\in\Theta$. I'll consider a series of different forms of the model to illustrate how the identification problem changes as we introduce more structure. First, I'll consider the classical Roy model in this simplified 2$\times$2 setting. Next, I'll consider what happens when we introduce random matching to the occupational choice problem. Finally, I'll consider what happens when we introduce a firm that tries to match workers optimally. In this case, I'll consider two separate scenarios. In the first scenario, firms will choose workers to maximize output but they face a fixed wage structure meaning they cannot influence occupational choice. In the second scenario, the wage is free to adjust. I will show that going from scenario one to scenario two gives us some identification power.
 
 \subsubsection{Roy model without matching}
 
@@ -198,15 +198,20 @@ The result above is a special case of the well-known Roy model identification pr
 
 \subsubsection{Roy model with random matching}
 
-For now, suppose that there is no social planner. Instead, each worker $i$ chooses their occupations according to $\max\{\pi_i,w_i\}$ and then they are paired randomly. Two workers can only be paired with one another if they are opposite types. From Proposition \ref{prop:identnomatch} we know that the number of $k$-type workers is $n(k) = n(k_H,s_H) + n(k_H,s_L) + n(k_L,s_H)$. Similarly, we also know that the number of $s$-type workers is $n(s)=n(k_L,s_H)$. In this case, we are almost certainly going to have unpaired workers. This is because the market clears if and only if $n(k) = n(s)$. However, given the strict monotonicity of wages (Assumption \ref{ass:mono}) and occupational choice there is no guarantee that this will occur. Instead, if we suppose that the distribution of skills is roughly uniform, it is far more likely to be that $n(k)>n(s)$. The purpose of introducing this case is to motivate why it is useful to introduce matching with firms that optimize. Without wage schedules determined in equilibrium, we are stuck in the classical Roy model world where without additional assumptions, selection will always prevent us from identifying the skill distribution. I'm going to go through this in the next section where first I consider firms which choose workers optimally but wages are fixed and then I'll introduce a mechanism to clear the market.
+For now, suppose that there is no attempt to match workers in a way which maximizes output. Instead, each worker $i$ chooses their occupations according to $\max\{\pi_i,w_i\}$ and then they are paired randomly. Two workers can only be paired with one another if they are opposite types. From Proposition \ref{prop:identnomatch} we know that the number of $k$-type workers is $n(k) = n(k_H,s_H) + n(k_H,s_L) + n(k_L,s_H)$. Similarly, we also know that the number of $s$-type workers is $n(s)=n(k_L,s_H)$. In this case, we are almost certainly going to have unpaired workers. This is because the market clears if and only if $n(k) = n(s)$. However, given the strict monotonicity of wages (Assumption \ref{ass:mono}) and occupational choice there is no guarantee that this will occur. Instead, if we suppose that the distribution of skills is roughly uniform, it is far more likely to be that $n(k)>n(s)$. The purpose of introducing this case is to motivate why it is useful to introduce matching with firms that optimize. Without wage schedules determined in equilibrium, we are stuck in the classical Roy model world where without additional assumptions, self-selection prevents us from identifying the skill distribution. I'm going to go through this in the next section where first I consider firms which choose workers optimally but wages are fixed and then I'll introduce a mechanism to clear the market.
 
-\subsubsection{Roy model with optimal matching}
+\subsubsection{Roy model with optimal matching and fixed wages}
 
 Now I'll introduce a firm which chooses workers optimally. I'm going to make a few assumptions about the firm's revenue function and the distribution of workers.
 
 \begin{assumption}(Revenue function)
 	The firm's revenue function $R:\Theta\to\mathbb{R}_+$ is strictly supermodular (i.e., $R(k_H,s_H) + R(k_L,s_L) > R(k_L,s_H) + R(k_H,s_L)$) which will induce positive assortative matching (PAM). 
 	\label{ass:rev}
+\end{assumption}
+
+\begin{assumption}(Unmatched workers)
+	Workers can only produce output in pairs organized in firms. That is, if a worker is unmatched, they produce and earn nothing.
+	\label{ass:unmatched}
 \end{assumption}
 
 \begin{assumption}
@@ -241,21 +246,52 @@ For the sake of illustration, first suppose that wages are fixed according to th
 		
 		\item Case II: $n(k_H) > n(k_L,s_H)$
 		
-		Now all of the $n(k_L,s_H)$ workers will match with $n(k_H)$ workers, but instead we will have an excess of $k_H$ types. These workers will match with $(k_L,s_L)$ types. As before, we know $\mu(k_H,s_H)=n(k_L,s_H)$ and $n(k_H) = \mu(k_H,s_H) + \mu(k_H,s_L)$ but we can't say anything about the $k_H$ types $s$ type. We can get $n(k_L,s_L)$ from summing $\mu(k_H,s_L)$ and the number of unmatched individuals.
+		Now all of the $n(k_L,s_H)$ workers will match with $n(k_H)$ workers, but instead we will have an excess of $k_H$ types. These workers cannot match with $(k_L,s_L)$ types since they choose the $k$ role since $\pi(k_L)>w(s_L)$. As before, we know $\mu(k_H,s_H)=n(k_L,s_H)$. However, in this case there are unmatched $k_H$ workers who we would  not be able to differentiate from the unmatched $(k_L,s_L)$ workers due to Assumption \ref{ass:unmatched}.
 		
 		\item Case III: $n(k_H) = n(k_L,s_H)$
 		
 		Finally, in this case $\mu(k_H,s_H) = n(k_H) = n(k_L,s_H)$ and again, we don't know anything about the $k$-type worker's $s$ type. All of the $(k_L,s_L)$ types remain unmatched since they all choose to be the $k$ role. Again, all we can identify is $n(k_H)$, $n(k_L,s_H)$, and $n(k_L,s_L)$.
 	\end{itemize}
 	
-	Thus, in each case we have an identical result to Proposition \ref{prop:identnomatch}. We can identify $n(k_L,s_H)$ and $n(k_L,s_L)$ but all we know about the remaining workers is that $n(k_H)=\sum_{\tilde{s}\in S}n(k_H,\tilde{s})$
+	Thus, in each case we have an similar result to Proposition \ref{prop:identnomatch}. We can identify $n(k_L,s_H)$ and $n(k_L,s_L)$ but all we know about the remaining workers is that $n(k_H)=\sum_{\tilde{s}\in S}n(k_H,\tilde{s})$
 	
 \end{proof}
 
-Proposition \ref{prop:noidentmatch} highlights what happens if we do not consider a competitive equilibrium. Of course, it leads to some very unrealistic results. For example, in each case there are always leftover $(k_L,s_L)$ workers. Assuming that unmatched workers produce nothing, this is inefficient in the sense that total output could increase if we could entice some of these workers to switch from choosing the $k$ role to the $s$ role. One way to do this, which is not necessarily optimal, is to set $\pi(k_L) = w(s_L)$. In this case, $(k_L,s_L)$ workers would be indifferent between the two roles and we could pair them up such that all individuals in the labour force are employed by firms.
+Proposition \ref{prop:noidentmatch} highlights what happens if we do not consider a mechanism which allows wages to adjust to clear the market. Of course, it leads to unrealistic results which would not arise in reality. For example, in all three cases there are leftover $(k_L,s_L)$ workers. Since we assume that that unmatched workers produce nothing (Assumption \ref{ass:unmatched}), this is inefficient in the sense that total output could increase if we could entice some of these workers to switch from choosing the $k$ role to the $s$ role. One way to do this is to set $\pi(k_L) = w(s_L)$. In this case, $(k_L,s_L)$ workers would be indifferent between the two roles and we could pair them up and increase total output. Furthermore, as I'll show in the next section, we can also use this idea to say something about the identification of skills. 
 
-\subsubsection{Roy model with optimal matching and equilibrium wages}
+\subsubsection{Roy model with optimal matching and wage adjustments}
+\begin{table}[H]
+	\centering
+	\begin{tabular}{l|ll}
+		& $s_H$        & $s_L$        \\ \hline
+		$k_H$ & 20 & 10 \\
+		$k_L$ & 20 & 50
+		
+	\end{tabular}
+	\caption{Counts of skill types---numeric example}
+	\label{tab:2by2countsex}
+\end{table}
+For the sake of illustration I'm going to describe how this works with a numeric example. In particular, I'll consider the case from Proposition \ref{prop:noidentmatch} where $n(k_H) > n(k_L,s_H)$ and the counts satisfy Assumptions \ref{ass:scarcity} and \ref{ass:correl}. The example I'll focus on is shown in Table \ref{tab:2by2countsex}. Consider two time periods where in each period we can observe occupational choice, earnings, and who is matched with whom. That is, we have a panel of workers who we observe in both periods. In the first period, suppose that wages are fixed according to Assumption \ref{ass:mono}, and workers are paired together as described in Proposition \ref{prop:noidentmatch}. In the second period, we will allow wages to adjust ensure that all workers are employed and total output is maximized. Given Assumption \ref{ass:rev}, this implies that we want to match $k_H$ types with $s_H$ types and $k_L$ types with $s_L$ types. Let $\mu_t(k,s)$ denote the number of $(k,s)$ matches in period $t=1,2$. 
 
+\begin{proposition}
+	In the two-period case with $n(k_H) > n(k_L,s_H)$ as described above, we can partially identify the $s$ type of the $k_H$ workers.
+\end{proposition}
+\begin{proof}
+	I'll go through each period separately to describe how the matching works and then I'll show how this provides partial identification of the skill distribution. 
+	\begin{enumerate}
+		\item In the first period where wages are fixed according to $\pi(k_H) > w(s_H) > \pi(k_L) > w(s_L)$, those who have $k$ type $k_H$ will prefer the $k$ role regardless of their $s$ type implying $n(k_H)=30$. These workers will then match with $(k_L,s_H)$ types who choose the $s$ role. Since $n(k_L,s_H)=20$ this implies we will have $\mu_1(k_H,s_H) = 20$. The remaining 10 $k_H$ workers with type will not match with $(k_L,s_L)$ workers since they also choose the $k$ role. That is, all $(k_L,s_L)$  types remain unmatched and 10 of the $k_H$ are unmatched. 
+		
+		This is not optimal for two reasons. The first is that we could increase $\mu_1(k_H,s_H)$ if we could incentivize some of the $(k_H,s_H)$ workers to choose $s$ instead of $k$. The second reason is that the leftover  $(k_L,s_L)$ types produce nothing.
+		
+		\item In the second period, the wages will adjust to correct for the two inefficiencies occurring in period 1. One way to do this is to set $\pi(k_H)=w(s_H)$ and $\pi(k_L)=w(s_L)$. Now occupational choice is such that, if you're high or low type of both, you're indifferent between $k$ and $s$. However, if you're high type of one and low type of the other, you prefer the occupation in which you are a high type.
+		
+		 First let's allocate the $k_H$ workers. We can assign the $n(k_H,s_L)=10$ workers to 10 of the $(k_L,s_H)$ workers to generate 10 $(k_H,s_H)$ matches. Since $n(k_L,s_H)=20$, we can take the remaining 10 and assign them to 10 of the $n(k_H,s_H)=20$ workers to generate 10 more $(k_H,s_H)$ matches. Now we have 10 leftover $(k_H,s_H)$ workers who are indifferent between $k$ and $s$ who we can pair them up implying $\mu_2(k_H,s_H) = 25$. Thus we find that  $\mu_2(k_H,s_H) > \mu_1(k_H,s_H)$. The remaining workers are $(k_L,s_L)$ types and are indifferent between the two roles, so we pair them up and get $\mu_2(k_L,s_L)=25$.  Since $\mu_2(k_L,s_L)=0$, this is clearly an improvement.
+		 
+		 What does this imply regarding identification? We know that in the $\mu_2(k_L,s_L)-\mu_1(k_H,s_H)=5$ new matches, these individuals are necessarily $(k_H,s_H)$ type. Thus we know that $n(k_H,s_H) \geq 10$. We can also infer that there are $n(k_H)=30$ in total and since $n(k_H) = n(k_H,s_H) + n(k_H,s_L)$ it must be that $n(k_H,s_L)\leq 20$. Thus we have bounds for the counts of the $s$ types of the $k_H$ workers. We know that $10 \leq n(k_H,s_H) \leq 30$ and $0 \leq n(k_H,s_L)\leq 20$. Also, since $\mu_2(k_H,s_H)>\mu_1(k_H,s_H)$ we can tell that $n(k_H) > n(k_L,s_H)$ implying we necessarily know that $n(k_L,s_H) = \mu_1(k_H,s_H) = 20$.  Furthermore, from the $\mu_2(k_L,s_L)=25$ we know that $n(k_L,s_L)=50$.  
+	\end{enumerate}
+\end{proof}
+
+\section{Next steps}
 
 
 \newpage
