@@ -1,0 +1,246 @@
+%%% Document class (e.g. article, letter, beamer, etc...)
+\documentclass[12 pt]{article}
+%%%
+
+%%% Packages
+\usepackage[round]{natbib} %Allows custom options for bibliography management
+\usepackage{cite} %Adds bibliograhy functionality like \citet
+\usepackage{geometry} %Allows me to set the margins
+\usepackage{amsmath} %Adds additional math-related commands
+\usepackage{amsfonts} %Adds fonts-within-math-mode functionality
+\usepackage{amsthm} %Enables custom theorem environments
+\usepackage{bm} %Adds bold math fonts
+\usepackage{setspace} %Enables \doublespacing command
+\usepackage{parskip} %Removes indentation
+\usepackage{tikz} %Used for formatting plots and figures
+\usepackage{float} %Used to force the position of tables and figures
+\usepackage{graphicx} %For including images
+\usepackage[T1]{fontenc} %Allows for encoding of slavic letters
+\usepackage{lmodern} %Need to load back the original font for when T1 encoding is active
+\usepackage{hyperref}
+\usepackage{subcaption}
+%%%
+
+%%% Set the margins of the document
+\geometry{
+	left=1in,
+	right=1in,
+	bottom=1in,
+	top=1in,
+}
+%%%
+
+%%% NOTE: PLOT DIMENSIONS SHOULD BE AROUND 10 x 4
+
+%%% User-defined commands
+
+\DeclareMathOperator*{\argmax}{argmax} % The argmax operator
+
+\newtheorem{assumption}{Assumption} % Treating assumptions like theorems.
+\newtheorem{proposition}{Proposition} % Treating propositions like theorems.
+\newtheorem{definition}{Definition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+
+% Footnote without superscripts --- used in title
+\newcommand\blfootnote[1]{%
+	\begingroup
+	\renewcommand\thefootnote{}\footnote{#1}%
+	\addtocounter{footnote}{-1}%
+	\endgroup
+}
+
+%%%
+
+%%% Title
+\title{Identification in a $2\times2$ occupational and matching
+	model}
+%\author{Sean M. T. Elliott\blfootnote{University of Toronto, sean.elliott@mail.utoronto.ca}}
+\date{}
+%%%
+
+
+\begin{document}
+	
+	\maketitle
+	
+	\onehalfspacing
+	
+	\vspace{-2cm}
+	
+	\section{Preliminaries}
+	
+
+Consider a labour market with two occupations, managers whose skills are high and low, $M=\{H,L\},$ and workers whose skills are also high and low, $\omega=\{h,l\}$. There is a measure 1 of labor market participants.Every participant has an managerial skill, $M$, and a worker skill, $\omega$. Every participant chooses the occupation which maximizes their income. The matrix distribution of occupational skills across participants is given below:%
+\[
+P(M,\omega)=%
+\begin{array}
+	[c]{ccc}
+	& \omega=l & \omega=h\\
+	M=L & p_{Ll} & p_{Lh}\\
+	M=H & p_{Hl} & p_{Hh}%
+\end{array}
+\]
+where
+\begin{align}
+	&  p_{Hh}+p_{hL}+p_{Lh}+p_{Ll}=1\\
+	& p_{ij}   >0;i=L,H;j=l,h.
+\end{align}
+Each firm consists of a manager and a worker. They produce a unit of output to sell in the output market. The quality of the output, which is also the revenue of the firm, by a manager of skill $M$ and a worker of skill $\omega$ is $R(M,\omega\dot{)}$.
+\begin{assumption}
+	$R(M,\omega)$, revenue, is strictly
+	increasing in the occupational skills of the firm.
+	\label{a1}
+\end{assumption}
+\begin{assumption}
+	$R(M,\omega)$, revenue, is max supermodular
+	in occupational skills\footnote{When $R(i,j)$ is continuous in occupational
+	skills, max supermodular is the same as supermodular.}	
+	\begin{equation}
+		R(H,h)+R(L,l)>2\max(R(H,l),R(L.h))
+	\end{equation}
+		\label{a2}
+\end{assumption}
+Let managers (owners of the firms) hire workers in a competitive labor market
+for workers. Let the market earnings of a worker of skill $\omega$ be
+$w(\omega)$. The manager of skill $M$ will choose a worker to solve:
+\begin{equation}
+	\pi^{\ast}(M,w(\omega))=\max_{\omega}R(M,\omega)-w(\omega) \label{profit max}
+\end{equation}
+$\omega^{\ast}(M,w(\omega))$, also known as the matching function, is the
+worker who is optimally chosen by the manager:
+\begin{equation}
+	\omega^{\ast}(M)=\arg\max_{\omega}R(M,\omega)-w(\omega) \label{worker choice}
+\end{equation}
+
+
+As is well know, supermodularity implies that there will be positive
+assortative matching by occupational skills within each firm.
+
+Let $\pi^{\ast}(M,\omega^{\ast}(M))$ be the maximized profits of the manager
+$M$ and $w(\omega^{\ast}(M))$ be the maximized earnings of the worker in the firm:%
+
+\begin{equation}
+	R(M,\omega^{\ast}(M\dot{)})=\pi^{\ast}(M\dot{)}+w(\omega^{\ast}(M\dot{)})
+	\label{5}%
+\end{equation}
+
+
+If a worker's skill, $\omega$, is chosen by two types of managers, his wage
+only depends on his skill $\omega$ and not which type of manager he is matched
+to. We make a similar argument for managers. If a manager of skill $M$ is
+indifferent between two types of workers, her maximized profits is $\pi^{\ast
+}(M,\omega^{\ast}(M))$, independent of which type of worker she actually chooses.
+
+Given their occupational skills, ($M,\omega)$, every participant will choose
+the occupation which pays them the highest income:%
+
+\begin{equation}
+	O^{\ast}(M,\omega,\pi^{\ast},w^{\ast}),=\arg\max_{M,\omega}(\pi^{\ast
+	}(M,\omega^{\ast}(M)),w^{\ast}(\omega)) \label{occuptional choice}%
+\end{equation}
+
+
+Due to the competitive labor market assumption, for every active firm in the
+industry, its revenue, $R(M,\omega^{\ast}(M\dot{)})$, is equal to the
+maximized profits and its wage bill%
+
+\begin{equation}
+	R(M,\omega^{\ast}(M\dot{)}\dot{)}=\pi^{\ast}(M,\omega^{\ast}(M\dot{)}\dot
+	{)}+w^{\ast}(\omega^{\ast}(M\dot{)}\dot{)} \label{6}%
+\end{equation}
+
+
+We will now derive the demand and supply of occupational skills for the
+industry. Let $I^{\ast}(M,\omega,\pi^{\ast},w^{\ast})$ be an indicator
+function which takes the value 1 if a participant of skill ($M,\omega)$
+strictly chooses to be a manager, $\pi^{\ast}(M,\omega^{\ast}(M))>w^{\ast
+}(\omega)$, and is zero otherwise. Note that for any managerial skill $M$,
+there is at most two types of participant $(M,\omega)$ for which $I^{\ast
+}(M,\omega,\pi^{\ast},w^{\ast})>0$. Let $\phi(M,\omega,\pi^{\ast},w^{\ast}%
+)\in(0,1]$ if a participant of skill ($M,\omega)$ is indifferent between being
+a manager or a worker, $\pi^{\ast}(M,\omega^{\ast}(M))=w^{\ast}(\omega)$, and
+is zero otherwise. Note that for any managerial skill $M$, there is only one
+type of participant $(M,\omega)$ for which $\phi(M,\omega,\pi^{\ast},w^{\ast
+})>0$.
+
+The mass (market supply) of managers of skill $M$, $S^{\ast}(M,\pi^{\ast
+},w^{\ast})$ is:%
+
+\begin{equation}
+	S^{\ast}(M,\pi^{\ast},w^{\ast})=\phi(M,\omega,\pi^{\ast},w^{\ast}%
+	)p_{M_{\omega}}+\sum_{M,\omega}I^{\ast}(M,\omega,\pi^{\ast},w^{\ast
+	})p_{M_{\omega}} \label{supply of managers}%
+\end{equation}
+
+
+Let $J^{\ast}(M,\omega)$ be an indicator function which takes the value 1 if a
+manager of skill $M$ hires a worker of skill $\omega$ and zero otherwise. The
+mass (market demand) for workers of skill $\omega$, $d^{\ast}(\omega,\pi
+^{\ast},w^{\ast})$ is:%
+
+\begin{equation}
+	d^{\ast}(\omega,\pi^{\ast},w^{\ast})=\sum_{M}J^{\ast}(M,\omega)S^{\ast}%
+	(M,\pi^{\ast},w^{\ast}) \label{demand for workers}%
+\end{equation}
+
+
+Let $i^{\ast}(M,\omega,\pi^{\ast},w^{\ast})$ be an indicator function which
+takes the value 1 if a participant of skill $(M,\omega)$ strictly prefers to
+be a worker and zero otherwise. Let $\Phi(M,\omega,\pi^{\ast},w^{\ast}%
+)\in(0,1]$ if a participant of skill ($M,\omega)$ is indifferent between being
+a manager or a worker, $\pi^{\ast}(M,\omega^{\ast}(M))=w^{\ast}(\omega)$, and
+is zero otherwise. The mass (market supply) of workers of skill $\omega$,
+$n^{\ast}(\omega,\pi^{\ast},w^{\ast})$ is:%
+
+\begin{equation}
+	n^{\ast}(\omega,\pi^{\ast},w^{\ast})=\Phi(M,\omega,\pi^{\ast},w^{\ast
+	})p_{M_{\omega}}+\sum_{(M,w)}i^{\ast}(M,\omega,\pi^{\ast},w^{\ast
+	})p_{M_{\omega}} \label{supply of workers}%
+\end{equation}
+
+
+We now define a competitive equilibrium for this labor market:
+
+\begin{definition}
+	\begin{enumerate}
+		Let $P(M,w)$ be the population supply of skills.
+		
+		\item A competitive equilibrium is an equilibrium wage function, $w^{\ast}%
+		(w)$, such that:
+		
+		\item All labor market participants choose the occupations which maximize
+		their incomes. I.e. satisify (\ref{occpational choice}).
+		
+		\item All managers choose workers which maximizes their profits. I.e. satisfy
+		(\ref{profit maximization}) and (\ref{worker choice}).
+		
+		\item The market demand for workers is equal to the market supply of workers
+		by skills:%
+		\begin{equation}
+			d^{\ast}(\omega,\pi^{\ast},w^{\ast})=s^{\ast}(\omega,\pi^{\ast},w^{\ast
+			}),\omega=\{h,l\} \label{market equilibrium}%
+		\end{equation}
+		
+	\end{enumerate}
+\end{definition}
+
+\begin{description}
+	\item[Assumption] \label{3}\bigskip\ $p_{Hh}<p_{Hl}<\,p_{Lh}<p_{Ll}%
+	<p_{Hl}\,+p_{Lh}$
+\end{description}
+
+The population size by type of participants is decreasing in the skills of the
+participants, consistent with commonly observed occupational skills
+distributions. While $p_{Ll}$ is larger than $p_{Hl}$ or $p_{Lh}$, it is not
+larger than the sum of all the mixed skills populations. This last restriction
+restricts the population size of individuals with no occupational comparative advantage.
+	
+	
+
+	
+	\newpage
+	\bibliographystyle{plainnat}
+	\bibliography{/home/selliott/Research/bib/matching}
+	
+\end{document}
