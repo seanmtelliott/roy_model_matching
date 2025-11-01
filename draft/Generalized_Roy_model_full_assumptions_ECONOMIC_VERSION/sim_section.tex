@@ -1,0 +1,243 @@
+%%% Document class
+\documentclass[12pt]{article}
+
+%%% Packages
+\usepackage{geometry}
+\usepackage{amsmath, amsfonts, amsthm, bm}
+\usepackage{setspace, parskip, tikz, float, graphicx}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{hyperref}
+\usepackage{subcaption}
+
+%%% Margins
+\geometry{
+	left=1in,
+	right=1in,
+	top=1in,
+	bottom=1in
+}
+
+%%% Custom commands
+\DeclareMathOperator*{\argmax}{argmax}
+\newtheorem{assumption}{Assumption}
+\newtheorem{proposition}{Proposition}
+\newtheorem{definition}{Definition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+
+\newcommand\blfootnote[1]{%
+	\begingroup
+	\renewcommand\thefootnote{}\footnote{#1}%
+	\addtocounter{footnote}{-1}%
+	\endgroup
+}
+
+%%% Title
+\title{\blfootnote{*}}
+\author{Sean M. T. Elliott\blfootnote{University of Toronto, \texttt{sean.elliott@mail.utoronto.ca}}}
+\date{\today}
+
+\begin{document}
+%	
+%	\maketitle
+	
+	\section{Simulations}
+
+	In this section, we present two complementary sets of simulation results that serve distinct purposes. The first set explores how alternative specifications of the revenue function $F(k,s)$ influence the shape of the separating function $\varphi$. This exercise allows us to visualize and interpret the circumstances under which non-linearity in $\varphi$ naturally emerges, providing intuition for when the linear separation assumed in the traditional Roy model fails to hold. The second set of simulations demonstrates how our framework can be calibrated to reproduce observed empirical patterns—particularly the evolution of wage inequality in the U.S. over recent decades. Taken together, these results suggest that allowing for an endogenously nonlinear separating function is important for capturing the types of inequality dynamics observed in the data, whereas models restricted to linear separation are unlikely to do so in a realistic manner.
+	
+	As highlighted in Section~1, a central innovation of our approach relative to the classical Roy model is that we do not impose linearity on the separating function. Instead, $\varphi$ arises endogenously from the equilibrium relationship between wages and production, reflecting the underlying distribution of skills and the technology of matching. This flexibility enables the model to capture richer forms of sorting and inequality dynamics that cannot be represented in a purely linear setting. To explore these mechanisms quantitatively, we adopt the following baseline configuration for the simulations. The specification of the revenue function $F(k,s)$ remains general, subject only to two mild assumptions: (i) $F$ is strictly supermodular, ensuring complementarity between the two skill dimensions; and (ii) the joint distribution of skills $(k,s)$ is continuous with compact support, guaranteeing the existence of well-defined equilibrium matches. These conditions encompass a wide range of production environments and allow for rich heterogeneity across agents.
+	
+	\begin{enumerate}
+		\item \textbf{Production technology.} The production function is specified as
+		\[
+		F(k,s) = a k^n + b s^m + c k s, \quad \text{with } a,b,c,n,m>0.
+		\]
+		This functional form allows for heterogeneous returns to key and secondary skills, while the interaction term $c k s$ captures the degree of complementarity between the two roles. By varying these parameters, we can assess how technological structure affects equilibrium sorting and wage dispersion.
+		
+		\item \textbf{Distribution of skills.} Skill pairs $(k,s)$ are drawn from a lognormal distribution,
+		\[
+		(k,s) \sim \text{Lognormal}(\mu, \Sigma),
+		\quad \text{where } \mu = (0.5,0.5)' \text{ and } 
+		\Sigma =
+		\begin{bmatrix}
+			1 & 0.5 \\
+			0.5 & 1
+		\end{bmatrix}.
+		\]
+		The lognormal specification ensures strictly positive skill levels and introduces realistic correlation between the two dimensions of ability. To satisfy the compact-support requirement, we truncate the distribution so that $(k,s)\in[0,1]^2$.
+	\end{enumerate}
+	
+	Throughout all simulations, we maintain these structural assumptions while varying parameter values to examine how changes in technology or the strength of interaction between skills influence equilibrium outcomes. The numerical algorithm used to solve for the equilibrium distributions and wage functions follows the iterative procedure described in Section~4.6.
+	
+	\subsection{Simulation results}
+	
+	We now present the main results of the simulations conducted under this framework. The first set focuses on how the equilibrium separating function $\varphi$ responds to changes in the underlying production technology and in the distribution of skills. The second turns to the implications of skill-biased technical change (SBTC) for equilibrium wage inequality. All simulations build on the baseline parameterization introduced above, where
+	\[
+	F(k,s) = a k^n + b s^m + c k s,
+	\]
+	and $(k,s)$ are drawn from a truncated lognormal distribution on $[0,1]^2$. The parameters $(a,b,c,n,m)$ govern, respectively, the productivity weights of key and secondary skills, the strength of complementarity between them, and the degree of nonlinearity in their contribution to output.
+	
+	For each parameter configuration, we solve numerically for the equilibrium separating function $\varphi$, the induced distributions of managers and assistants, and the corresponding wage schedules $\pi(k)$ and $w(s)$. Equilibrium is obtained by iterating over the system of equations that jointly satisfies (i) occupational choice consistency, (ii) firm profit maximization, and (iii) market clearing through the mass-balance condition described in Section~2.5. Convergence is achieved when $\varphi$, $\pi(k)$, and $w(s)$ are mutually consistent within a specified numerical tolerance.
+	
+	\subsubsection{Changes in the separating function}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale = 0.8]{phi_a_equal_b.png}
+		\caption{Changes in log wages and the separating function as the strength of worker interaction $c$ varies in the production function, under similar productivity weights $a \approx b$.}
+		\label{fig:phi_a_equal_b}
+	\end{figure}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale = 0.57]{phi_a_not_equal_b.png}
+		\caption{Changes in log wages and the separating function as the strength of worker interaction $c$ varies in the production function, when the key role has a higher impact on production ($a > b$).}
+		\label{fig:phi_a_not_equal_b}
+	\end{figure}
+	
+	Figures~\ref{fig:phi_a_equal_b} and~\ref{fig:phi_a_not_equal_b} illustrate how the equilibrium separating function $\varphi$ evolves as we vary the parameters of the revenue function $F(k,s)$. In Figure~\ref{fig:phi_a_equal_b}, key and secondary workers contribute similarly to total output. Specifically, we set
+	\[
+	F(k,s) = 0.55k + 0.45s + cks,
+	\]
+	and vary $c \in \{0.01, 0.5, 1\}$. This allows us to examine the limit as $c \to 0$, corresponding to the absence of worker interaction. In the standard Roy model, $c = 0$ and $\varphi$ is linear by assumption. It is therefore instructive to test whether our more general framework reproduces this property as the production function becomes linear.
+	
+	When $a$ and $b$ are of similar magnitude, the nonlinearity in $F$ exerts only a minor influence on the shape of $\varphi$. As shown in Figure~\ref{fig:phi_a_equal_b}, there is no discernible change in the separating function as $c$ approaches zero. This result implies that when wage disparities between roles are modest, the assumption of a linear separating function---central to the classical Roy model---remains a reasonable approximation. The situation differs sharply when the key role is much more productive than the secondary one. In Figure~\ref{fig:phi_a_not_equal_b}, we modify the production function to
+	\[
+	F(k,s) = 0.9k + 0.1s + cks,
+	\]
+	again taking $c \in \{0.01, 0.5, 1\}$. Here, the key worker exerts a much larger influence on output, and we observe pronounced nonlinear changes in $\varphi$ as $c$ decreases. When $b \ll a$, the separating function is more likely to reach the boundaries of the skill space, indicating regions where one occupation strictly dominates the other.
+	
+	To interpret this pattern, recall that $\varphi(k) = w^{-1}(\pi(k))$. For a worker of skill $k$ who earns $\pi(k)$ in the key role, $\varphi(k)$ represents the level of secondary skill $s$ under the wage schedule $w(s)$ that yields indifference between the two occupations. Boundary values of $\varphi$ therefore correspond to cases where this indifference condition fails---that is, when workers strictly prefer one occupation. This occurs because the wage schedules $\pi(k)$ and $w(s)$ are both increasing in their respective skill arguments but at different rates. For instance, when $k = s$ and $\pi(k)$ greatly exceeds $w(s)$, $\varphi(k)$ lies on the upper boundary, implying that such a worker would always select the key occupation. This behaviour is visible in Figure~\ref{fig:phi_a_not_equal_b}. Restricting attention to interior points of the skill space, $\varphi$ becomes approximately linear as $c \to 0$, consistent with the classical Roy model. Even for moderate interaction levels ($c = 0.5$ or $c = 1$), deviations from linearity remain small. These results suggest that the linearly separable production function $F(k,s) = ak + bs$, which features prominently in the literature, provides a good approximation to equilibrium sorting even when production involves modest complementarities between workers ($c \neq 0$).
+	
+	Taken together, these comparative statics clarify how complementarities in production shape the structure of sorting. We next turn to a distinct but related mechanism---skill-biased technical change---that provides a natural link between technological progress and observed patterns of wage inequality.
+	
+		
+	\subsubsection{Skill-biased technical change}
+	
+	We next consider the case of skill-biased technical change (SBTC), a mechanism associated with rising wage inequality and shifts in labour demand across advanced economies (see, for example, \cite{CardDiNardo2002}). Our objective is to trace how equilibrium outcomes evolve when technological progress disproportionately raises the productivity of high-skilled (``key'') workers relative to low-skilled (``secondary'') workers. This extension builds directly on the previous analysis and provides a natural setting for evaluating the dynamic implications of our model.
+	
+	Within our setting, SBTC can be viewed as an increase in the marginal revenue attributable to the key worker compared with that of the secondary worker. In other words, SBTC shifts the production technology such that, holding other factors constant, an incremental improvement in $k$ yields a larger gain in output than an equivalent improvement in $s$. To illustrate this mechanism, we formalize SBTC through a simple two-period comparison.
+	
+	In the first period, the production function is
+	\[
+	F_1(k,s) = a_1 k^n + b s^m,
+	\]
+	and in the second period it is
+	\[
+	F_2(k,s) = a_2 k^n + b s^m,
+	\]
+	where $a_2 > a_1 > b$. The parameter $a_t$ captures the productivity weight on key-worker skills in period $t$. Comparing the two periods, we have
+	\[
+	\frac{\partial_k F_2}{\partial_k F_1}
+	= \frac{a_2 n k^{n-1}}{a_1 n k^{n-1}}
+	= \frac{a_2}{a_1}
+	> 1,
+	\]
+	while
+	\[
+	\frac{\partial_s F_2}{\partial_s F_1}
+	= \frac{b m s^{m-1}}{b m s^{m-1}}
+	= 1.
+	\]
+	Hence,
+	\[
+	\frac{\partial_k F_2}{\partial_k F_1}
+	> \frac{\partial_s F_2}{\partial_s F_1}
+	> 0. \tag{15}
+	\]
+	
+	Equation~(15) defines SBTC within our model: when the proportional increase in the marginal productivity of key skills exceeds that of secondary skills between two time periods, we say that SBTC has occurred. Such a change raises the relative contribution of more skilled workers to total output, leading to a reallocation of workers and, potentially, to an increase in equilibrium wage inequality. We now examine these implications quantitatively, showing how SBTC alters the equilibrium distribution of wages and replicates key features of the U.S. earnings data.
+	
+	\subsubsection{Wage inequality under SBTC}
+	
+	One of the main empirical contributions of \cite{Bloom} concerns the evolution of wage inequality in the United States, both within and across firms.\footnote{Following \cite{Bloom}, total wage inequality is decomposed into a \emph{between-firm} component---capturing variation in average wages across firms---and a \emph{within-firm} component---capturing dispersion of wages among workers within the same firm. The decomposition is based on matched employer--employee data from U.S. tax records covering 1983--2013.} Their analysis of matched employer--employee data reveals striking differences in how inequality has evolved over the past several decades.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale = 0.57]{bloom_data_1983_2013.png}
+		\caption{Evolution of U.S. wage inequality, 1983--2013. Reproduced from \cite{Bloom}, Figure 5.}
+		\label{fig:bloom_ineq}
+	\end{figure}
+	
+	In this section, we show that the empirical patterns documented by \cite{Bloom} can be replicated within our model in a quantitatively robust way, allowing for meaningful comparison between theory and data.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale = 0.57]{inequality_1983_2013_match.png}
+		\caption{Simulated results from the model: within- and across-firm components of wage inequality.}
+		\label{fig:inequality_1983_2013_match}
+	\end{figure}
+	
+	Figure~\ref{fig:bloom_ineq} uses U.S. matched employer--employee data from 1983 to 2013 to show that rising inequality has been driven primarily by differences \emph{across} firms and individuals, rather than \emph{within} firms. The figure compares the earnings distribution across the two time periods: if inequality had remained constant, the plotted lines would be flat. The line labelled ``Individuals'' shows the change in percentile earnings between 1983 and 2013; ``Firms'' reflects the change in average wages paid across firms; and ``Within firm'' captures the change in wage dispersion within each firm. The data indicate that while inequality between firms and individuals has risen sharply, within-firm inequality has remained essentially unchanged. Moreover, the largest increases in dispersion occur at the upper end of both the wage and revenue distributions, implying that technological change has disproportionately benefited top earners and the most productive firms.
+	
+	Figure~\ref{fig:inequality_1983_2013_match} demonstrates that our model reproduces these empirical patterns. To construct this comparison, we simulate two scenarios corresponding to different stages of technological development. In the first, we use
+	\[
+	F_1(k,s) = 0.55k + 0.45s + 0.01ks,
+	\]
+	and in the second,
+	\[
+	F_2(k,s) = 1.6k^2 + 0.4s + 0.15ks.
+	\]
+	Transitioning from $F_1$ to $F_2$ introduces skill-biased technical change (SBTC), as defined in Equation~(15). Skills are drawn from the same lognormal distribution used in earlier simulations.
+	
+	Because our framework differs slightly from that of \cite{Bloom}, we adapt their decomposition definitions accordingly. The ``Individuals'' line is constructed in the same way as theirs, capturing differences in individual earnings percentiles between the two simulated economies. For the ``Firms'' component, however, we use log revenue rather than average wages, since each firm in our model employs only two workers, making firm-level averages less informative. The ``Within firm'' line instead measures each worker's share of total firm wages, rather than deviations from the firm's mean wage.
+	
+	As shown in Figure~\ref{fig:inequality_1983_2013_match}, the simulated results closely match the empirical patterns: wage inequality increases predominantly across firms and individuals, while within-firm inequality remains nearly constant. The most pronounced divergence occurs among the highest-earning workers and the most productive firms, consistent with the empirical observation that the returns to skill and productivity have become increasingly concentrated at the top. These results suggest that, in a Roy-type economy with equilibrium matching, SBTC naturally generates a pattern of rising upper-tail wage inequality over time that aligns closely with the evolution observed in the U.S. labour market.
+	
+	\subsection{Another example}
+	
+	While we observed rising inequality in the United States, comparable measurements from other countries reveal markedly different trends. In the case of Brazil, shown in Figure~\ref{fig:brazil_data}, inequality across both firms and individuals decreases as we move up the earnings distribution between 1999 and 2013. Similar to the U.S. case, however, within-firm inequality remains essentially unchanged over this period. As an additional test of our model, we show that these contrasting patterns can also be replicated within our framework.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale = 0.57]{brazil_data.png}
+		\caption{Evolution of wage inequality in Brazil, 1999--2013.}
+		\label{fig:brazil_data}
+	\end{figure}
+	
+	To generate the results in Figure~\ref{fig:brazil_sim}, we modify both the underlying skill distribution $(k,s)$ and the revenue function $F_j(k,s)$ across the two scenarios $j=1,2$. In the first scenario, skills $(k,s)$ are uniformly spaced grid points on the unit square, whereas in the second they follow a lognormal distribution. We also include a scale factor $d_j$ in the revenue function, so that in each scenario
+	\[
+	F_j(k,s) = a_j k^{n_j} + b_j s^{m_j} + c_j k s + d_j.
+	\]
+	Specifically, we set
+	\[
+	F_1(k,s) = 2.65k^2 + 1.15s^2 + 2,
+	\]
+	with $(k,s)$ drawn from the uniform grid, and compare it to
+	\[
+	F_2(k,s) = 2.35k^2 + 1.4s^2 - 0.5ks + 2.2,
+	\]
+	where $(k,s) \sim \text{Lognormal}(\mu, \Sigma)$, $\mu = (0.75,0.75)'$, and
+	\[
+	\Sigma =
+	\begin{bmatrix}
+		1 & 0.15 \\
+		0.15 & 1
+	\end{bmatrix}.
+	\]
+	
+	The results, displayed in Figure~\ref{fig:brazil_sim}, show that this parameterization reproduces the decline in inequality across firms and individuals observed in the Brazilian data, while leaving within-firm inequality effectively unchanged. The model thus captures both the increase in inequality in the U.S. and the decrease observed in Brazil, highlighting its flexibility in accounting for cross-country heterogeneity in wage dynamics. In particular, differences in the shape of $F(k,s)$ and in the distribution of $(k,s)$ can jointly explain how economies subject to distinct technological and institutional environments generate opposite trends in wage inequality. The contrast between the U.S. and Brazilian experiences further illustrates that the direction of inequality change depends critically on the nature of technological bias and the composition of skills within the labour force.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale = 0.57]{brazil_sim.png}
+		\caption{Simulation results approximating the Brazilian experience.}
+		\label{fig:brazil_sim}
+	\end{figure}
+	
+	\begin{thebibliography}{}
+		
+		\bibitem{CardDiNardo2002}
+		Card, D. and DiNardo, J. E. (2002).
+		``Skill-biased technological change and rising wage inequality: Some problems and puzzles.''
+		\emph{Journal of Labor Economics}, 20(4), 733--783.
+		
+		\bibitem{Bloom}
+		Song, J., Price, D., Guvenen, F., Bloom, N., and von Wachter, T. (2018).
+		``Firming up inequality.''
+		\emph{The Quarterly Journal of Economics}, 134(1), 1--50.
+		
+	\end{thebibliography}
+	
+\end{document}

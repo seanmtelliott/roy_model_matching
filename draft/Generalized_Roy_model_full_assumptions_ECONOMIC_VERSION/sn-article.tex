@@ -1,0 +1,1034 @@
+\documentclass[pdflatex,sn-mathphys]{sn-jnl}
+\usepackage{enumerate}
+\usepackage[shortlabels]{enumitem}
+\usepackage{amsmath}
+\usepackage{algpseudocode}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\pc}{\mathbf{PC}}
+\DeclareMathOperator*{\li}{\mathbf{LI}}
+\DeclareMathOperator{\dom}{Dom}
+\DeclareMathOperator{\spt}{spt}
+\DeclareMathOperator*{\re}{RE}
+\DeclareMathOperator{\Ima}{Im}
+\DeclareMathOperator{\range}{Range}
+\jyear{2021}%
+
+\theoremstyle{thmstyleone}%
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}% 
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{assumption}{Assumption}
+\renewcommand*{\theassumption}{A\arabic{assumption}}
+\newtheorem{conjecture}{Conjecture}
+
+
+\theoremstyle{thmstyletwo}%
+\newtheorem{example}{Example}%
+\newtheorem{remark}{Remark}%
+\newtheorem{observation}{Observation}
+
+
+\theoremstyle{thmstylethree}%
+\newtheorem{definition}{Definition}%
+\newtheorem{problem}{Problem}
+\raggedbottom
+\begin{document}
+
+\title[Generalized Roy Model]{A generalization of a model of Roy for partition of labor force via matching and occupational choice}
+
+
+\author{Joaquín Sánchez García}\email{joaqsan@math.utoronto.com}
+\author{Aloysius Siow} \email{pavalow.siow@utoronto.ca}
+\author{Sean Elliott} \email{sean.elliott@mail.utoronto.ca}
+\author{Jeffrey Liang}\email{jeffery.liang@mail.utoronto.ca}
+%\equalcont{These authors contributed equally to this work.}
+
+
+\abstract{
+\textcolor{red}{We study a realistic version of the occupational choice problem posed by Roy on which we do not enforce the linearity constraints. In this general approach we are able to establish connections between worker heterogeneity and economic wage gaps. The (linear) model of Roy is of the foundational models on economic micro-structures capable of explaining many different economies. By allowing non-linear separations we are able to accommodate to more realistic situations which yield the possibility of explaining different situations on a single model. \\
+The model depends on few parameters and it is possible due to the re-writing of the problem as an instantaneous 2-stage problem on which the standard mathematical tool of optimal mass transportation can be used. By rewriting this problem we are able to utilize the mathematical results of transportation theory which yield clear new insights into the structure of the problem.} \\ 
+We relate this formulation to previous models by Roy, Heckman and Honoré, Siow and Mak. Through simulations we show that this model is able to encapsulate the empirical content of the american market  when as shown in \cite{Bloom}.}
+
+
+\keywords{Optimal transport matching, occupational choice, Roy model, distribution of labor, social planner matching problem, labor force, earning schedules, production couples, wage inequality}
+
+\maketitle
+\newpage
+\tableofcontents
+\markboth{}{}
+\newpage
+\section{Introduction}\label{sec1Roy}
+Recent empirical investigations, such as the seminal work by Bloom et al. \cite{Bloom}, have studied the intricate dynamics of wage inequality across and within firms within the U.S. labor sector. Within the context of the American market, the prevailing conjecture suggests that wage inequality predominantly stems from disparities in skill levels among workers. However, contrasting insights emerge from analyses of different markets, exemplified by the case of Brasil as explored by Siow and Mak \cite{Mak}, where reductions in wage inequality across firms are attributed to enhancements in minimum education levels.\\
+This dichotomy underscores the exigency for a parsimonious yet robust model for the distribution of labor, one capable of reconciling these divergent perspectives. Such a model must inherently possess the following attributes:\begin{enumerate}
+    \item  Versatility in accommodating varying scenarios, including both skill-based dynamics observed in the U.S. and external factors driving wage inequality as evidenced in Brasil.
+\item Capacity to furnish novel insights and analytical tools to elucidate the underlying mechanisms governing labor market dynamics.
+\item Simplicity and theoretical justification to ensure applicability across diverse empirical contexts.
+\end{enumerate}
+In this endeavor, our objective is to construct such a model, drawing inspiration from foundational works such as that of Roy \cite{Roy} and subsequent refinements by Heckman and Honoré \cite{HeckmanHonore}, while integrating insights from Siow and Mak \cite{Siow}, \cite{Mak} observations of non-linear dynamics. Our proposed model not only furnishes a quantitative elucidation of wage inequality but also provides a nuanced understanding of the relevance of worker matches. Furthermore, it facilitates a rigorous examination of the repercussions of demographic shifts and changes in production on the wage inequality. Through the theoretical exposition of our model, anchored in the constraints imposed by occupational choice, we aim to offer a comprehensive framework for analyzing labor distribution. Additionally, we supplement our theoretical discourse with illustrative simulations, encompassing a spectrum of scenarios reflective of the aforementioned divergent contexts. \\
+In the seminal work of A.D. Roy \cite{Roy}, a model for the distribution of occupations in a community is presented. The objective of the model is to explain using specific conditions on the needs of the community, which workers will dedicate to each possible occupation assuming we can give a numerical value to the skills of performing each job. Recent work (\cite{Siow},\cite{Mak}) has focused on a generalized version of the model of \cite{Roy} where a separation function, dividing workers from both roles, has had a successful impact on the analysis of the theory. In this article we study analytical details of these separation functions, the necessity of them and consequences of this formulation. \\
+We study a problem based on \cite{McCannMax}, \cite{Siow} and \cite{Roy} on which workers aim to be hired in companies for any of two roles. The two roles can be thought of as manager (primary) and assistant (secondary) and the companies will hire pairs of workers so that each worker will do one job. Each matched couple of workers will be assigned to a company on which one of the agents will be the manager and the other one will be the assistant. The underlying matching is modelled by a production function that evaluates the numerical output of their work, corresponding to a benefit function in the context of optimal transportation, in the context of \cite{McCannMax}. \\
+The work on both occupations is remunerated by wages, the structure of this salaries is what we refer as earnings schedule. Given an earnings schedule, i.e. determination of salaries for both options, the occupational choice model requires each worker to choose what job to do. We assume that each worker's decision is motivated only by the earnings schedule and hence will choose the job that will pay the most according to their own set of skills. The problem studied here involves also finding the optimal earnings schedule for the economy and therefore differs from the standard occupational choice in the sense that the earning schedules are not known a priori but are part of the solution. An important step in the development of this model is Section \ref{2step} on which we show that the optimal solution of the model corresponds to a 2-step problem on which the inner problem is the occupational choice for workers given earning schedules. \\
+The problem presented here generalizes the Roy model from \cite{Roy} where the separation between workers is assumed to be linear. In this generalization, presented to us by Dr. Siow, we allow the separation to be non-linear.  One could expect that in certain specific production functions depending on interaction, one would always get linear separation, we show this is not the case by means of an example in section \ref{nonlinear}. \\
+We also study the relationship between this model and the general version of the social planner's problem presented in \cite{McCannMax}. 
+\subsection{Plan of the Paper}
+In section \ref{RoyModel} we present the generalized Roy model and introduce the formulation of Dr. Siow. We explain the role of each variable and some technicalities. We describe the problem, the assumptions made and provide intuition and interpretations of the model. \\
+In section \ref{2step} we rewrite the original model as a 2-step problem which allows us to introduce the framework of optimal transportation of mass, which is a theory proven to be very useful in many physical and economical problems, for introduction to the theory see \cite{McCannGuillen}, \cite{Ball}, \cite{Villani} and for interesting applications to economics and physics see \cite{Galichon}, \cite{santambrogio} to name a few. The idea is that any equilibrium of distribution of workers into roles should involve optimal matching between managers and assistants, allowing optimal transportation theory to handle an inner problem. The rest of the section is dedicated to obtain further understanding of the problem using the optimal transport framework. \\
+In section \ref{socialplanners} we review the model of McCann and Trokhimtchouk, from their seminal work \cite{McCannMax}. We introduce their model and state some important results before making the connection with the generalized Roy model presented here. %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% maybe change the sections, if I do this part of the intro changes too
+At this point we also include simple examples to fix intuition and also resolve a conjecture by Dr. Siow on whether or not the separation function would result to be linear and hence agreeing always with the original model of Roy from \cite{Roy} and \cite{HeckmanHonore}.\\
+Finally in section \ref{Dependence} we study how the different variables affect the model and yield a continuity result for separation. This result intuitively says that similar economies and similar work-forces will yield similar separations of the labor force. Here we take advantage of the separation function to study the wage inequality, the difference in salaries between two people working in the same firm and conclude an interesting bound that provides economical insight in \ref{wagelip}. We finish by exploiting the first order conditions and duality to understand approximations of optimal total production from similar economies in terms of production or in terms of original distribution of people. \\
+In section \ref{Further}, we explain how this model can be implemented and possibly changed as well as explaining what we believe the next lines of investigation of this model should look like. 
+\subsection{Preview and conclusions from the economical stand-point}
+In this section we give an economical preview of the results, that is we explain their economical significance before developing the mathematical tools required. \begin{itemize}
+    \item In section \ref{TheModel} we formulate the model, the objective is to obtain a model for the distribution of roles that optimally includes occupational choice and the best matching for revenue. We study the implication of having firms competing to hire the agents, which establishes a structure in the earning schedules that we model through the use of the $F$-transform (Definition \ref{Ftransform}). We know that agents will decide their occupation in an strictly economical way, meaning that they will always take the better-paying job. This choice is modelled as a constraint, as we separate the agents doing the different roles by a function that we call the separation function (Definition \ref{separation}). The separating function itself, has to be defined by the wages, and the occupational choice constraint forces all possible separation functions to have the same structure (Definition of $\mathcal{C}$ in \ref{RoyModeleq}). This idea has to be coupled with the fact that everyone will be employed, both of this conditions determine the set on which the optimization is done.  
+    \item In section \ref{2step} we propose a slightly different model \eqref{2step}. In the first model, as all the optimizations are done at the same time, agents don't really know the wages and so they happen to be guessing what the best paying job given their skills is. This guess is eliminated by the $2$-step program. This second problem gives the agents a possible wage structure on which they base their decision for a role and then optimizes over all feasible wage structures.  We show that these problems are equivalent in \ref{equivalence}. 
+    \item For section \ref{existenceanduniq}, we establish existence of equilibrium for the $2$-step model. In order to do this, several continuity properties need to be shown. These properties also explain how the model interacts to small changes. For example, in Lemmatta \ref{pitowcont} and \ref{pitophicont} we see that if a wage structure is changed a little, one does not expect agents to radically change their decisions, on the contrary one expects the new distribution of roles to be similar. This is the content of this section.
+    \item As the draft by \cite{Siow}, in the section \ref{optimalityDualRoy} we derive first order conditions on the separation function \eqref{optimalityeq}. We learn that the rate of change of the line that separates people into jobs depends on the amount of change of production with respect to each skill and the rate of change of salaries. We also obtain a expected result: the change in wages depends on the partial derivative of revenue with respect to the corresponding skill, evaluated at the matching. 
+    \item We explore an optimality conjecture: Conjecture \eqref{conjectureeq}. One can expect the optimal wage schedule to be stable. That is, once agents see the optimal salaries in the market, they will adjust to use that schedule. We formulate this conjecture rigorously and show some progress towards it (Observation \ref{progressobs}).
+    \item In section \ref{socialplanners} we look at the Social Planner's problem of \cite{McCannMax} and compare it to our model. The model in \cite{McCannMax} allows a general framework in which revenue depends on both skills of both agents, in this context the twist condition \eqref{twist} says that a match on which a manager and an assistant are better in both skills is better for production. Nevertheless, our model has the singularity that once both agents are hired, the skill for the job they are not performing is irrelevant. This is a reasonable assumption, economies on which both jobs are differentiated need to find good couplings but the roles for the hired pairs are truly distinguished. This formulation differentiates from said previous work (as seen in Proposition \ref{notSame}).
+    \item In section \ref{Examples} we study what happens with pure interaction and we note that the formulation is an actual generalization of the previous models as in general the separation function need not to be linear.
+    \item After, we show mathematically that if two economies are very similar (in appropriate sense) the resulting distribution of roles will also be similar (Theorem \ref{contsep}). We do this by showing that the change in separation function has to be small and we quantify this change in terms of the difference of this two markets.
+    \item Finally, we provide a bound on the wage inequality \eqref{wagelipeq}. We show that the difference of salaries between a manager and an assistant is at most a factor of the maximal change in revenue by one skill multiplied by how different a person match is to a person who you would be indifferent to swapping jobs with.
+\end{itemize}
+\section{Generalized Roy Model}\label{RoyModelFormulation}
+The seminal model of Roy \cite{Roy} is a simple community where workers will decide on their own whether to fish or hunt. The fundamental idea is to allow ourselves to think about the amount of rabbits hunted or the amount of fish in terms of a numerical pair that represents both skills of each person. In \cite{HeckmanHonore} we see the first mathematical modelling of the ideas from \cite{Roy}. The model presented here is called the generalized model of Roy for matching, as we start from the fundamental idea in \cite{Roy} that the skills of the workers are quantified by numerical values, that the workers will decide their occupation by themselves but we add the constraint similar to \cite{McCannMax} that two workers are needed in every firm and each of the workers will do a single job. Our work differs from \cite{HeckmanHonore} in the sense that we do not assume any linearity in how the distribution of workers will be split and we incorporate the occupational choice as a contraint. \\
+\textcolor{red}{
+The model presented below is also a generalization of the model in the highly cited results in \cite{KremerMaskin}. Notice that in the model of \cite{KremerMaskin} depends heavily on the production function and so most of the results are only a feature of the explicit form. With more general production functons, the model has no guarantees. In our framework, the production function remains absolutely general (by only assuming necessary conditions like 2-monotonicity) which implies that our results do not depend in any way of the production function chosen but on the intrinsic formulation of the problem. This is an absolute advantage of the theoretical insights provided by optimal transport. When we discover that the wage inequality can be explained by specific factors, it implies it is those factors and their hidden interrelations which cause the gap and not the specific function chosen. This property makes the difference between a calculation and a model. The upgrade to a model costs only with the analytical complexity which is only solved by the means of optimal transport theory. \\ 
+Specifically, our model extends the Roy framework to accommodate endogenous occupational choices, firm-side matching, and relative advantage. Workers are assigned into pairs, each allocated to a firm, with one worker acting as a manager and the other as an assistant. The production output of a matched pair is determined by a joint production function, and wages are determined through an earnings schedule that must support incentive-compatible occupational choices. Unlike KM, where the wage schedule is exogenous or based on restrictive assumptions, we endogenize the earnings schedule and solve for it as part of the equilibrium.}
+\subsection{The model} \label{TheModel}
+We assume there exists a group of people which represents the labor force and want to be employed. Every person in this labor force will be required to get one of two jobs: Manager or Assistant. Manager and assistant represent a key and a secondary role, respectively. We assume that every worker is capable of doing any of the jobs and will decide on their own which job to take. Each worker is represented by a skill set, an ordered pair of numerical values $(k,s)$ on which the first coordinate represents the level of skill of the worker for performing the key occupation (manager) and the second coordinate represents the skill of the person for the secondary job (assistant). Notice that this assumption can be relaxed to a multi-dimensional skill set $(\tilde{k},\tilde{s}) \subset \mathbb{R}^{n \times m}$ without much loss of generality as explained in \cite{Siow}. We do not handle such generalization in this document. \\
+We model a labor force by a distribution $\mathcal{R} \in \mathcal{P}_{ac,c}(\mathbb{R}^2)$ where $\mathcal{P}_{ac,c}(\mathbb{R}^2)$ is the set of Borel probability measures on $\mathbb{R}^2$ that are absolutely continuous with respect to the Lebesgue measure and have compact support. We denote by $R$ the density function of $\mathcal{R}$. \\
+We assume the existence of a production function $F: \mathbb{R}^2 \to \mathbb{R}$ where the value $F(k,s)$ represents the amount of money generated by a couple of workers where the worker performing the key role has skill $k$ to do the job and it's pair has skill $s$ to do the secondary occupation. 
+\begin{definition}(Strict supermodularity) \\
+Let $ F: \mathbb{R}^2 \to \mathbb{R}$, we say $F$ is strictly supermodular if 
+\begin{equation} \label{supermodular}
+F(c,d) + F(a,b) - F(a,d) - F(c,b) > 0 \text{ whenever } a <   c, b < d.
+\end{equation}
+\end{definition}
+If we assume that $F$ is twice differentiable, then supermodularity implies that the cross partials are positive and so by addition of a constant we can assume without loss of generality that \begin{equation} \label{partialsassumptions}
+    \partial_1 F(k,s) > 0, \partial_2 F(k,s) > 0 \: \: \: \mathcal{R}-a.e. \text{ on } (k,s). 
+\end{equation}
+From now on, we always assume our production $F$ is strictly supermodular and satisfies \eqref{partialsassumptions}. In economic terms, strict supermodularity of the production function represents an economy on which strictly better skills yield strictly better monetary outputs for the firms. \\
+Under a strictly supermodular production function $F$, the Generalized Roy model aims to study wages and distribution of occupations among the labor force $\mathcal{R}$ on which: 
+\begin{itemize}
+    \item Every worker will be employed.
+    \item Firms will hire by pairs. For each firm, one worker will be a manager and the other one will be an assistant.
+    \item Each worker will attempt to maximize salary.
+    \item Each firm attempts to maximize the difference between production and wages paid.
+    \item There is competitive equilibrium, differentiation and no entry barrier among firms so that every level of skills will be employed by a firm.
+\end{itemize}
+\subsection{Occupational choice} \label{occupationalchoice}
+Suppose that the salary for performing the managing role with a skill level of $ k$ is given by $\pi(k)$ and the salary for performing the assistant role with a skill level of $s$ is $w(s)$. Given an earnings schedule, an agent of skill $(k,s)$ will evualate  
+\begin{equation*}
+    \max\{\pi(k),w(s) \}
+\end{equation*}
+to decide what role to work in. \\
+Competitive occupational choice is the economic model on which the person with skill set $(k,s)$ will try to dedicate to the highest paying job, that is, manager if $\pi(k) > w(s)$ and assistant if $w(s) > \pi(k)$. The person will be indifferent between jobs if $ \pi(k) = w(s)$. Observe that if $\pi,w$ are given, then each worker can just evaluate it's own skill set and determine what job to do. Nevertheless, the earning schedules observed in the market will depend on the labor force $R$, on the production function $F$, on the distribution of both occupations and the possible matchings. This implies that the wages structures, $\pi$ and $w$ are not known a priori and have to be determined during the optimization process. 
+\subsection{Competitive equilibrium for firms} \label{cef}
+Each firm will attempt to maximize $F(k,s) - \pi(k) - w(s)$ among the pair of skills it is able to employ. If there is competitiveness among firms, for each available skill set on the final distribution of occupations, there will exist a firm willing to employ that skill set pair, yielding the problem
+\begin{equation*}
+    \max_{(k,s) \in \spt(\mathcal{R})} F(k,s) - \pi(k) - w(s).
+\end{equation*}
+The objective of the model presented in this document is to couple occupational choice as in Section \ref{occupationalchoice} with firms in a competitive equilibrium as in Section \ref{cef}. In order to do this, we study the possible earning schedules in the optimals for both problems, for which it is convenient to recall the $F$-transform, a tool from optimal mass transport theory,
+\begin{definition} ($F$-transform) \label{Ftransform} \\
+Given $\pi: \Omega_1 \to \mathbb{R}$, we define $\pi^F$, the $F$-transform of $\pi$ via
+\begin{equation}
+    \pi^F(s) : = \sup_{k \in \Omega_1} \{ F(k,s) -\pi(k) \}.
+\end{equation}
+\end{definition}
+\begin{definition} ($ \tilde{F}$-transform)
+Given $w: \Omega_2 \to \mathbb{R}$, we define $\pi^F$, the $\tilde{F}$-transform of $\pi$ via
+\begin{equation}
+    w^{\tilde{F}}(s) : = \sup_{s \in \Omega_2} \{ F(k,s) -w(s) \}.
+\end{equation}
+\end{definition} 
+The difference between $F$-transform and $\tilde{F}$-transform is the set on which we maximize and the coordinate used, when there is no confusion on the domain of a function we use $\tilde{F}$ and $F$ to denote the same transform, that is, we write $w^F$ for an $\tilde{F}$-transform as long as there is no confusion that the domain of $w$ is a subset of $\Omega_2$.\\
+From the definition of $F$-transform, we have $\pi(k) + \pi^F(s) \geq F(k,s)$ for any pair $(k,s)$ on which $\pi$ and $\pi^F$ are defined. Note also that the definition of $F$-transform depends on the domain of the original function $\Omega_1$. \\
+\begin{remark} \label{Omega12} (On the definition of $\Omega_1$ and $\Omega_2$) \\
+The definitions of the $F$ and $\tilde{F}$ transforms involve two arbitrary sets $\Omega_1$ and $\Omega_2$. We state it in this way for technical reasons but after the right Lemmas have been proved we will use the projections of $\spt(\mathcal{R})$ onto coordinates instead of $\Omega_1$ and $\Omega_2$, respectively. That is, after some mathematical reasults are obtained we will set $\Omega_1 = \spt(P_1\# \mathcal{R}), \Omega_2 = \spt(P_2\# \mathcal{R})$ where $P_1(x,y) = x, P_2(x,y) =y$. See Definition \ref{pushforward}.
+\end{remark}
+\begin{definition} (Separation of wages) \label{separation}\\
+Given $\Omega_1, \Omega_2 \subseteq \mathbb{R}$, and functions $ \pi: \Omega_1 \to \mathbb{R}, w: \Omega_2 \to \mathbb{R}$ where $w$ is invertible in $\pi(\Omega_1)$ we say $\phi: \{ k \in \Omega_1: \pi(k) \in w(\Omega_2)\} \to \mathbb{R}$ separates $\pi$ and $w$ if for every $k \in \dom(\phi)$, \begin{equation}
+    \phi(k) = w^{-1}(\pi(k)).
+\end{equation}
+The function that separates is called the separation function for $(\pi,w)$. In the definition $\Omega_1,\Omega_2$ are just two subsets of $\mathbb{R}$ and the domain of the separation function is well-defined. If $ w = \pi^F$, we denote $\phi = w^{-1} \circ \pi$ simply by $\phi_{\pi}$ when the domains are specified.
+\end{definition}
+\begin{lemma} (Reformulation of wages and separation) \label{separationlemma} \\
+Given $ \pi: \Omega_1 \to \mathbb{R}, w: \Omega_2 \to \mathbb{R}$ strictly increasing functions, a function $\phi$ is the separation function for $(\pi,w)$ from Definition \ref{separation} at $ k \in \{ \Tilde{k} \in \Omega_1 : \pi(\Tilde{k}) \in w(\Omega_2) \} $ if and only if $ \max\{ \pi(k),w(\phi(k))\} = \pi(k) = w( \phi(k)).$
+\end{lemma}
+\begin{proof}
+For the first direction if $ \phi = w^{-1}(\pi)$ (well-defined as $w$ is strictly increasing), then $\max\{ \pi(k), w(\phi(k)) \} = \max\{ \pi(k),w(w^{-1}(\pi(k)))\} = \max\{ \pi(k),\pi(k)\} = \pi(k) = w(w^{-1}(\pi(k))) = w(\phi(k)).$ \\
+The reverse implication follows directly from the condition $ \pi(k) = w (\phi(k)) $ and the fact that $w$ is invertible.
+\end{proof}
+\begin{definition}(Separation $1/2$-cut) \\
+Let $\mathcal{R} \in \mathcal{P}_{ac,c}(\mathbb{R}^2)$ with density $R$, let $(\pi,w)$ be a pair of strictly increasing functions as in Lemma \ref{separationlemma}, if $\phi$ is the separation function for $(\pi,w)$, we say that $\phi$ $1/2$-cuts $\mathcal{R}$ if 
+\begin{equation}
+    \int_{\mathbb{R}} \int_{-\infty}^{\phi(u)} R(u,v) dv du = 1/2.
+\end{equation}
+\end{definition}
+Observe that this definition only makes sense when $\phi$ is defined in the correct domain (this technical point is dealt with in Assumption \ref{phidomainProyect}).  In the general case, to avoid the use of $\phi $ and it's domain, given an earnings schedule $( \pi, w)$ we say the earning's schedule $1/2$-cuts $\mathcal{R}$ if 
+\begin{equation}
+    \int_{\mathbb{R}} \int \mathbf{1}_{\{\pi(u) \geq w(v)\}}(v) R(u,v) dv du = 1/2.
+\end{equation}
+where $\mathbf{1}_{\{\pi(u) \geq w(v)\}}(v)$ denotes the indicator of the set of points $v $ such that $\pi(u) \geq w(v)$ at level $u$. The two definitions are equivalent via Lemma \ref{separationlemma}. \\
+The $1/2$-cut separation refers to the idea of splitting the mass exactly in half. In this case, $\phi$ separates the wages (by definition) and it's image splits the mass in halves. A separation function is interpreted as a divisory line between the two groups of the population.
+Before we set up the model, we need one more definition. The push-forward measure familiar in the context of optimal transportation of mass is a useful tool to conceptualize mass-balance.
+\begin{definition} (Push-forward) \label{pushforward}\\
+Given a Borel measure $\nu$ and a borel function $f: \mathbb{R} \to \mathbb{R}$ the push-forward measure of $\nu$ by $f$ denoted $f \# \nu$ is defined for every borel set $A$ via 
+\begin{equation*}
+    f \# \nu (A) := \nu ( f^{-1}(A)). 
+\end{equation*}
+\end{definition}
+If $g$ is measurable and integrable, one can understand the push-forward of $\mu$ by $f$, denoted $f\# \mu$ by the following identity: 
+\begin{equation} \label{integralpush}
+    \int g(y) d (f\#\mu)(y) = \int g(f(y)) d\mu(y). 
+\end{equation}
+Equation \eqref{integralpush} can be taken as definition for the push-forward if it satisfied for every $g$ in an appropriate set.The symbol `` $\#$ '' is a useful notation to think about the composition in \eqref{integralpush} when dealing with measures.  \\
+To fix notation we write $P_1 (x,y)= x, P_2(x,y) = y$ the coordinate projections and $\lvert \lvert F \rvert \rvert_{\infty} $ to denote the supremum over the set $\spt(P_1 \# R) \times \spt  (P_2 \# R)$, that is 
+\begin{equation*}
+    \lvert \lvert F \rvert \rvert_{\infty} : = \sup_{(k,s)\in \spt(P_1 \# R) \times \spt  (P_2 \# R)} \lvert F(k,s) \rvert
+\end{equation*}
+and $\lvert \lvert \cdot \rvert \rvert_{\infty}$ to denote the supremum of a function over it's domain. 
+As mentioned in Remark \ref{Omega12}, from now on we always assume $\Omega_1 = \spt(P_1 \# R), \Omega_2 = \spt(P_2 \#R)$ for the definitions of $F$-transforms and separations (Definitions \ref{Ftransform} and \ref{separation}).
+\begin{remark} ($\phi$ and it's domain)  \label{phidomainProyect} \\
+According to definition \ref{separation}, in order to define $\phi$ we need to be able to evaluate $(\pi^{F})^{-1}$ on $\pi(k)$. As stated, it is not a general condition nor (to our knowledge) something that can be derived from initial data $\mathcal{R},F$. Because of the use of separation functions in literature we state the possibility of evaluation as an assumption, we explain in section \ref{assumptionsexplain} the consequences of this assumption. 
+\end{remark}
+\begin{definition} (Market-feasible separation) \label{market-feasible} \\
+We say that a separation function $\phi$ (as in Definition \ref{separation}) is market-feasible (with respect to $\mathcal{R}$) if $r_1,r_2 \in Dom(\phi)$ i.e. for the wages $\pi,w$ that $\phi$ separates, there exist $s_1,s_2 \in \spt(P_2\#\mathcal{R})$ satisfying
+\begin{equation}
+    \pi(r_1)= w(s_1), \pi(r_2) = w(s_2).
+\end{equation} 
+\end{definition}
+\begin{assumption}\label{connectedsupport} (Connectedness of the projected measure and feasibility)\\ We assume that there exist $r_1,r_2 \in \mathbb{R}$ such that $\spt(P_1 \# \mathcal{R}) = [r_1,r_2]$ and every earnings schedule $\pi$ is market-feasible according to Definition \ref{market-feasible}.\end{assumption}
+
+\begin{definition} (Occupational distributions induced by separation) \label{HandG} \\
+Let $\mathcal{R} \in \mathcal{P}_{ac,c}(\mathbb{R}^2)$ with density $R$, given a continuous, $\phi: \spt(P_1 \# R) \to \mathbb{R}$ the occupational distributions induced by $\phi$ are the measures whose distribution functions are given by the following formulas: 
+\begin{eqnarray}
+H^{\phi}(k) = \int_{-\infty}^k \int_{-\infty}^{\phi(\tilde{k})} R(s,\tilde{k}) dsd\tilde{k} \\
+G^{\phi}(s)  = \int_{-\infty}^s\int_{-\infty}^{\phi^{-1}(\tilde{s})} R(k,\tilde{s}) dkd\tilde{s}. 
+\end{eqnarray}
+The measure associated to $H^{\phi}$ via $H^{\phi}(k) =: \mu_{H^{\phi}}((-\infty,k])$ is called the distribution of the labor force for the key occupation. The one associated to $G^{\phi}$ corresponds to the secondary job. To simplify notation we will not distinguish between $H^{\phi}$ and $\mu_{H^{\phi}}$ and will write $ dH^{\phi}$ instead of $d\mu_{H^{\phi}}$.
+Exactly, as before, according to Remark \ref{phidomainProyect} it is not clear wether or not a separation function is defined everywhere on the domain of $\pi$, in the case where it is not we instead write 
+\begin{eqnarray}
+\label{Hindic} H^{(\pi,w)}(k) = \int_{-\infty}^k \int \mathbf{1}_{ \{\pi(k) \geq w(s) \} }R(s,\tilde{k}) dsd\tilde{k} \\
+G^{(\pi,w)}(s)  = \int_{-\infty}^s\int \mathbf{1}_{ \{\pi(k) \leq w(s) \}} R(k,\tilde{s}) dkd\tilde{s}. 
+\end{eqnarray}
+To further simplify notation, in the case where $ w = \pi^F$ we write $H^{(\pi,\pi^F)} = H^{\pi}$ and $G^{(\pi,w)} = G^{\pi}$.
+\subsubsection{Economic interpretation of distributions}
+Observe that if $\phi$ induces a 1/2-cut, this rewrites as $H^{\phi}(\mathbb{R}) = 1/2$ and in that case by Fubini's theorem one obtains $G^{\phi}(\mathbb{R}) = 1/2$ as well. 
+\end{definition}
+The idea is that $H^{\phi}(k)$ should be interpreted as the amount of population that dedicates to the key role having a skill lesser or equal than the value $k$. It is amount of workers willing to perform the key role under the salaries $(\pi,w)$ which have skill at most $k$.
+
+The objective of the Generalized Roy model is to incorporate the most economical matching of managers and assistants under competitive occupational choice and firm competitiveness.
+\subsection{Formulation of the model} \label{FormulationRoy}
+\begin{problem}(Generalized Roy Model) \label{RoyModel} \\
+Given $ \mathcal{R} \in \mathcal{P}_{ac,c}(\mathbb{R}^2)$ with density $ R: \spt(\mathcal{R}) \to \mathbb{R}$, a strictly supermodular function $F: \mathbb{R}^2 \to \mathbb{R}$ the Generalized Roy Model is the following non-linear optimization program: 
+\begin{equation} \label{RoyModeleq}
+\sup_{(\phi, \pi,w,\mu) \in \mathcal{C}} \left\{ \int F(k,\mu(k)) dH^{\phi} \right\}.
+\end{equation}
+where $ \mathcal{C} $ is the set of quadruples $(\phi, \pi, w, \mu)$ satisfying: 
+$\pi,\phi \in C( \spt(P_1 \# R), \mathbb{R}), w \in C( \spt(P_2 \# R), \mathbb{R}), \mu: \mathbb{R} \to \mathbb{R}$ and
+%%%% maybe here it is using pi > 0
+\begin{enumerate}[i.]
+    \item $ \pi = w^{F}$,
+    %%%%%%%%%%%%%%%% should I add H^{\phi} a.e.
+    \item $ \phi$ separates $(\pi,w)$,
+    \item $ \phi$ 1/2-cuts $\mathcal{R}$,
+    \item $ \mu \# H^{\phi} = G^{\phi}$ (as measures according to Definition
+    \ref{pushforward}).
+    \item $\lvert \lvert \pi \rvert \rvert_{\infty} \leq \lvert \lvert F \rvert \rvert_{\infty}$
+\end{enumerate}
+A quadruple $(\tilde{\phi}, \tilde{\pi}, \tilde{w}, \tilde{\mu}) \in \mathcal{C}$ is called an equilibrium for the Generalized Roy model if it achieves the supremum in \eqref{RoyModeleq}.
+\end{problem}
+The Generalized Roy model \eqref{RoyModel} differs from a usual Monge-Kantorovich optimal transportation problem in the sense that the optimization involves the generation of earning schedules directly, as $\pi,w$ determine $\phi$ which in turn defines $H^{\phi}$ and $G^{\phi}$ which appear in the objective. This apparent circularity stops us from applying the theory of optimal transportation (\cite{McCannGuillen}, \cite{Villani}) directly. In section \ref{2step} we will show that the use of $\phi,\pi,w$ is somehow immaterial, as we can reduce it only to dependence on $\pi$, given that $w$ and $\phi$ can be determined by only knowing $\pi, \mathcal{R}$ and $F$. \\
+The idea to incorporate the pair $(\pi,w)$ in the constraint set is motivated from the discussion in the beginning of section \ref{occupationalchoice}. The earning schedules are not exogenous. The original Roy model assumes $\phi$ to be linear, as one can see from the definition of occupational distributions in \cite{HeckmanHonore}. This model makes no such assumption, motivating the name ``Generalized Roy Model''.
+\subsubsection{Detailed review of the model}
+The supremum in \eqref{RoyModel} attempts to maximize total production for a distribution of skills $H^{\phi}$, at this point the production in a firm corresponds to matching a worker with skill $k$ to be manager with a worker whose skill for the assistant role is $\mu(k)$. The matching function $\mu$ represents which worker is matched with whom to work together. The integral is computed with respect to $H^{\phi}$ as we have to consider the total produced from all workers that will dedicate themselves to the manager role. The total produced is the sum over all managers of the amount produced by the manager and the assistant matched with them. \\
+The separation function $\phi$ will be shown to be avoidable in section \ref{2step} but has a significant economical interpretation: a person of skill $k$ for the manager role, $\phi(k)$ is the skill for the assistant role needed for this person to be indifferent between being a manager or an assistant. That is, every worker whose skill set is of the form $(k,\phi(k))$ is indifferent between being a manager or an assistant, therefore one expects $\phi$ to be a certain kind of boundary separating both occupations. 
+\subsection{The set of constraints}
+In this section we analyze and explain every constraint in the definition of the set $\mathcal{C}$ from the model \eqref{RoyModel}. The objective is to give intuition on why each of this constraints is imposed and the implications they have on the assumptions made.\\
+\subsubsection{Wages are revenue-conjugates}
+Given a possible earning schedule $(\pi,w)$ the condition that firms will have profit but this profit would potentially be zero in competitive equilibrium yields $F(k,s) \geq \pi(k) + w(s)$ from which we know that $ F(k,s) - \pi(k) \geq w(s) $ which in turn yields $\pi^{F}(s) \geq w(s)$, as we will see in section \ref{duality}, the objective function increases as $w$ increases, so $\pi^{F}$ is a feasible wage for the secondary role that increases the total output. A similar argument to the one in \cite[Theorem 1.14]{Villani}, for duality of the Kantorovich problem allows us to reduce our search space to only $F$-conjugate pairs (functions that are $F$-transforms of each other). \\
+In this definition, the use of $w^{-1}$ involves an apparent hidden assumption that $w$ is strictly increasing, nevertheless this presents no difficulties due to the following lemma:
+\begin{lemma} (Strict supermodularity yields strictly increasing $F$-conjugate wages) \label{inverselemma} \\
+If $F$ is strictly supermodular as in Definition \ref{supermodular}, then $ \pi^F$ is non-decreasing for every function $\pi$. Further if $F$ is twice differentiable  and $\pi$ is continuous then $\pi^F$ is strictly increasing.
+\end{lemma}
+\begin{proof}
+Given $ s > s'$ we have $\pi(k) + \pi^{F}(s) \geq F(k,s)$, consequently
+\begin{equation*}
+    \pi^{F}(s) \geq F(k,s) - \pi(k) > F(k,s') - \pi(k)
+\end{equation*}
+Taking the supremum yields $\pi^{F}(s) \geq \pi^{F}(s')$. \\
+In the twice differentiable case, by envelope theorem one has \begin{equation*}
+     (\pi^{F})'(s) = \partial_2 F(k^*(s),s) > 0
+\end{equation*}
+by the assumption of  \eqref{partialsassumptions} where $k^*(s)$ attains the maximum from Definition \ref{Ftransform} and continuity of $\pi$.
+\end{proof}
+
+\subsubsection{Separation of wages}
+The definition of $\phi = w^{-1} \circ \pi$ helps to have a better interpretation. In section \ref{equivalence}, the model is shown to be equivalent to a formulation without $\phi$ even though the term $w^{-1} \circ \pi$ is essential as it enforces occupational choice as shown in Lemma \ref{separationlemma}. The imposition of $w^{-1} \circ \pi$ to determine distributions of occupations enforces occupational choice. In this way, looking for optimal $(\pi,w)$ will yield distributions that satisfy occupational choice in the sense of section \ref{occupationalchoice}.
+\subsubsection{Separation of wages and the technical assumptions}\label{assumptionsexplain}
+During the development of this work we realized that the definition of the separation of wages is somewhat unjustified for the modelling. It turns out that one can define a generalized roy model by looking only at salaries schedules $(\pi,w)$ without ever defining $\phi$. The use of the separation function is common in literature (see \cite{Mak},\cite{Siow},\cite{Roy}). In order to obtain existence and continuity results an assumption must be made. Either we impose a technical condition that ensures separation functions are well defined (Assumption \ref{uniformDomain} or Assumption \ref{connectedsupport} combined with Definition \ref{market-feasible}) or we impose a condition on the rate of growth of earning schedules (Assumption \ref{ProductionAndDerivatives}). \\
+Assumptions \ref{uniformDomain} and \ref{connectedsupport} allow us to have a better economical interpretation and link our results with the ideas already present in literature. The assumption \ref{ProductionAndDerivatives} allows us to show existence and uniqueness in other cases. We evaluate both possibilities throughout this work.
+\subsubsection{Separation cuts the labor force in half}
+The fact that $\phi$ (in defect $w^{-1} \circ \pi$) achieves a $1/2$-cut of $R$ represents the fact that exactly half of the workers will be managers and half will be assistants. If this constraint were not placed, one would not obtain a one-to-one map for matching. Models of many-to-one are discussed in section \ref{Further}.
+\subsubsection{Mass Balance}
+The condition $ \mu \# H^{\phi} = G^{\phi}$ ensures the matching is one-to-one, this allows each manager to have exactly one assistant associated and every firm to get a manager-assistant pair to hire.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SEAN: I started editing here.
+
+\section{Simulations}\label{sec:simulations}
+In this section we present two different sets of simulation results. The first set shows how different specifications of the revenue function $F(k,s)$ can generate non-linearity in the separating function $\phi$. The second set of simulations showcases how we can calibrate the model to replicate recent observed changes in wage inequality in the United States. As mentioned in Section \ref{sec1Roy}, in contrast to the traditional Roy model, we do not impose $\phi$ to be linear. Furthermore, up until now, we have not mentioned anything about the form of $F(k,s)$ aside from the fact that we require it to be strictly supermodular. Aside from non-negativity, the only other restriction placed on pairs of skills $(k,s)$ is that it is drawn from a continuous distribution with compact support. Taking these two restrictions into consideration, in the simulations that follow, we use different versions of the revenue function given by \begin{enumerate}
+    \item $F(k,s) = ak^n + bs^m + cks$ with $a,b,c,n,m > 0$,
+    \item $(k,s)\sim \text{Lognormal}(\mathbf{\mu,\Sigma})$ with $\mu = (0.5,0.5)'$  and 
+$\Sigma=\begin{bmatrix}
+1 & 0.5 \\
+0.5 & 1 
+\end{bmatrix}$.
+\end{enumerate}Additionally, we truncate the distribution so that $(k,s)\in[0,1]^2$ to satisfy the compact support requirement. Details on the iterative procedure used to solve the model are given in Section  \ref{sec:numerics} \\
+\subsection{Skill-biased technical change}
+The simulations presented here are largely performed within the context of how the labour market evolves under skill-biased technical change (SBTC). That is, we are interested in seeing what happens to the labour market outcomes of agents in our model as high-skilled (key) workers  become relatively more productive compared to low-skilled (secondary) workers. This approach is motivated by numerous examples in the literature.\\ 
+Here we will illustrate and define SBTC in the context of our model through a simple example. In our case, an increase in the relative productivity of a worker of skill $k$ is analogous to an increase in marginal revenue attributable to the key worker, relative to the marginal revenue associated with the secondary worker. To introduce SBTC in the labour market, we adjust the relative values of the parameters $(a,b,c,n,m)$  across simulations. For illustration purposes, consider a two-period case:  in the first period, the production function is given by $F_1(k,s) = a_1k^n + bs^m$, and in the second period $F_2(k,s) = a_2k^n + bs^m$ with $a_2 > a_1 > b$. In this case we have that 
+\begin{equation*}
+  \frac{\partial_k F_2}{\partial_k F_1} = \frac{a_2 n k^{n-1}}{a_1 n k^{n-1}} = \frac{a_2}{a_1} > 1,
+   %\frac{\frac{\partial F_2}{\partial k}}{\frac{\partial F_1}{\partial k}} = \frac{a_2 n k^{n-1}}{a_1 n k^{n-1}} = \frac{a_2}{a_1} > 1
+\end{equation*}
+and also
+\begin{equation*}
+   \frac{\partial_s F_2}{\partial_s F_1} = \frac{b m s^{m-1}}{b m s^{m-1}}  = 1.
+     %\frac{\frac{\partial F_2}{\partial s}}{\frac{\partial F_1}{\partial s}} = \frac{b m s^{m-1}}{b m s^{m-1}}  = 1
+\end{equation*}
+One immediately obtains
+\begin{equation}     \label{eqn:SBTC}
+\frac{\partial_k F_2}{\partial_k F_1} >  \frac{\partial_s F_2}{\partial_s F_1} > 0,
+    %\frac{\frac{\partial F_2}{\partial k}}{\frac{\partial F_1}{\partial k}} >  \frac{\frac{\partial F_2}{\partial s}}{\frac{\partial F_1}{\partial s}} > 0
+\end{equation}
+which in turn tells us that SBTC occurs between periods 1 and 2. In fact, Equation \eqref{eqn:SBTC} is the definition of SBTC in the context of our model. That is, when comparing two time periods, SBTC occurs if the increase in the marginal productivity of the key worker $k$, is greater than that of the secondary worker $s$.
+\subsection{Simulation results}
+We divide the presentation of numerical results in two parts: We first analyze the behaviour of the separation function as we reduce the impact of worker interaction ($ c\to 0$ in the cross-term of the revenue functions). For the second part we analyze the behaviour of the wage inequality.
+\subsubsection{Changes in the separating function}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale = 0.8]{phi_a_equal_b.png}
+    \caption{Changes in the log-wages and the matching function as the effect of interaction of workers changes in the production function assume similar relative impacts $ a \approx b$.}
+    \label{fig:phi_a_equal_b}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale = 0.57]{phi_a_not_equal_b.png}
+    \caption{Changes in the log-wages and the matching function as the effect of interaction of workers changes in the production function assume difference in the roles impact to production $ a > b$.}
+    \label{fig:phi_a_not_equal_b}
+\end{figure}
+Figures \ref{fig:phi_a_equal_b} and \ref{fig:phi_a_not_equal_b} show how the separation function $\phi$ changes as we modify the parameters of the revenue function $F(k,s)$. In the model of figure \ref{fig:phi_a_equal_b} the key and secondary workers are similar in terms of their relative productivity. We are interested in what happens to $\phi$ as $c\to 0$. In the standard Roy model, it is assumed that $c = 0$ and that $\phi$ is linear. As such, it is worth investigating whether or not this can be observed this in our model as well. Or put another way, as $F(k,s)$ becomes linear do we also observe that $\phi$ also becomes linear? To do this, we first specify that $F(k,s) = 0.55k + 0.45s+cks$ and take $c\in\{0.01,0.5,1\}$. In the case where $a$ and $b$ are numerically similar, the non-linearity in $F$ has a very small impact on the linearity of $\phi$. There is no discernable change in the shape of $\phi$ as $c\to 0$ implying that, if \textbf{there is little wage disparity}, the \textbf{linearity} assumption on $\phi$ \textbf{is reasonable}. This is not the case if $b \ll a$. \\
+In Figure \ref{fig:phi_a_not_equal_b} we modify the revenue function to be $F(k,s) = 0.9k + 0.1s + cks$ with $c\in\{0.01,0.5,1\}$. In this case, the key worker is relatively more productive than the scenario illustrated in Figure \ref{fig:phi_a_equal_b}. We can now observe large changes in the shape of $\phi$ as $c\to 0$. First, we note that in the case where $b \ll a$ that $\phi$ is much more likely to hit the boundaries of the skill space. It can be explained why this occurs here if we recall the definition $\phi(k) = w^{-1}(\pi(k))$. This implies that $\phi$ tells us, for an individual of skill $k$ who earns $\pi(k)$ in the key role, what their corresponding skill $s$ under the wage schedule $w(s)$ must be in order for them to be indifferent between working in either of the two roles. Thus, the boundaries simply represent points at which workers strictly prefer one role over the other. This occurs due to the fact that the wage schedules $\pi(k)$ and $w(s)$ are increasing in $k$ and $s$, respectively, and do so at differing rates. For example, consider a point where $k=s$ and $\pi(k)$ greatly exceeds $w(s)$, we would see that $\phi(k)$ is on the upper boundary implying that this worker would never choose the secondary role under the prevailing wage schedules. This behaviour can be observed in the Figure \ref{fig:phi_a_not_equal_b}.\\
+If we only consider points not on the boundaries of the skill space, we can indeed observe that $\phi$ becomes linear as $c\to 0$ which is what we would expect intuitively as this case represents the classical Roy model. However, even in the cases where $c=0.5$ and $c=1$, there is only a small amount of non-linearity. This tells us that the linearly separable production function $F(k,s) = ak + bs$, which features prominently in the literature, is likely a good approximation even if the workers interact with one another in production (i.e., $c\neq 0$ in the examples above). 
+\subsubsection{Wage inequality under SBTC}
+One of the main contributions from empirical data of \cite{Bloom} is the content of the evolution of the US wage inequality within and across firms.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale = 0.57]{bloom_data_1983_2013.png}
+    \caption{Evolution of US wage inequality: 1983-2013, graphic from \cite{Bloom} Figure 5}
+    \label{fig:bloom_ineq}
+\end{figure}
+In this section we show that the US market can be replicated by our model, in a robust way which allows us to make significant quanitative conclusions.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale = 0.57]{inequality_1983_2013_match.png}
+    \caption{Results of simulation of our model. The behaviour of within firm and across firm inequalities in the simulated case.}
+    \label{fig:inequality_1983_2013_match}
+\end{figure}
+In these simulations we show how the model can be calibrated to replicate observed changes in wage inequality in the United States from 1983-2013. Figure \ref{fig:bloom_ineq} using employer-employee matched data from Song et al. (2019) highlights how income inequality has increased for the top earners from the period 1983 to 2013. This figure is constructed by comparing percentiles of the earnings distribution across these two time periods. If the level of income inequality remained constant over this time period, the lines in Figure \ref{fig:bloom_ineq} would be flat. The line labeled ``Individuals'' simply represents the difference in the percentiles of wage earnings of individuals between 1983 and 2013. ``Firms'' represents the difference in the average wage paid by firms in the data between 1983 and 2013. The line ``Within Firm'' measures the difference in inequality within each firm. That is, it compares an individual's wage earnings and the average wage paid by their firm and then compares these two differences in 1983 and 2013. As we can see, increases in wage inequality have occurred exclusively across firms and individuals. The level of within-firm inequality has remained constant over this time period.
+Figure \ref{fig:inequality_1983_2013_match} shows how we can capture observed patterns in the data using the model. This is done by simulating the model under two different scenarios and comparing percentiles of the earnings distributions in a way which is analogous to Song et al. (2019). In the first scenario we use  $F_1(k,s)=0.55k + 0.45s + 0.01ks$ and in the second scenario we use $F_2(k,s) = 1.6k^2 + 0.4s+0.15ks$. One can verify that moving from the first to the second scenario introduces SBTC following the definition given in Equation \ref{eqn:SBTC}. Skills are drawn from the same lognormal distribution as above. Given the setting of our model is slightly different than that of Song et al. (2019) we define some of the features a bit differently. The line ``Individuals'' is calculated in a way that is identical to that of Song et al. (2019). However, for the ``Firms'' line, instead of average wages paid by a firm, we are using log revenue of the firm. This is due to the fact that each firm only has 2 employees in our model so the average is less meaningful in our case relative to the case where there are large firms with many employees to compute average wages over. The ``Within Firm'' line uses a worker's share of total wages paid by the firm instead of deviation from the average wage paid by the firm as in Song et al. (2019). As we can see, the simulated data match quite closely to the observed wage inequality patterns. This suggests that in a Roy economy with matching, SBTC can produce wage inequality that increases over time in a way that coincides with what has been observed in the US labour market. 
+
+
+\subsection{Another example}
+While we observed increases in inequality in the US, we can also look at identical measurements from other countries which tell a different story. In the case of Brazil, as seen in Figure \ref{fig:brazil_data}, the inequality across both firms and individuals decreases as we move up the earnings distribution between the years 1999 to 2013. Additionally, similar to the US case, we observe that there is no change in within-firm inequality over this period. As a test of our model, we show that it is also possible to replicate these patterns.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale = 0.57]{brazil_data.png}
+    \caption{Evolution of Brazil wage inequality: 1999-2013.}
+    \label{fig:brazil_data}
+\end{figure}
+To generate the results in Figure \ref{fig:brazil_sim} we need to change both the underlying distribution of $(k,s)$ and the revenue function $F_j(k,s)$ between the  scenarios $j=1,2$. In the first scenario, $(k,s)$ are simply generated as points of the grid on the unit square which are uniformly spaced and in the second we use the Lognormal distribution. Additionally, we add a scale factor $d$ to the revenue function. That is, in scenario $j$, revenue function is of the form $F_j(k,s)= a_jk^{n_j} + b_js^{m_j} + c_jks + d_j $. In particular we set, $F_1(k,s) = 2.65k^2 + 1.15s^2 + 2$ with $(k,s)$ coming from the unit square grid, and compare it to outcomes generated by the revenue function $F_2(k,s) = 2.35k^2 + 1.4s^2 - 0.5ks + 2.2$ and $(k,s)\sim \text{Lognormal}(\mathbf{\mu,\Sigma})$ with $\mu = (0.75,0.75)'$  and 
+$\Sigma=\begin{bmatrix}
+1 & 0.15 \\
+0.15 & 1 
+\end{bmatrix}$. As a result, we obtain similar changes in inequality to that which are observed in the Brazilian data displayed in Figure \ref{fig:brazil_data}. 
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale = 0.57]{brazil_sim.png}
+    \caption{Simulation results approximating the Brazilian experience}
+    \label{fig:brazil_sim}
+\end{figure}
+%% SEAN: ended editing here.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Analytical properties and the two-step model} \label{2step}
+In this section we rewrite the Generalized Roy model (Problem \ref{RoyModel}) as a $2$-step problem. We show that the model es equivalent to considering the wage structure as given, maximizing production via optimal matching and then maximizing over feasible earning schedules. This means that in competitive equilibrium, the determination of optimal wages happens in a way that is equivalent to the occupational choice given matching. 
+
+The condition of market-feasibility imposed via Definition \ref{market-feasible} is the economic idea that the worst and best $k$-workers will be matched to someone instead of left to work by themselves. Mathematically, the concept allows separation functions to have the same domain and therefore be compared. An interesting line of research can be the relaxation or removal of this condition, where one would encounter the difficulty of multiple domains of separations. Under this setting, one would need to not compare separation functions in a pointwise matter (as we do later) but maybe the use of a different distance (like $L^p(P_1\#R)$) would suffice. More on this is explained in Section \ref{FurtherGen}.
+\begin{lemma} \label{marketfeasibleuniformlemma} (Market-feasibility and domains) \\
+Let $\phi : C(\spt(P_1\#\mathcal{R}) \to \mathbb{R}$, if $\phi$ is market-feasible (as in Definition \ref{market-feasible}) separation function for $(\pi,w)$ a pair of continuous functions, then $Dom(\phi) = [r_1, r_2]$
+\end{lemma}
+\begin{proof}
+    Notice that $\phi = w^{-1} \circ \pi$, which means $\phi $ is continuous as a composition of continuous functions. Because $[r_1,r_2]$ is connected so is $\pi([r_1,r_2])$ and by continuity so is $w (\pi([r_1,r_2])$. Hence $Dom(\phi)$ is connected and $r_1,r_2 \in Dom(\phi)$ giving the result. 
+\end{proof}
+\subsection{The 2-step problem}
+\begin{problem} (2 step problem with explicit separation) \label{2stepphi} \\
+Given a strictly supermodular function $F$ and a labor force $\mathcal{R}$ as in \eqref{RoyModel}, we define the 2-step program with explicit separation to be the non-linear problem:
+\begin{equation}
+    \sup_{(\phi,\pi,w) \in \mathcal{C}_2} \left\{ \sup_{\mu \# H^{\phi} = G^{\phi}} \left\{ \int F(k,\mu(k))dH^{\phi} \right\} \right\}
+\end{equation}
+where $\mathcal{C}_2$ is the set of triples $(\phi,\pi,w)$ of continuous functions, $\pi: \spt(P_1 \# R) \to \mathbb{R}, w: \spt(P_2 \# R) \to \mathbb{R}, \phi: \mathbb{R} \to \mathbb{R}$ and 
+\begin{enumerate}[i.]
+    \item $ \pi = w^{F}$,
+    \item $\phi = w^{-1} \circ \pi (k)$,
+    \item $\phi$ 1/2-cuts $R$,
+    \item $\lvert \lvert \pi \rvert \rvert_{\infty} \leq \lvert \lvert F \rvert \rvert_{\infty}$,
+%    \item \textcolor{blue}{$\phi$ is market-feasible (w.r.t $\mathcal{R}$) as in Definition \ref{market-feasible}}.
+\end{enumerate}
+\end{problem}
+\begin{problem} (2 step problem for earnings schedule) \label{2steppi} \\
+Given a strictly supermodular function $F$ and a labor force $\mathcal{R}$ as in \eqref{RoyModel}, we define the 2-step program to be the non-linear problem:
+\begin{equation}
+    \sup_{\pi \in \mathcal{C}_3} \left\{ \sup_{\mu \# H_{\pi} = G_{\pi}} \left\{ \int F(k,\mu(k))dH_{\pi} \right\} \right\}
+\end{equation}
+where $\mathcal{C}_3$ is the set of continuous functions $\pi: \spt(P_1 \# R) \to \mathbb{R}$ such that 
+\begin{enumerate}[i.]
+    \item There exists $w: \spt(P_2 \# \mathcal{R}) \to \mathbb{R}$ satisfying $ \pi = w^{F}$,
+    \item  $(\pi^F)^{-1} \circ \pi $ 1/2-cuts $R$,
+     \item $\lvert \lvert \pi \rvert \rvert_{\infty} \leq \lvert \lvert F \rvert \rvert_{\infty}$
+\end{enumerate}
+here $H_{\pi}$ and $G_{\pi}$ are the induced measures from Definition \ref{HandG} using $(\pi^F)^{-1} \circ \pi$ as separation function.
+\end{problem}
+Observe that the only difference between Problem \ref{2stepphi} and Problem \ref{2steppi} is that $\phi$ is explicit in the former but not in the latter. This technicality is essential to note that the set of constraints is not on really triples as one may expect from looking at Problem \ref{2stepphi} but only in the wage structure as it is evident in Problem \ref{2steppi}. The fact that Problem \ref{2stepphi} and \ref{2steppi} are equivalent is evident by the definition of $\phi$ in both cases. \\
+We turn our attention to the relation between these two problems and the generalized Roy model (Problem \ref{RoyModel}).
+\subsubsection{Equivalence} \label{equivalence}
+\begin{theorem} (Equivalence of the problems) \label{equivalenceThm}\\
+Given a strictly supermodular production function $F$ and a labor force $\mathcal{R} \in \mathcal{P}_{ac,c}(\mathbb{R}^2)$, Problem \ref{RoyModel}, Problem \ref{2stepphi} and Problem \ref{2steppi} are equivalent, i.e. 
+\begin{align*}
+    \sup_{(\phi, \pi,w,\mu) \in \mathcal{C}} \left\{ \int F(k,\mu(k)) dH^{\phi} \right\}  &=  \sup_{(\phi,\pi,w) \in \mathcal{C}_2} \left\{ \sup_{\mu \# H^{\phi}  = G^{\phi}}  \left\{ \int F(k,\mu(k))dH^{\phi} \right\} \right\}  \\
+     &= \sup_{\pi \in \mathcal{C}_3} \left\{ \sup_{\mu \# H_{\pi} = G_{\pi}} \left\{ \int F(k,\mu(k))dH^{\phi} \right\} \right\}
+\end{align*}
+\end{theorem}
+\begin{proof} It is clear that Problem \ref{2stepphi} and Problem \ref{2steppi} are equivalent so it is enough to show that Problem \ref{RoyModel} and \ref{2steppi} are equivalent.
+Given $(\phi,\pi,w,\mu) \in \mathcal{C}$, clearly $\pi \in \mathcal{C}_3$ as $w$ satisfies the constrain $w^{F} = \pi$, as it is imposed in $\mathcal{C}$. Again, feasibility means $\mu \# H_{\pi} = G_{\pi}$ as $H_{\pi} = H^{\phi}$ by definition. Hence, 
+\begin{align*}
+\int F(k,\mu(k))dH^{\phi} & \leq \sup_{\mu \# H_{\pi} = G_{\pi}} \left\{ \int F(k,\mu(k))dH^{\phi} \right\} \\
+& \leq \sup_{\pi \in \mathcal{C}_3} \left\{ \sup_{\mu \# H_{\pi} = G_{\pi}} \left\{ \int F(k,\mu(k))dH_{\pi} \right\} \right\}
+\end{align*}
+As this happens for every $(\phi,\pi,w,\mu) \in \mathcal{C}$ taking the supremum on $\mathcal{C}$ yields that the supremum in Problem \ref{RoyModel} is bounded above by the suprema in Problem \ref{2steppi}. \\
+For the reverse inequality, take $\pi \in \mathcal{C}_3$, then there exists $w$ with $w^{F} = \pi$ and set $\phi = w^{-1} \circ \pi$, well defined as noted in Lemma \ref{inverselemma}, then $(\phi,\pi,w,\mu) \in \mathcal{C}$ and hence
+\begin{equation*}
+    \int F(k,\mu(k)) dH_{\pi} \leq \sup_{(\phi,\pi,w,\mu) \in \mathcal{C}_3} \left\{ \int F(k,\mu(k)) dH^{\phi}  \right\}
+\end{equation*}
+Taking the suprema in the order of Problem \ref{2steppi} yields the result.
+\end{proof}
+\begin{remark}
+Although the proof is relatively simple, the value of Theorem \ref{equivalenceThm} is 2-fold: firstly, it simplifies the problem of the Generalized Roy Model into a two-step program on which we can identify a Monge-Kantorovich optimal transport problem in usual form in the inner problem and secondly it provides the sanity check that it is indeed the same to think about the matching given the earning schedules as our intuition predicts. 
+\end{remark}
+\subsubsection{Interpretation}
+Theorem \ref{equivalenceThm} allows us to conclude that the generalized Roy model equilibrium yields the same equilibrium of looking at the occupational choice problem and then optimizing over possible earning schedules. The original formulation on the quadruple does not allow to apply the results developed over the last decades from the theory of transportation, while the 2-step reformulation does. In the community where workers are deciding between being managers or assistants, they can plan by finding their optimal match first for every earning schedule and then finding the earning schedule that maximizes the total output. In this way, each individual could potentially plan for their own occupational choice, knowing that maximizing over earnings will yield the ``simultaneous" equilibrium from problem \ref{RoyModel}.\\
+The main motivation for establishing Theorem \ref{equivalenceThm} is that we can now make use of the framework developed in recent years in the study of the Monge-Kantorovich problem.
+\subsubsection{Duality} \label{duality}
+In order to take advantage of the technicality provided by Theorem \ref{equivalenceThm}, we start by rewriting the duality theorem for the Monge problem, as in \cite{VillaniOldAndNew} Theorem 5.3
+\begin{theorem} (Kantorovich Duality) \\
+Given $F$ strictly supermodular and $\mathcal{R} \in \mathcal{P}_{ac,c}(\mathbb{R}^2)$, let $\pi: \spt(P_1 \# R) \to \mathbb{R}$ be given and suppose $w^{F} = \pi$ a.e. for some $w : \spt(P_2 \# R) \to \mathbb{R}$, if we set $\phi = w^{-1} \circ \pi$ we have
+\begin{align}
+    \sup_{\mu \# H^{\phi} = G^{\phi}} \int F(k,\mu(k)) dH^{\phi} = \sup_{\gamma \in \Gamma(H^{\phi},G^{\phi})} \left\{ \int F(k,s) d\gamma \right\}  \\
+    \label{dualityKD}
+    =\inf_{\varphi \in C(\spt(P_1\#R))} \left\{ \int \varphi dH^{\phi} + \int \varphi^F dG^{\phi} \right\}
+\end{align}
+where $\Gamma(H^{\phi}, G^{\phi})$ is the set of measures in the product space with marginals $H^{\phi}$ and $G^{\phi}$ respectively.
+\end{theorem}
+
+For a proof see \cite[Theorem 5.3]{VillaniOldAndNew}. \\
+
+
+\subsubsection{Existence and Uniqueness}
+\begin{theorem}(Optimality on Monge-Kantorovich) \\
+The $F$-optimal transport map $\mu$ for the Monge-Kantorovich problem between $\nu_1$ and $\nu_2$ satisfies
+\begin{equation}\label{E-L}
+    \pi(k) + \pi^F(\mu(k)) = F(k,\mu(k)) \: \: \nu_1-\text{a.e.}
+\end{equation}
+\end{theorem}
+For a proof see \cite[Theorem 5.10]{VillaniOldAndNew}.\\
+In this section we explore whether the problem \ref{RoyModel} has a unique solution or not. We do this by exploiting the knowledge of existence and uniqueness on the inner problem of Problem \ref{2stepphi} and then appealing to Theorem \ref{equivalenceThm}.
+\begin{theorem}(Existence) \\ \label{existenceanduniq} Under either the assumption \ref{uniformDomain} or assumption \ref{ProductionAndDerivatives}, 
+if $F$ is twice differentiable and super-modular and $\mathcal{R} \in \mathcal{P}_{ac,c}(\mathbb{R}^2)$ then Problem \ref{RoyModel} has a solution. 
+\end{theorem}
+Before we write the proof of the Theorem we need some Lemmata.
+\begin{lemma}($F$-transforms are equi-Lipschitz) \label{Lipschitz} \\
+Let $\pi,w$ be such that $\pi = w^F$, then $\pi$ is Lipschitz with Lipschitz constant at most $\sup_y \lvert D_xF(x,y) \rvert$. 
+\end{lemma}
+For a proof see \cite[Lemma 3.1]{McCannGuillen}. 
+\begin{lemma} (Pointwise uniform bound) \label{pointwisebounded} \\
+The set $\mathcal{C}_3$ is pointwise uniformly bounded.
+\end{lemma}
+\begin{proof}
+Take $\pi \in \mathcal{C}_3$ by definition of the set $\mathcal{C}_3$, $\pi(x) \leq \lvert \lvert F \lvert \lvert_{\infty} $ everywhere on the domain of $\pi$. This bound is uniform as it does not depend on $\pi$ nor $w$. 
+\end{proof}
+\begin{lemma} ($\pi \to w$ continuity)  \label{pitowcont}\\
+Let $\pi, \tilde{\pi} \in \mathcal{C}_3$ with $ w^{F} = \pi$ and $\tilde{w}^F = \tilde{\pi}$, for every $\epsilon > 0 $ there exists $\delta > 0$ such that $\lvert \lvert \pi - \tilde{\pi} \rvert \rvert_{\infty} < \delta $ then $\lvert \lvert w - \tilde{w} \rvert \rvert_{\infty} < \epsilon $
+\end{lemma}
+\begin{proof}
+Given any $y \in \spt(P_2 \# R)$, note that 
+\begin{equation*}
+    \sup_{x} \{ F(x,y) - \pi(x)\} - \sup_{x} \{F(x,y) - \tilde{\pi}(x)\} \leq \sup_{x} \{ \tilde{\pi}(x) - \pi(x) \} \leq \lvert \lvert \pi - \tilde{\pi} \rvert \rvert_{\infty}
+\end{equation*}
+So setting $\delta = \epsilon$ finishes the proof.
+\end{proof}
+Observe that the proof of Lemma \ref{pitowcont} indicates that $\Ima(\tilde{\pi}^F) \subseteq \{  w_1 \in \mathbb{R}: \lvert w - w \rvert < \delta, w \in \Ima(\tilde{\pi}) \} =: \Ima(\pi^F)^{\delta}.$
+According to Remark \ref{phidomainProyect}, separation functions may not share a full domain. The fact that two different separation functions can not be compared in supremum norm is a technical liability.Observe that this assumption is implicit in the formulation of the model by \cite{Roy} and \cite{Mak}. (See for example the definition of separation function on \cite{Mak}).
+\begin{assumption} \label{uniformDomain} (Uniformity of Domains) \\
+Assume that for every $\pi \in \mathcal{C}_3$, if $\phi$ is the separation function induced by $(\pi,w)$ then $Dom(\phi) = \spt(P_1\# R)$, i.e. 
+for every $ k \in \spt(P_1\# R) $ there exists (a unique) $s \in Dom(w)$ such that $\pi(k) = w(s)$. 
+\end{assumption}
+The assumption \ref{uniformDomain} will allow us to show continuity of the Roy Model in the sense that small changes in the earning's schedule will correspond to small changes in the solution. This continuity is done via the $\lvert \lvert \cdot \rvert \rvert_{\infty}$ norm for which we need to be able to compare separation functions everywhere. One can argue that the assumption can be avoided by the introduction of a different norm to evaluate the differences of separation functions (for example an $L_{P_1 \#R}^p$ norm, we leave this for future work or other reasearchers and explain further details in section \ref{Further}.
+\begin{remark} (Assumption \ref{connectedsupport} and Definition \ref{market-feasible} $\Rightarrow$ \ref{uniformDomain}) \\
+Observe that Lemma \ref{marketfeasibleuniformlemma} shows that under Assumption \ref{connectedsupport} if $\phi$ is market-feasible (by definition \ref{market-feasible}), the domain of all separation functions is $[r_1,r_2]$ which in particular yields Assumption \ref{uniformDomain}.
+\end{remark}
+\subsection{The restricted version of the problem}
+Whenever we add the Assumption \ref{uniformDomain} to the generalized Roy Model we call it the restricted Generalized model. We note also that this may not be the only way to avoid such problem. We observe that this assumption on the earning schedules allows us to study general economies and general populations, nevertheless making assumptions on the population or the production function can lead to similar conclusions via different techniques. We explore the idea of restricting the production functions further to not assume the uniform domains in section \ref{ProductionAndDerivatives}.
+\begin{lemma}(Continuity of the inverse of $w$) \label{winversecont} \\
+Under Assumption \ref{uniformDomain}, let $\pi \in \mathcal{C}_3$ and $w$ such that $w^{F} = \pi$, for every $\epsilon > 0$ there exists $\delta > 0$ such that every $\tilde{w}\in B_{\delta}^{\lvert \lvert \cdot \rvert \rvert_{\infty}}(w) $ such that 
+\begin{equation}
+    \lvert \lvert \tilde{w}^{-1}  - w^{-1} \rvert \rvert_{\infty} < \epsilon.
+\end{equation}
+\end{lemma}
+\begin{proof}
+
+Given $\epsilon > 0$ let $\delta $ be the one from the uniform continuity of $w$, if $y$ is fixed in $\range(w)$, note that by $\tilde{w} \in B_{\delta}(w)$ we get  \begin{equation*}
+w^{-1}(y-\delta) \leq \tilde{w}^{-1}(y) \leq w^{-1}(y+\delta)
+\end{equation*}
+
+Substracting $w^{-1}(y)$ in all terms we get
+\begin{equation*}
+    w^{-1}(y-\delta) - w^{-1}(y)  \leq \tilde{w}^{-1}(y) - w^{-1}(y) \leq w^{-1}(y+\delta) - w^{-1}(y)
+\end{equation*}
+By definition of $\delta$ the suprema on both bounds approaches $0$ as $\epsilon \to 0$ which yields the result as the definition of $D$ in terms of $w$ and $\tilde{w}$ ensures existence of the inverses.
+\end{proof}
+\begin{lemma} ($\pi \to \phi$ continuity) \label{pitophicont} \\
+Under Assumption \ref{connectedsupport}, given $\epsilon > 0$ and $\pi \in \mathcal{C}_3$, there exists $\delta > 0 $ such that $\lvert \lvert \pi - \tilde{\pi} \rvert \rvert_{\infty} < \delta $ implies $ \lvert \lvert \phi_{\pi} - \phi_{\tilde{\pi}} \rvert \rvert_{\infty} < \epsilon$ where $\phi_\pi$ and $\phi_{\tilde{\pi}}$ are from Definition \ref{separation}.
+\end{lemma}
+\begin{proof} Given $\pi,\tilde{\pi} \in \mathcal{C}$ and $w^F = \pi,\tilde{w}^{F} = \tilde{\pi}$ by triangle inequality, 
+\begin{equation*}
+    \lvert w^{-1}(\pi(x)) - \tilde{w}^{-1}(\tilde{\pi}(x)) \rvert \leq  \lvert w^{-1}(\pi(x)) - w^{-1}(\tilde{\pi}(x)) \rvert +  \lvert w^{-1}(\tilde{\pi}(x)) - \tilde{w}^{-1}(\tilde{\pi}(x)) \rvert.
+\end{equation*}
+Given $\epsilon > 0$ we define $\delta < \min\{\delta_1,\delta_2\} $ where $\delta_1$ is from uniform continuity of $w^{-1}$ and $\delta_2$ from Lemma \ref{winversecont}. 
+If $\pi(x)$ belongs to the image of $\tilde{\pi}$, using assumption \ref{connectedsupport}.
+\end{proof}
+\begin{lemma}($d_2$-continuity of the split measures) \label{phitoHcont} \\
+Take $(\phi,\pi,w),(\tilde{\phi}, \tilde{\pi}, \tilde{w})$ satisfying the constraints of \eqref{2step} if we assume \ref{uniformDomain} then for every $\epsilon > 0$ there exists $\delta > 0$ such that if 
+\begin{equation*}
+    \lvert \lvert \phi -\tilde{\phi} \rvert \rvert_{\infty} < \delta
+\end{equation*}
+then
+\begin{equation*}
+    d_2(H^{\phi},H^{\tilde{\phi}}) < \epsilon.
+\end{equation*}
+\end{lemma}
+\begin{proof}
+Note that we can simply compute the difference of integrals 
+\begin{align*}
+    & \bigg \lvert \int_{-\infty}^k \int_{-\infty}^{\phi(\hat{k})} R(\hat{k},s) ds d\hat{k} -  \int_{-\infty}^k \int_{-\infty}^{\tilde{\phi}(\hat{k})} R(\hat{k},s) ds d\hat{k}\bigg \rvert  \\
+    & \leq \lvert \lvert R \rvert  \rvert_{\infty,R} \left( \lvert \lvert \phi - \tilde{\phi} \rvert \rvert_{\infty,R_1} diam(R_1)   \right)  
+\end{align*}
+where the $\infty,R$ norms are the suprema on $\spt(\mathcal{R})$ and over the projection to the first coordinate which are compact sets so continuity of $\phi$ and $R$ yield an uniform estimate on accumulation functions of $H^{\phi}$ and $H^{\tilde{\phi}}$. Because $\spt(\mathcal{R})$ is compact $H^{\phi}$ and $H^{\tilde{\phi}}$ also have compact support so the $L_{\infty}$ bound gives an $L^1$ bound which translates to a $d_1$-bound for the measures and by compactness of $\spt(\mathcal{R})$ again we obtain the desired $d_2$ bound. See \cite{Villani} Chapters 2 and 8 for the $d_1-d_2$ relation under compactness.
+\end{proof}
+\subsection{What restricting the problem? }
+As explained in the previous section, the assumption \ref{uniformDomain}, of uniformity of domains is not inherent to the original model of Roy. It is a technical hypothesis to reconstruct continuity using the supremum norm. We formulate here another assumption and explore conditions that result on such an assumption that would yield a $\pi \to H^{\pi}$ continuity as Lemmata \ref{pitophicont} and \ref{phitoHcont}. Here we avoid the use of $\phi$ and it's domain by using the second equivalent definition of $H^{\pi}$ given in definition \ref{HandG}.
+
+\subsection{Restrictions on production functions and populations instead}
+We have discussed Assumptions \ref{connectedsupport} and \ref{uniformDomain} as they played a significant role in previous versions of the Roy model (\cite{Mak}, \cite{Roy}). This assumption has been helpful to obtain continuity of the problem. In this section we explore a different assumption that can be inferred more directly from initial data and is also sufficient for the continuity conditions as in Lemma \ref{phitoHcont}. In this section we focus on the formulation of the measures \eqref{HandG} that don't depend on a separation function \eqref{Hindic}. The idea is that a uniform lower bound on derivatives of earning schedules for the secondary role yields the same continuity estimates but we are able to obtain such bounds in more general situations where $\phi$ may not be everywhere defined.
+\begin{assumption} \label{ProductionAndDerivatives} (Uniform lower bound on $F$-transforms via $F$) \\
+We assume that there exists a positive constant $C > 0$ such that for every $\pi \in \mathcal{C}_3$ 
+\begin{equation}
+    (\pi^F)'(s) \geq C.
+\end{equation}
+for every $s$ for which the derivative is defined. 
+\end{assumption}
+Economically, assumption \ref{ProductionAndDerivatives} says that the rate of change of salaries of the secondary role is bounded for all possible salaries. 
+\begin{lemma}\label{pitoH} ($ \pi \to H^{\pi}$-continuity) \\
+For every $\epsilon > 0$, there exists $\delta > 0$ such that if $\lvert \lvert \pi - \Tilde{\pi} \rvert \rvert_{\infty} < \delta$ then 
+$d_2(H^{\pi},H^{\Tilde{pi}}) < \epsilon$
+\end{lemma}
+\begin{proof} By Lemma \ref{Lipschitz}, we know $\pi^F$ is a.e. differentiable therefore 
+We claim for any $\epsilon > 0$, there exists a $\delta > 0$ s.t. if $\lvert \lvert \pi-\tilde{\pi}\rvert \rvert_{\infty} < \delta $ then $\lvert \lvert  f_{H_{\pi}} - f_{H_{\Tilde{\pi}}} \rvert \rvert < \epsilon$ where $f$ with a subscript refers to the density.
+Let $\epsilon > 0$ be given, first note that $H_{\pi} - H_{\hat{k}}$ can be written as the integral over $\hat{k}$ of the skill density $R$ times the difference in the two indicator functions of he sets where $ \pi(\hat{k}) > \pi^F(s)$ and $\tilde{\pi}(\hat{k}) > \tilde{\pi}^F(s)$ just as in equation \eqref{Hindic}.This difference is nonzero only when exactly one condition is true at a given point. Since for a given $\hat{k}$, the left hand sides in the indicator functions in \eqref{Hindic} are fixed and the right hand sides are increasing, the integrand is nonzero on an interval $(s_0, s_1)$. Without loss of generality suppose that at $s_0$ we have $\pi(\hat{k}) = \pi^F(s_0)$ but $\Tilde{\pi}(\hat{k}) > \tilde{\pi}^F(s_0)$. In this case,  \begin{align*}
+    & \tilde{\pi}(\hat{k}) - \tilde{\pi}^F(s_0) \leq \lvert \lvert \Tilde{\pi}-\pi\rvert \rvert_{\infty} + \lvert \pi(\hat{k}) - \tilde{\pi}^F(s_0)\rvert \\ 
+    &= \lvert \lvert \Tilde{\pi} - \pi \rvert \rvert_{\infty} +  \lvert \pi^F(s_0) - \Tilde{\pi}^F(s_0)\rvert \leq  \lvert \lvert \Tilde{\pi} - \pi \rvert \rvert_{\infty}  + \lvert \lvert  \pi^F - \tilde{\pi}^F\rvert \rvert_{\infty} \leq 2 \lvert \lvert \Tilde{\pi} - \pi \rvert \rvert_{\infty}
+\end{align*}
+Therefore if $\tilde{\pi}^F$ has derivative bounded below by $C > 0$, we will have
+\begin{equation*}
+\tilde{\pi}(\hat{k}) - \pi^{F}(s_0) \leq 2\lvert \lvert \tilde{\pi} - \pi \rvert \rvert_{\infty} \leq \tilde{\pi}^F(s_0 + 2 \lvert \lvert \Tilde{\pi} - \pi \rvert \rvert_{\infty} / C) - \tilde{\pi}^F(s_0),
+\end{equation*}
+which means 
+\begin{equation*}
+    \tilde{\pi}(\hat{k}) \leq \tilde{\pi}^F(s_0 + 2 \lvert \lvert \Tilde{\pi} - \pi \rvert \rvert_{\infty} / C)
+\end{equation*}i.e. $s_1 \leq s_0 + 2\lvert \lvert \Tilde{\pi} - \pi \rvert \rvert_{\infty}/ C$. Therefore,
+\begin{equation*}
+    \lvert \lvert H_{\pi} - H_{\Tilde{\pi}} \rvert \rvert_{\infty} \leq \int_{s_0}^{s_1} R(\hat{k},s)ds  \leq 2 C \lvert \lvert R \rvert \rvert_{\infty} \cdot \lvert \lvert \Tilde{\pi} - \pi \rvert \rvert_{\infty}
+\end{equation*} a bound independent of $\hat{k}$. Therefore we can choose $\delta$ to be $\epsilon  C / 2 \lvert \lvert R \rvert \rvert_{\infty}$.
+%\begin{equation*}
+%\end{equation*}}
+\end{proof}
+
+The previous proof seems rather unintuitive because we are only using the low-regularity estimate of $\pi$ and $\tilde{\pi}$ being differentiable almost everywhere, observe that by the mean value theorem if every element of $\mathcal{C}_3$ were continuously differentiable we could obtain the same conclusion by mean value theorem: 
+\begin{equation*}
+ \lvert s_1 - s_2 \rvert = \big \lvert   \frac{s_1-s_2}{\pi^F(s_1) - \pi^F(s_2)}  \big  \lvert \pi(s_1) - \pi (s_2) \rvert < \frac{  \lvert \lvert \pi - \Tilde{\pi} \rvert \rvert_{\infty}}{C} < \delta/C
+\end{equation*}
+which yields the $\pi \to H^{\pi}$ continuity by the same argument as above. We specifically don't assume that the elements in $\mathcal{C}_3$ belong to $C^1(\spt(P_1\# \mathcal{R})$ as the regularity we use is inherent from Lemma \ref{Lipschitz}.
+\begin{theorem}(Stability of optimal Transport) \label{StabilityOfCost} \\ 
+Let $F_n \to F$ uniformly, where each $F_n$ is as in Definition \ref{supermodular} and satisfying the assumption \eqref{partialsassumptions}, and $\{\rho_n\}, \{\nu_n\}$ two sequences of probability measures converging weakly to $\mu$ and $\nu$ respectively, suppose that there exists an $F_n$-optimal transport map $T_n$ between $\rho_n$ and $\nu_n$ and assume there exists an optimal transport map $T$ between $\rho$ and $\nu$ then as $n \to \infty$,
+\begin{equation*}
+\int F(k,T_n(k)) d \rho_n \to \int F(k,T(k))d\rho
+\end{equation*}
+\end{theorem}
+For a proof see \cite[Theorem 5.20]{VillaniOldAndNew}. 
+\begin{corollary}(Stability of optimal transport maps) \label{Stability} \\
+Assume that $\{F_k\}_{k\in \mathbb{N}}$ is a sequence of production functions which are supermodular and twice continuously differentiable and so is $F$,  such that $F_k \xrightarrow{\lvert \lvert \cdot \rvert \rvert_\infty} F$, let $\nu_n \xrightarrow{d_2} \nu $ and $\rho \in \mathcal{P}(\mathbb{R})$ be fixed, then the $F_k$-optimal transport map $\mu_k$ between $\rho$ and $\nu_k$ converges in $\rho$-probability to $\mu$, the unique $F$-optimal transport map between $\nu$ and $\rho$, that is for every $\epsilon > 0$ we have
+\begin{equation}
+    \rho \left( \left\{k: \lvert \mu(k) - \mu_n(k) \rvert > \epsilon\right\} \right) \xrightarrow{n \to \infty} 0.
+\end{equation}
+\end{corollary}
+For a proof see \cite[Corollary 5.23]{VillaniOldAndNew}.
+With all the Lemmata in place, now we can write a proof for Theorem \ref{existenceanduniq}.
+\begin{proof}[Proof of Theorem \ref{existenceanduniq}]
+Inner problem has a unique solution via Brenier's Theorem, the map \begin{equation*} 
+    \pi \to \sup_{\mu \# H_{\pi} = G_{\pi}} \left\{ \int F(k,\mu(k))dH_{\pi} \right\}
+\end{equation*}
+is continuous in the uniform topology under the assumptions \ref{uniformDomain} or \ref{ProductionAndDerivatives} via Lemmatta \ref{phitoHcont} or \ref{pitoH} respectively.
+Let us show that $\mathcal{C}_3$ is nonempty. Let $D_c := \{w \in C(\spt(P_{2}\#R)) : \lvert \lvert w\rvert \rvert_{\infty} \leq c\}$ and define $A$ to be $\mathcal{C}_3$ without the condition that the function 1/2-cuts $R$ , that is $ A = \{ \pi: \spt(P_1 \# R) \to \mathbb{R} : \exists w, \pi = w^F, \lvert \lvert \pi \rvert \rvert_{\infty} \leq \lvert \lvert F \rvert \rvert_{\infty} \} $. $D_c$ is convex and therefore connected, furthermore it maps continuously to a subset $P_c$ of $A$ via the F transform as long as $c$ is small enough (according to Lemma \ref{pitowcont}). Thus $P_c$ is connected. Also note that if $w = 0 \in D_c$ is chosen, then $\pi(k) = \sup_{s \in \spt(P_{2}\#R)} F(k,s)$, and so the resulting $H^{\phi}(\mathbb{R}) = 1$ and if $ w = \sup_{k \in \spt(P_{1}\#R)} F(k,s) \in D_c$ then $\pi(k) = \sup_{s \in spt(P_{2}\#R)} F(k,s) - F(k^*,s)$ where $k^*$ is the maximum of k in $\spt(P_{1}\#R)$. Then $H^{\phi}$ = 0 on $\mathbb{R}$. But $H^{\phi}$ is a continuous function on $A$ (according to Lemmata \ref{pitophicont} and \ref{phitoHcont}), hence we have exhibited two functions in a connected subset $P_c$ which map to $0$ and $1$. Therefore there exists a function in $P_c$ which maps to $1/2$ and is therefore an element of $\mathcal{C}_3$.
+Now by Lemma \ref{Lipschitz} the set $\mathcal{C}_3$ is equi-Lipschitz and by Lemma \ref{pointwisebounded} point-wise bounded and so by Arsela-Ascoli it is relatively compact in the uniform topology and hence achieves the supremum by extreme value theorem.
+\end{proof}
+\begin{observation}
+A simpler version of the intermediate value theorem can be used when more restrictions on the revenue function are imposed. If $F$ satisfies the (A3S) condition from \cite{McCannGuillen}, then by \cite[Theorem 5.1]{McCannGuillen} the set of $F-$convex functions is convex itself and intermediate value theorem van be applied in a much simpler way. In general the (A3S) condition is a differential equation on the fourth partials of $F$ which is a-priori not assumed here but yields regularity of optimal transport maps, see \cite{McCannGuillen} or \cite{VillaniOldAndNew} for more details.
+\end{observation}
+\subsubsection{First order conditions for optimality}\label{optimalityDualRoy}
+In this section we explore how the optimal quadruples on Problem \ref{RoyModel} depend on the problem data. In this section we assume all variables are continuously differentiable even though form some variables as $\pi,w$ only almost everywhere differentiability is ensured by Lemma \ref{Lipschitz}. We assume continuously differentiable throughout but most of the results can be generalized by the concept of approximate differentiability.
+\begin{proposition}
+Let $F$ and $R$ satisfy assumptions of Problem \ref{RoyModel}, then for the optimal quadruple it holds 
+\begin{equation} \label{optimalityeq}
+    \phi'(k) = \frac{F_1(k,\mu(k)) + F_2(k,\mu(k))\mu'(k) - w'(\mu(k))\mu'(k))}{w'(w^{-1}(F(k,\mu(k)) - w(\mu(k))))}  .
+\end{equation}
+where $F_1$ and $F_2$ denote the partials with respect to the first and second coordinate respectively.
+\end{proposition}
+The proposition is a direct computation. But the economical interpretation of this derivative is particularly interesting: the optimal salary paid in the labor market for workers with skill $k$ depends not only on the production achieved by their optimal matching but also on how difficult it is to change the pairs ($\mu'$) at a certain level. Note that one can find this computation in \cite{Mak}.
+
+\begin{proposition} \label{Wage Derivatives}
+Let $F$ and $R$ satisfy assumptions for Problem \ref{RoyModel}, then for the optimal quadruple it holds that
+\begin{align}
+    \pi'(k) = F_1(k,\mu(k)) \\
+    w'(s) = F_2(\mu^{-1}(s),s)
+\end{align}
+for $k \in \spt(H)$ and $s \in \spt(G).$ If there exists an interval $[a,b] \supseteq \spt(H)$ on which $\mu$ is defined Lebesgue a.e., we may integrate to obtain the following expression for the wages:
+\begin{align}
+    \pi(k) = c_k + \int^{k}_{a} F_1 (\hat{k},\mu(\hat{k})) d\hat{k}
+\end{align}
+where $c_k$ is an integration constant. The analogous result holds for $w(s).$ For example, this condition holds for k if the projection of $\spt(\mathcal{R})$ to the k-axis is an interval and the "lower envelope", defined as $\min \{s : (k,s) \in \spt(\mathcal{R})\} $ is non-increasing in k.
+\end{proposition}
+\begin{proof}
+We prove this for $\pi(k)$ as the result for $w$ follows by symmetry. Recall we have $\pi(k) = \sup_{s \in \spt(G)} \left\{ F(k,s) - w(s) \right\}$ for $k \in \spt(H)$ by duality of wages. By \eqref{E-L} this supremum is attained by $\mu(k).$ Since $\pi(k)$ is differentiable and $F(k,s)-w(s)$ is differentiable with respect to k, the envelope theorem implies that $\pi'(k) = F_1(k,\mu(k)).$ The result follows by integrating.
+The last condition implies that $\spt(H)$ is an interval. Since $\phi$ is strictly increasing.
+\end{proof}
+\subsection{An optimality conjecture} \label{conjecturesection}
+The following conjecture arises from discussions with Dr. Siow and the fact that the 2-step problem rewrites the model in \cite{Siow}. The 2-step problem is expected to be wage-optimal in the sense that if agents decide after they see wages and wages are maximal, those should correspond to the actual earnings. In our context, we formulate this economical idea as follows.
+\begin{conjecture} (Super optimality of wages)\\ The optimal wages in the generalized Roy Model and the 2-step problem are the Kantorovich potentials of the inner problem of Problem \ref{2steppi}, i.e. if $\pi^* \in \mathcal{C}_3$ realizes the supremum of Problem \ref{2steppi} then 
+\begin{equation} \label{conjectureeq}
+    \max_{\pi \in \mathcal{C}_3} \left\{ \max_{\mu \# H^{\phi} = G^{\phi}} \int F(k,\mu(k))dH^{\phi} \right\} = \int \pi^* dH_{\pi^*} + \int (\pi^*)^ F dG_{\pi^*}
+\end{equation}
+\end{conjecture}
+\begin{observation} \label{progressobs}
+Note that, by duality \eqref{dualityKD}, we automatically obtain 
+\begin{equation*}
+     \max_{\pi \in \mathcal{C}_3} \left\{ \max_{\mu \# H^{\phi} = G^{\phi}} \int F(k,\mu(k))dH^{\phi} \right\} \leq \int \pi^* dH_{\pi^*} + \int (\pi^*)^ F dG_{\pi^*},
+\end{equation*}
+as $\pi$ is a viable candidate for the inner minimization problem. The trickier part (if the conjecture is true) is the reverse inequality. One can attempt to define a map $\Theta: \mathcal{C}_3 \to C_{3}$ corresponding to the Kantorovich potential of a given element (with the appropriate constant to make a $1/2$-cut). If the map $\Theta$ happens to be a contraction (in the appropriate Banach space), then one can use a fixed-point argument, as one could use the consecutive iterations of $\Theta$ starting from $\pi^*$ to obtain a limit which increases the objective function and hence should coincide with $\pi^*$. We haven't been able to show the map is a contraction, not even assuming convexity of $\mathcal{C}_3$ which one can derive from general assumptions of $F$ (such as the cross-curvature condition) as \cite[Theorem 5.1]{McCannGuillen}. By expanding both terms on \eqref{conjectureeq}, it is equivalent to show that if $\pi^* \in \mathcal{C}_3$ is optimal and $\phi$ is it's corresponding optimal earning schedule for role $k$, then 
+\begin{equation*}
+    \int \int \max\{ \pi(k),\pi^F(s) \} dR (k,s) \leq \int \int \left( \mathbf{1}_{\{\pi^F(s) \leq \pi(k) \}} \phi(k) + \mathbf{1}_{\{ \pi(k) < \pi^{F}(s) \}} \phi^F(s) \right) dR(k,s),
+\end{equation*}
+where $\mathbf{1}_C$ is the indicator function of the set $C$.\\
+Now clearly, it would be \textit{sufficient} to show that $R$-a.e. with respect to $(k,s)$,
+\begin{equation*}
+   \max\{ \pi(k),\pi^F(s) \} \leq  \left( \mathbf{1}_{\{\pi^F(s) \leq \pi(k) \}} \phi(k) + \mathbf{1}_{\{ \pi(k) < \pi^{F}(s) \}} \phi^F(s) \right),
+\end{equation*}
+which we haven't been able to show.
+\end{observation}
+\subsection{Numerics}\label{sec:numerics}
+In this section we describe the numerical algorithms used to obtain the simulations and show how one can obtain insight by the means of an example.
+We compute approximations to the true key wage, $\pi$ by iteratively applying a function $\lambda(\pi)$ which represents the evolution of wages under market forces. Under the conjecture that this is a contraction mapping, this procedure indeed converges to the solution. We begin with an arbitrary $\pi.$ As long as the distance between the last two wages $\pi_k, \pi_{k-1}$ is above some specified threshold $\epsilon$, we compute $\lambda(\pi_k) =: \pi_{k+1}$ by computing the C that equalizes the mass working in each occupation when C is added to $\pi$ (and thus subtracted from $\pi^F$) using a root finding algorithm such as bisection. With the induced skill distributions, we compute the Optimal Transport solution using a specialized library and extract the dual variable associated with the key role. This is our desired $\lambda(\pi_k).$ Note that $\pi$ may not be defined in skill levels where there are no key workers. In this case, $\pi$ may be defined arbitrarily except that it has to be strictly increasing on its domain. The simulation results can be seen in Section \ref{sec:simulations}.
+\begin{algorithm}[H]
+To obtain $(\pi,w,\mu,\phi)$ as in the optimal for Problem \ref{2stepphi}.
+\begin{algorithmic}
+\State $\pi_0 \gets 0$
+\State $w_0 = \pi^F_0$
+\State Define $H_0$ and $G_0$ from $\pi_0$ as in Definition \ref{HandG}.
+\While{$ \|\pi_{k} - \pi_{k-1}\|_{\infty} > \epsilon$} 
+    \State find C such that $\pi_k + C$ and \textcolor{blue}{$w_k - C$} induces $G^\phi(\mathbb{R}) = H^\phi(\mathbb{R}) = 1/2$;
+    \State compute optimal transport map $\mu \# H^{\phi} = G^{\phi}$;
+    \State set $\pi_{k+1}$ as dual minimizer from OT solution;
+    \State set $w_k = \pi_k^F, \phi_k = w^{-1} \circ \pi, H_k = H^{\phi_k} $;
+    \EndWhile
+\State Return $(\pi_{k},w_{k},\phi_{k},\mu_{k})$
+\end{algorithmic}
+\end{algorithm}
+
+%% SEAN: I made a few changes to this just to more accurately reflect how the code actually works. I don't think this necessarily fully describes what the code is doing, but it is close enough, I think. 
+
+\section{Examples of the Generalized Roy Model} \label{Examples}
+\subsection{Non-homogeneous degree 1 Cobb-Douglas production}
+The generalized Roy model (Problem \ref{RoyModel}) allows many different types of markets and behaviours. In this section we simplify the problem by looking at a specific production function that depends non-linearly in both skills $k$ and $s$ but the interaction term is homogeneous of degree 1. 
+\begin{assumption}
+We assume that there exist strictly increasing, continuously differentiable functions $a,b: \mathbb{R} \to \mathbb{R} $ and a constant $c \geq 0 $ such that 
+\begin{equation}\label{Production}
+    F(k,s) = a(k) + b(s) + c ks. 
+\end{equation}
+\end{assumption}By Proposition \ref{Wage Derivatives}, we have
+\begin{align} \label{FOC}
+    \begin{split}
+        &\pi'(k) = a'(k) + c\mu(k) \\
+        & w'(\mu(k)) = b'(\mu(k)) + ck.
+    \end{split}
+\end{align}
+on $\spt(H).$
+Changing variables to $ s = \mu(k)$ and integrating we obtain \begin{align}\label{solutions}
+    \begin{split}
+        & \pi(k) = a(k) + c\int_0^k \mu(\tilde{k}) d\tilde{k} + e \\
+        & w(s) = b(s) + c\int_0^s \mu^{-1}(\tilde{s}) d\tilde{s} + d
+    \end{split}
+\end{align}
+for constants $e,d$. To figure out $e$ and $d$ we plug in the lowest matching $(0,\mu(0))$ whenever $0 \in \spt(e_1\# \mathcal{R})$ we obtain  \begin{equation*}
+    e + d + \int_0^{\mu(0)} \mu^{-1}(\tilde{s}) d\tilde{s} = 0.
+\end{equation*}
+Using the separation of wages, note that by structure of Brenier's map $\mu$ is positive assortative from which the integral term vanishes and then $ e+ d = 0$, from the optimality condition on $(\phi,\mu,\pi,w)$ we know that $\phi = w^{-1} \circ \pi$ to find $e$ we use that $\phi$ 1/2-cuts $\mathcal{R}$, meaning that 
+\begin{equation*}
+   \int_{-\infty}^{\infty} \int_{-\infty}^{\phi(k)} R(k,s) ds dk = \frac{1}{2} = \int_{-\infty}^{\infty} \int_{-\infty}^{\phi^{-1}(s)} R(k,s) dk ds .
+\end{equation*}
+Our goal is to explore the different regimes of the production function as $c$ varies, for which it is important to start by understanding the model for the case with no interaction. 
+\subsection{No interaction}
+In the case where there is no interaction $(c = 0)$ above, $F(k,s) = a(k) + b(s) $ let us analize the separation function $\phi$. The separation function determines the wages being paid to the workers. For a worker of skill $k$, the value $\phi(k)$ represents the salary at which the worker would be indifferent between working in the primary or the secondary job. \\
+Given a function $\pi: \mathbb{R} \to \mathbb{R}$, define $H^{\phi}$ and $G^{\phi}$ as in Definition \eqref{HandG}. Observe that for any function $\mu$ with $\mu \# H^{\phi} = G^{\phi}$ we have
+\begin{equation*}
+    \int F(k,\mu(k))dH^{\phi} = \int a(k) dH^{\phi} + \int b(s) dG^{\phi}
+\end{equation*}
+which means that every function $\mu$ that satisfies $\mu \# H^{\phi} = G^{\phi}$ yields the same production output. \textit{So the matching does not affect production}, we can choose any volume-preserving map when $\phi$ is fixed. In this case \eqref{solutions} reduce to 
+\begin{align}
+    \begin{split}
+        & \pi(k) = a(k) + e \\
+        & w(s) = b(s) + d
+    \end{split}
+\end{align}
+Notice then that $w^{-1}(y) = b^{-1} (y-d)$ and so $\phi(k) = b^{-1}(\pi(k) - d) = b^{-1}(a(k) + e - d ) = b^{-1}(a(k) + 2e) $. This implies that the slope of $\phi$ in the $a(k)-b(s)$-axis is $1$. The separating function on the skill value-skill value plane is a straight line, in other words, in equilibrium workers are paid linearly with respect to their skill sets and how much their skill set produces, independent of other workers abilities and matches. So in the context where production is modelled to not be improved by the relationship between manager and assistant, it doesn't matter who they match, they'll be paid as much as they can generate for production. If you are good enough worker, the person you match should not affect your wage. \textit{In this model, even if your manager is incompetent you can still make it.}
+\subsection{Pure interaction}
+Now we look into the complete opposite case on which production depends only on the interaction between workers. This models labor markets where the relationship between primary and secondary job is complementary, \textit{in this context you can not do your job well (in terms of producing more) if you can't work efficiently with your coworker. The better you and your coworker get along, the more you produce together.}
+\begin{assumption}
+In this case production is totally complementary, i.e. $a(k) = 0,b(s) = 0$ and there exists $ c > 0$ such that $F(k,s) = cks$.
+\end{assumption} 
+In this case given $\phi$, the inner problem of \eqref{2step} corresponds to the optimal transport problem with cost $c(k,s) = \lvert k-s\rvert^2$ because 
+\begin{equation*}
+    \int c k \mu(k) dH^{\phi} =  \frac{c}{2} \left(\int \lvert k\rvert ^2 dH^{\phi} + \int \lvert s\rvert ^2 dG^{\phi} - \int \lvert k-\mu(k)\rvert^2dH^{\phi} \right)
+\end{equation*}
+and once $\phi$ is fixed, the first two terms are constant. For this part we can think of $\phi$ as being fixed, obtain conditions on $\mu$ and the afterwards optimize on $\phi$ thanks to Problem \ref{2stepphi}. Again by Brenier's theorem we know that \begin{equation}
+    \mu =  (G^{\phi})^{-1} \circ H^{\phi}
+\end{equation}
+where in this context we denote by $G^{\phi}$ and $H^{\phi}$ the accumulation functions, simplifying Problem \ref{2stepphi} to
+\begin{equation}
+    \max_{(\phi,\pi,w)} \left\{ \int (k - (G^{\phi})^{-1} \circ H^{\phi}(k))^2dH^{\phi} \right\}
+\end{equation}
+where $(\phi,\pi,w)$ satisfy the constraints of Problem \ref{2stepphi}.
+\subsection{Counterexample to linearity of the separating function}  \label{nonlinear}
+Let $R(k,s) = \chi_{[0,1]^2}$, so that skills are distributed uniformly on the unit square. Let $a(k) = ak, b(s) = bs, c = 0$ so that $f(k,s) = ak+bs.$ As we showed in the last section, $b(\phi(k)) = a(k) + 2\alpha$ so by rearranging we obtain $\phi(k) = \frac{ak+2\alpha}{b}.$ Furthermore, the separating function should divide the density in half so we should have $\int_0^1 \Phi(\phi(\hat{k})) d\hat{k} = 1/2,$ where $\Phi(x) = max(min(x,1),0)$ clamps the value between 0 and 1. If $\alpha > 0$ and $b-2\alpha > a$, it is easy to check that $0 \leq \phi(k) \leq 1$ for all k in the unit interval so we can omit $\Phi.$ In this case a simple computation shows that $\alpha = \frac{b-a}{4}.$
+
+Let $a=1, b=3$. We see that $\alpha = 1/2$ and the conditions for this computation to be valid are satisfied. So $\phi(k) = \frac{k+1}{3}.$ Now by the definition of $\phi$ we have $w(\phi(k)) = \pi(k).$
+
+We claim that this no longer holds for some $k$ when $c > 0.$ Therefore the separating function is no longer the same. Suppose $\phi$ is the same for some $c > 0$. Then we note that $\mu$ is also the same. The corresponding equality would be 
+\begin{equation}
+3\phi(k)+c\int^{\phi(k)}_0 \mu^{-1}(s)ds - \alpha = k + c\int^{k}_0 \mu(\hat{k})d\hat{k} + \alpha
+\end{equation}
+Substitute the old expression for $\phi$ and we obtain:
+\begin{align}
+    k+1+c\int^{\frac{k+1}{3}}_0 \mu^{-1}(s)ds = k + c \int^k_0 \mu(\hat{k})d\hat{k} + 2\alpha \\
+    c\left( \int^{\frac{k+1}{3}}_0 \mu^{-1}(s)ds - \int^k_0 \mu(\hat{k})d\hat{k}\right) = 2\alpha - 1
+\end{align}
+which has to hold for all $k$ in the unit interval. So differentiate with respect to $k$, we obtain that $\mu^{-1}(\frac{k+1}{3}) * 1/3 = \mu(k).$ But $\mu(0) = 1/3$ which implies that $\mu^{-1}(1/3) = 1$ contradicting the fact that $\mu^{-1}(1/3)=0$ as we saw. 
+
+\section{Dependence of the model on relevant quantities} \label{Dependence}
+In this section we study how the model is affected when different inputs change, of particular interest is the economical question: If the production function varies slightly, with the same labor force, is it true that the separation of occupations will vary slightly too? .\\
+This question can be reformulated in terms of the model, if the difference between two production functions is small (in an appropriate normed space) is it true that the difference of the resulting optimal separation functions is small (in appropriate normed space)?. We will answer this question positively in the next section. 
+\subsection{On continuity of separation}
+In this section we provide a positive answer to the question posed in the introduction. 
+\begin{theorem} (Continuity of separation) \label{contsep} \\
+Suppose that $(\phi,\pi,w,\mu) \in \mathcal{C}$ realize the maximum in Problem \ref{RoyModel} for a super-modular function $F$ and $\mathcal{R} \in \mathcal{P}_{ac,c}(\mathbb{R}^2)$, for every $\epsilon > 0$ there exists $\delta > 0 $ such that if $(\tilde{\phi},\tilde{\pi},\tilde{w},\tilde{\mu}) \in \mathcal{C}$ is an optimal quadruple for a super-modular function $\tilde{F}$ and the same labor force $\mathcal{R}$ with 
+\begin{equation*}
+    \lvert \lvert F - \tilde{F} \rvert \rvert_{\mathcal{C}^1} < \delta 
+\end{equation*}
+then 
+\begin{equation*}
+\lvert \lvert \phi - \tilde{\phi} \rvert \rvert_{\infty} < \epsilon
+\end{equation*}
+\end{theorem}
+
+\begin{lemma} ($F \to \pi$ continuity) \label{Ftopi} \\
+Let $\{F_n\}$ be a sequence of twice differentiable functions satisfying supermodularity and converging uniformly to a supermodular, twice continuously differentiable function $F$. If $\pi_n$ and $\pi$ are their Kantorovich potentials then $\pi_n \to \pi$ in uniform norm. 
+\end{lemma}
+\begin{proof} By Lemma \ref{Lipschitz} every potential is Lipschitz with constant depending on it's production function $F_n$. If $F_n \xrightarrow{C^1} F$, then for $n$ big enough $\{\pi_n,\pi\}$ are equi-lipschits with Lipschitz constant at most $\lvert \sup_{(x,y)}D_xF(x,y)\rvert $ and so by Arzela-Ascolil using Lemma \ref{pointwisebounded} have a convergent subsequence with respect to uniform topology. By relabelling, assume $\pi_n \to \pi$ in uniform topology, by Lemma \ref{pitophicont} we obtain the desired result.
+
+\end{proof}
+
+\begin{proof}[Proof of Theorem \ref{contsep}:] 
+The theorem results by consequently applying Lemmata \ref{Ftopi} and \ref{pitophicont}.
+
+\end{proof}
+
+\begin{example}(From small interaction to none) \\
+For $ c> 0$ consider the function $F_c(k,s) = a(k) + b(s) + c ks$ and $F(k,s) = a(k) + b(s)$, then 
+\begin{align}
+    \nabla F_c(k,s) &= \begin{bmatrix}
+           a'(k) + cs \\
+           b'(s) + ck
+         \end{bmatrix}
+  \end{align}
+Note that $F_c \to F$ in uniform norm but also $\nabla F_c \to \nabla F$ in uniform norm over $\spt(\mathcal{R})$, so $F_c \xrightarrow{C^1(\spt(\mathcal{R}))} F$ and Theorem \ref{contsep} applies. Therefore in the limiting case of interaction, separation remains close. This can be understood as follows: If the output of the work done by two people depends very slightly on how they interact, the distribution of workers for both occupational roles will be similar to the ones observed in no-interaction at all. This is a mathematical justification of a expected economical behaviour.
+\end{example} 
+\subsection{Maximum wage inequality and matching someone with very different skill} \label{wagelip}
+Observe that if $(\phi,\pi,w,\mu)$ is the optimal quadruple for a supermodular function $F$ and a labor force $\mathcal{R}$, by Lemma \ref{Lipschitz} $w$ is a Lipschitz function, denote it's Lipschitz constant by $L_W := \sup \lvert D_2 F(k,s) \rvert $ as in Lemma \ref{Lipschitz}, hence
+\begin{equation} \label{wagelipeq}
+    \lvert w(\phi(k)) - w(\mu(k)) \rvert \leq L_W \lvert \phi(k) - \mu(k) \rvert.
+\end{equation}
+This means that the in-firm wage inequality can't surpass a factor (depending only on the change in production as one of the skills is changed (see Lemma \ref{Lipschitz})) times the difference in skill for the secondary job of the person matched with our worker of $k$ skill level for the primary job and the secondary skill of the person who our worker would be indifferent in swapping jobs with. \\ This quanititative result not only tells us that there is no wage inequality when $\phi = \mu$ but also that the wage is proportional (at worst) to the difference in secondary skill of these workers associated to the person of key skill $k$.
+\section{The Social Planner's problem of McCann-Trokhimtchouk} \label{socialplanners}
+In this section we present the formulation of the social planner's problem from \cite{McCannMax} and it's connections with the present work. We start by presenting the problem, relevant definitions, the duality result and provide economic interpretation. In section \ref{connection}  we relate the formulation of this social planner's problem to our generalized Roy model. \\
+The work of McCann and Trokhimtchouk \cite{McCannMax} deals in much more generality, where the skill-set is not assumed to be an ordered paired of real numbers. In this section we write the relevant definitions of \cite{McCannMax} in the specific case of the skill set $ \mathbf{X} = \mathbb{R}^2$ for consistency. The goal of this section is to relate these definitions to our generalized Roy model, so for consistency we rewrite the relevant definitions in the case of $\mathbb{R}^2$. 
+\subsection{Relevant definitions}
+\begin{definition}(Pure pairing) \\
+A probability measure $\nu \in \mathcal{P}(\mathbb{R}^2)$ and a Borel function $ f: \mathbb{R}^2 \to \mathbb{R}^2$ are called a pure pairing for $\mathcal{R} \in \mathcal{P}(\mathbb{R}^2)$ whenever
+\begin{equation*}
+    \nu + f \# \nu = 2 \mathcal{R}
+\end{equation*}
+\end{definition}
+\begin{problem}(Social Planner's problem) \label{planners} \\
+Given a production function $ p : \mathbb{R}^2 \times \mathbb{R}^2 \to \mathbb{R}$, the social planner's problem is the maximization of pure-pairing productions, that is,
+\begin{equation}
+    \sup_{\nu + f \# \nu = 2\mathcal{R}}\left\{ \int p(x,f(x)) d\nu \right\}.
+\end{equation}
+\end{problem}
+The fact that the domain of this production function is a subset of $\mathbb{R}^4$ means that the joint production achieved by a couple of workers may depend on both skills of the workers, i.e. even if a worker performs the manager role, his assistant skill set influences production. This model is different to Problem \ref{RoyModel} from section \ref{FormulationRoy}. Nevertheless, one can specify the model in $\mathbb{R}^2 \times \mathbb{R}^2$ to our context by setting $ p((k,s),(k',s')) = F(k,s')$.
+%\begin{definition}(Mixed Pairing) \\ 
+%A Borel probability measure $\gamma \in \mathcal{P}(\mathbb{R}^2 \times \mathbb{R}^2)$ is called a mixed pairing for $\mathcal{R}$ if for every Borel set $A $, one has
+%\begin{equation*}
+%    \gamma(\mathbb{R}^2 \times A) + \gamma(A \times \mathbb{R}^2) = 2 \mathcal{R}(A).
+%\end{equation*}
+%The set of mixed pairings for $\mathcal{R}$ is denoted $\Gamma_{\mathcal{R}}^{\text{mix}}$.
+%\end{definition}
+
+%\begin{problem}(Relaxation of the social planner's problem) \label{relaxed}
+%Given a production function $ p : \mathbb{R}^2 \times \mathbb{R}^2 \to \mathbb{R}$, the relaxed %social planner's problem is the maximization of mixed-pairing productions, that is,
+%\begin{equation}
+ %   \sup_{\gamma \in \Gamma_{\mathcal{R}}^{\text{mix}}}\left\{ \int p(x,y) d\gamma(x,y) \right\}.
+%\end{equation}
+%\end{problem}
+%\begin{theorem}(Existence of mixed solutions) \label{existencemix} \\
+%For any $\mathcal{R} \in \mathcal{P}(\mathbb{R}^2)$ there exists a solution to Problem \ref{relaxed}.
+%\end{theorem}
+%For a proof see \cite{McCannMax} Theorem 1.
+%\begin{problem} (Dual of the relaxed problem) \label{dualmix} \\
+%Given $\mathcal{R} \in \mathcal{P}(\mathbb{R}^2)$ and a production function $p:\mathbb{R}^2 \times \mathbb{R}^2 \to \mathbb{R}$, we define the dual to the relaxed social planner's problem to be the minimization problem; 
+%\begin{equation}
+ %   \inf_{u \in \mathcal{U}} \left\{ 2 \int u(x) d\mathcal{R}(x) \right\},
+%\end{equation}
+%where $ \mathcal{U} = \{ u \in L_{\mathcal{R}}^1(\mathbb{R}^2): u(x) + u(y) \geq p(x,y) \}$. An element of $\mathcal{U}$ is called a feasible potential for Problem \ref{relaxed}.
+%\end{problem}
+%\subsubsection{Duality result}
+%One of the main contributions of \cite{McCannMax} is achieving a duality result for the relaxed social planner's problem similar to the Kantorovich duality theorem in optimal transportation. 
+%\begin{theorem} (Sufficient conditions from optimality) \\
+%If $p$ is non-negative and continuous, one has 
+%\begin{equation*}
+%     \inf_{u \in \mathcal{U}} \left\{ 2 \int u(x) d\mathcal{R}(x) \right\} \geq  \sup_{\gamma \in \Gamma_{\mathcal{R}}^{\text{mix}}}\left\{ \int p(x,y) d\gamma(x,y) \right\} \geq  \sup_{\nu + f \# \nu = 2\mathcal{R}}\left\{ \int p(x,f(x)) d\nu \right\}.
+%\end{equation*}
+%Furthermore, if there exists a feasible potential $u \in \mathcal{U}$ and a mixed pairing $\gamma \in \Gamma_{\mathcal{R}}^{\text{mix}}$ such that
+%\begin{equation*}
+ %   2 \int v(x) d \mathcal{R}(x) = \int p(x,y) d\gamma(x,y),
+%\end{equation*}
+%then $v$ and $\gamma$ attain Problem \ref{dualmix} and Problem \ref{relaxed}, respectively.
+%\end{theorem}
+%For a proof, see \cite{McCannMax} Theorem 2.\\
+Finally we review the existence result which mimics the existence theorem from optimal transportation, the idea is that an optimal pure pairing must be supported in a $p$-cyclically monotone set which in turn correspond to subdifferentials of potentials. 
+\begin{theorem} (Existence and uniqueness of optimal pure pairings) \label{existencepure} \\
+Assume that $p$ is non-negative, continuously differentiable and satisfies, 
+\begin{equation} \label{twist}
+    y \to \nabla_1 p(x,y) \text{ is inyective } \forall y. 
+\end{equation}
+If $ \mathcal{R} \in \mathcal{P}_{ac,c}(\mathbb{R}^2)$ then there exists a $p$-contact map $f$ such that all optimal mixed pairings are of the form $ \gamma = (Id,f)\# (P_{(1,2)}\# \gamma)$. And this function is unique $P_{(1,2)}\# \gamma$ a.e., where $P_{(1,2)}$ is the projection onto the first two coordinates: $P_1((x,y,x',y')) = (x,y)$.
+\end{theorem}
+%Note that a solution of Problem \ref{planners} results by combining Theorem \ref{existencemix} and Theorem \ref{existencepure}. Hypothesis \eqref{twist} is often referred to as the twist condition for $p$.
+\subsection{Relation to the Generalized Roy Model} \label{connection}
+The objective of this section is to relate Problem \ref{RoyModel} with the problem \ref{planners}. One may think that the Generalized Roy model can be put in the general framework of McCann-Trokhimtchouk but the assumptions on Theorem \ref{existencepure} are not satisfied, hence one can not ensure from this framework the general existence and uniqueness result. Note that Theorem \ref{existencepure} presents sufficient conditions for existence of pure pairings, while the existence in the Generalized Roy Model was discussed in section \ref{existenceanduniq}.
+\begin{proposition}(Dissimilarity of the models) \label{notSame} \\
+In the framework of Problem \ref{planners}, the production function associated to Problem \ref{RoyModel} does not satisfy the twist condition \eqref{twist}.
+\end{proposition}
+\begin{proof}
+Let $p:\mathbb{R}^2 \times \mathbb{R}^2$ be given by $ p((x,y),(x',y')) = F(x,y')$ where $F$ is the production function on Problem \ref{RoyModel}, then 
+\begin{align}
+    \nabla_1 p((x,y),(x',y')) &= \begin{bmatrix}
+           \partial_1 F(x,y') \\
+           0
+         \end{bmatrix}
+  \end{align}
+  which is clearly not injective as a function of $(x',y')$.
+\end{proof}
+This means that even though the problems are related (as both are self-partition of labor force) the conditions of the independence of the production function $F$ on the skills not used don't allow us to conclude the existence and uniqueness from the general framework of \cite{McCannMax}. \\
+The main reason is that the labor force partition is being done in different ways. The generalized Roy Model (Problem \ref{RoyModel}) has the peculiar property that people don't care about their partner's abilities to perform the role they won't end up performing. Note that the imposition of the outer supremum on Problem \ref{2steppi} is motivated by the imposition of occupational choice, which is not imposed a priori in the social Planner's problem \ref{planners}. One can think of this difference as the fact that a social planner will determine the distribution of occupations without considering the specific preferences of each individual.
+\section{On the identification problems}
+Suppose now that we do not know the initial distribution of skills $\mathcal{R}$ but we see the optimal matchings made by firms and we see the conditional (on salaries) distributions of skills. The identification problem asks on what conditions can we recover the distribution of skills $\mathcal{R}$? \\
+Mathematically, the identification problem corresponds to the uniqueness in the inverse problem. \\
+The more interesting question is wether or not we can recover together the distribution of skills and the production function, that is, given the matchings, earnings and distribution of skills can we recover the unconditional distribution of skills $\mathcal{R}$ together with the production function $F$ ? 
+\subsection{Identification on social planner's problem}
+In the context of problem \eqref{socialplanners}, given $\nu$ and $f$, the condition \begin{equation}
+    \nu + f \# \nu = 2 \mathcal{R}
+\end{equation}
+completely determines $\mathcal{R}$. This is observed by definition, as for every $A$ Borel subset of $\mathbb{R}^2$ we have 
+\begin{equation} \label{RisAverage}
+    \mathcal{R}(A)  = \frac{\nu(A)  + \nu (f^{-1}(A))}{2} 
+\end{equation}
+Whether or not the production function $p$ is known, we can always use \eqref{RisAverage} to find $\mathcal{R}$. \\
+In the context of \ref{socialplanners} if $p$ is twice differentiable, non-negative, satisfies the twist condition and $\mathcal{R}$ is containted in a compact set and the diagonal is $p-$cyclically monotone, then by  \cite[Corollary 1]{McCannMax} the mixed pairing is unique indicating how to obtain the production function via
+\begin{equation*}
+    p(k,s) = \pi(k) + w(s) \hspace{0.5cm } \mathcal{R}-\text{a.e.},
+\end{equation*} 
+which is exhaustive as we know $\pi,w$ and $\mathcal{R}$. This implies we can only recover the production function in the support of the unconditional distribution, meaning that we can only know the production function for the workers that we see and it's behaviour outside the support of $2\mathcal{R}$ can not be determined. Of course, under regularity assumptions on $\mathcal{R}$ and $p$ like being Lipschitz-continuous one can extend $p$ uniquely.
+\subsection{Discussion on the identification on general non-linear Roy model} \label{identification}
+In a similar way to the previous section, we ask ourselves whether we can recover $\mathcal{R}$ and $F$ from knowledge of $(\pi,w,\phi,\mu)$. \\
+If $\pi$ is fixed and assumed to be continuous and $F$ is known and strictly supermodular, 
+%we claim that \eqref{Hindic} uniquely determines the conditional distributions of labor for the earnings $\pi$. 
+Assume there exists two different unconditional distributions $\mathcal{R}_1,\mathcal{R}_2$ with continuous densities $R_1,R_2$ then for every $k \in \spt(H^{(\pi,w)})$
+\begin{equation} \label{uniqueR}
+ 0 = H^{(\pi,w)}(k) - H^{(\pi,w)}(k) = \int_{k_1}^k \int \mathbf{1}_{ \{\pi(\tilde{k}) \geq w(s) \} }(R_1(\tilde{k},s)-R_2(\tilde{k},s)) dsd\tilde{k}. 
+\end{equation}
+%Note that by strict supermodularity of $F$, $w$ is strictly increasing (Lemma \ref{inverselemma}) which is not ensured otherwise.
+%If we assume that the underlying distribution is absolutely continuous, by continuity of $\pi$ and $w$ consider $\delta > 0 $ and $ k \in \spt(H^{(\pi,w)})$ such that $\pi(\tilde{k}) > w(s) $ for every $\tilde{k} \in (k-\delta,k+\delta)$ then \begin{equation} \label{Rconclusion}
+ %    R_1(s,\tilde{k}) - R_2(s,\tilde{k}) = 0,
+%\end{equation}
+%By symmetry, the same occurs for $w(s) > \pi(k)$  and we are only left with the equality case. The set of points $(k,s)$ such that $\pi(k) = w(s)$ is lower-dimensional and so $\mathcal{R}(\{(k,s): \pi(k) = w(s) \}) = 0$ for any absolutely continuous measure, so $\mathcal{R}$ is a.e defined. 
+%Therefore the unconditional distribution $\mathcal{R}$ is unique as soon as we assume it is absolutely continuous (as the continuity of $\pi$ and $w$ is assumed). Therefore under the assumption of equilibrium in \eqref{RoyModeleq} we can recover $\mathcal{R}$ via Definition \ref{HandG} \textit{under the condition of continuity of the underlying density}.
+Let $s^* \in \spt(P_2\# \mathcal{R})$, if $k^* \in \spt(P_1 \# \mathcal{R})$ is such that $\pi(k^*) > w(s^*)$ then by continuity of $\pi$ and $w$ there exist $\delta_1,\delta_2$ such that if $(k,s) \in (k^*-\delta_1,k^*+\delta_1) =: B_{\delta_1,\delta_2}(k^*,s^*) \times (s^* - \delta_1, s^* + \delta_2) $ then \begin{equation}
+    \pi(k) > w(s).
+\end{equation}
+Using \eqref{uniqueR} we obtain that 
+\begin{align*}
+      0 = & \int_{k^*-\delta_1}^{k^* + \delta_1} \int \mathbf{1}_{B_{\delta_1,\delta_2}(k^*,s^*)}(\tilde{s}) \cdot (R_1(\tilde{k},\tilde{s})-R_2(\tilde{k},\tilde{s})) d\tilde{s} d\tilde{k} \\
+       &+ \int_{k^*-\delta_1}^{k^* + \delta_1} \int \mathbf{1}_{(B_{\delta_1,\delta_2}(k^*,s^*))^c}(\tilde{s}) \cdot (R_1(\tilde{k},\tilde{s})-R_2(\tilde{k},\tilde{s})) d\tilde{s} d\tilde{k}
+\end{align*}
+Using that $ \tilde{k} \in (k^*-\delta_1,k^* + \delta_1) $ yields
+\begin{equation}
+    0 = \int_{k^*-\delta_1}^{k^* + \delta_1} \int \mathbf{1}_{B_{\delta_1,\delta_2}(k^*,s^*)}(\tilde{s}) \cdot (R_1(\tilde{k},\tilde{s})-R_2(\tilde{k},\tilde{s})) d\tilde{s} d\tilde{k}
+\end{equation}
+Because $R_1-R_2$ is integrable, by continuity of the Lebesgue integral: 
+\begin{equation} \label{limitdeltas}
+    \lim_{\delta_1,\delta_2 \to 0} \int_{k^*-\delta_1}^{k^* + \delta_1} \int \mathbf{1}_{B_{\delta_1,\delta_2}(k^*,s^*)}(\tilde{s}) \cdot (R_1(\tilde{k},\tilde{s})-R_2(\tilde{k},\tilde{s})) d\tilde{s} d\tilde{k} = 0.
+\end{equation}
+Equation \eqref{limitdeltas} impedes us from concluding $R_1(k^*,s^*) = R_2(k^*,s^*) =0 $ with the usual techniques. This impediment reinforces the idea of \cite{HeckmanHonore} in the linear case where the distribution can not be identified. 
+Nevertheless, notice that under regularity assumptions on $F,\phi,\mathcal{R}$, differentiating twice \eqref{HandG} we obtain \begin{equation}\label{partialRformula}
+    R(k,\phi(k)) = \frac{(H^{\phi})''(k)}{\phi'(k)}.
+\end{equation} 
+This formula serves as partial analogue of \eqref{RisAverage}. We can identify the distribution at the points $(k,\phi(k))$ explicitly but it seems like nowhere else. .\\
+
+\subsection{Identification of production}
+The identification of production is a more subtle question. Note that uniqueness of Brenier maps in 1-dimensional transport indicates that if the distributions are one dimensional, the optimal matching will be the same for all super-modular functions. The question whether or not one can recover the pair $(F,\mathcal{R})$ from only the information of $(\pi,w,\mu)$ remains open to the authors. Observe that $F$ was known in section \ref{identification} when we looked  for $\mathcal{R}$, the identification of the pair $(\mathcal{R},F)$ is expected to not be solvable i.e. we expect many different pairs to yield the same earnings $(\pi,w)$
+and matching $\mu$, although we still have no rigorous proof.
+\section{Further development and some open questions} \label{Further}
+In this section we describe some generalizations, problems and ideas that we believe would make interesting lines of future investigation. 
+\subsection{Infinite dimensional linear program}
+Motivated by the success of the Kantorovich formulation in the Monge-Kantorovich problem, in this section we formulate the infinite-dimensional relaxation of Problem \ref{RoyModel}. \begin{definition} (Kantorovich formulation of Roy's model) \label{KantoForm} \\
+Given a supermodular production function $F:\mathbb{R}^2 \to \mathbb{R}$ and $\mathcal{R} \in \mathcal{P}_c(\mathbb{R}^2)$ we define the relaxation of the generalized Roy model (Problem \ref{RoyModel}) as the linear program defined via
+\begin{equation} \label{kantoeq}
+    \sup_{ \displaystyle \bigcup \limits_{ \pi \in \mathcal{C}_3} \Gamma(H^{\pi},G^{\pi})} \left\{ \int F(k,s) d\gamma(k,s) \right\}
+\end{equation}
+    where $\Gamma(\mu,\nu) = \{ \gamma \in \mathcal{P}(\spt(\mathcal{R})): P_1 \# \gamma = \mu, P_2 \# \gamma = \nu \} $ and $\mathcal{C}_3$ is the set defined in Problem \ref{RoyModel}.
+\end{definition}The constraint set in Definition \ref{KantoForm} may be an interesting object of study. It is not clear to the author whether or not this set is compact or even convex. Observe that a formulation like that of \eqref{kantoeq} resembles the work in \cite{McCannMax}, indicating possible lines of investigation. 
+\subsubsection{Reformulation of the definitions of the measures}
+Given a function $f: X \to \mathbb{R}$ is $S \subseteq X$, the $S$-hypograph of $f$ is defined via \begin{equation*}
+    Hyp_S (f) = \{ (x,r) \in S \times \mathbb{R}: r \leq f(x) \}. 
+\end{equation*}
+Similarly, the $S$-strict epi-graph of $f$ is defined via 
+\begin{equation*}
+    SEpi_S(f) = \{ (x,r) \in S \times \mathbb{R} : f(x) < r \}.
+\end{equation*}
+With this notation, Definition \ref{HandG} rewrites 
+\begin{align*}
+    &H^{\pi}(A) = \mathcal{R}(Hyp_A(\pi)) \\
+    & G^{\pi}(B) = \mathcal{R}(SEpi_B(\pi)).
+\end{align*}
+We expect this notation to be useful to simplify some of the proofs and enlighten other properties as the hypergraph and the epigraph have notable properties for convexity/concavity. 
+\subsection{Superoptimality Conjecture}
+The first line of investigation seems to be whether or not Conjecture \ref{conjectureeq} holds true. This conjecture is interesting both in mathematical and economical sides. We refer to section \ref{conjecturesection} for the details. This conjecture is also related to classical economical theory, one could attempt to use Theorem 9.19 in \cite{Roth} but the generalizations and connections should be established rigorously,
+\subsection{Generalizations and extensions} \label{FurtherGen}
+The generalized Roy Model (Problem \ref{RoyModel}) presented here applies for an absolutely continuous, compactly supported labor force with skill sets in $\mathbb{R}^2$ and a supermodular function $F$ that does not depend on the skills of your partner in the job not performed. The general version of \cite{McCannMax} deals with much more generality but one could attempt to introduce occupational choice. The separation function of Problem \ref{RoyModel} was shown to be removable via the equivalence with Problem \ref{2steppi}, nevertheless it provides interesting economic interpretations, so one must ask, is there an equivalent of separation in many dimensions? If so, how can one interpret such a function?. \\
+The intuitive modelling using the separation function $\phi$, could potentially be used for a multi-role model on which one would obtain multiple separation functions and the matching would realize $n$-tuples of people to work on a firm. This could be an interesting model for the hiring of teams to perform a job but the optimal matching in this context would require different tools. \\
+Another interesting point of investigation is the relaxation of the continuity of separation functions made in Definition \ref{HandG}, we expect the model to be unstable and very different if such hypothesis is removed. \\
+Along a similar line, the condition of Definition \ref{market-feasible} could potentially be removed by looking at separation functions with different domains, this apparent technicallity showed to be necessary for the strategy used during the proof of Lemma \ref{phitoHcont} and the use of Arzela-Ascoli requires a uniform domain. Studying existence and stability in this framework is still open and interesting. 
+\subsection{On the second fundamental Theorem of Welfare}
+A very interesting line of investigation comes from pure economical reasoning. If the social planner's problem from \cite{McCannMax} (Problem \ref{planners}) is indeed a Pareto equilibrium, can one find the initial conditions (say $F$ supermodular and $R$) such that the solution for Problem \ref{RoyModel} achieves the solution of Problem \ref{planners} ? If not, as they may be disassociated, what is the competitive version (with no occupational choice as constraints) that allows the social planner's problem of McCann-Trokhimtchouk to be attained for initial conditions? Can one find such initial conditions? \\
+
+Furthermore, the solution to Conjecture \eqref{conjectureeq} could come from the second fundamental theorem of welfare but appropriate definitions and connections are yet to be established.
+\subsection{First variations, the envelope theorem and approximating total production in similar economies}
+In this section we propose two intuitive ways to approximate the resulting outputs of different economies. Let us introduce notation: 
+\begin{align*}
+    & TP_{GRM}(F,\mathcal{R}) = \sup_{(\phi, \pi,w,\mu) \in \mathcal{C}} \left\{ \int F(k,\mu(k)) dH^{\phi} \right\}, \\
+    & TP_{MT}(p,\mathcal{R}) =   \sup_{\nu + f \# \nu = 2\mathcal{R}}\left\{ \int p(x,f(x)) d\nu \right\}.
+\end{align*}
+One could attempt to approximate to first order the values for similar economies via
+\begin{align*}
+    & TP_{MT}(p,\mathcal{R}) - TP_{MT}(p,\tilde{\mathcal{R}}) \approx 2\int v(x) d\mathcal{R} \: \cdot \:  d_2(\mathcal{R},\tilde{\mathcal{R}}) \\
+    & TP_{GRM}(F,\mathcal{R}) - TP_{GRM}(\tilde{F},\mathcal{R}) \approx \left( \int \pi - \tilde{\pi} dH^{\phi} + \int (w- \tilde{w}) dG^{\phi} \right) \lvert \lvert F - F \rvert \rvert_{\infty}
+\end{align*}
+This ideas are motivated from the concept of first variations (see \cite[Chapter 7]{santambrogio}) and could be used to approximate the values of economies where one can either only see the earnings or one element of the quadruple but expects labor forces to be similar (in the second case). Whether this approximations are good or not to first order is not known to the authors but would yield an interesting approach to studying similar populations whose production functions are the same or viceversa. The second guess is a little more naive, we attempt to use only salaries observed in both economies, difference between production functions and \textit{only one} of the labor forces to make the prediction.
+
+
+
+
+
+
+\begin{thebibliography}{}
+\bibitem{KremerMaskin} M. Kremer and E. Maskin, \textit{Wage Inequality and Segregation by Skill}, unpublished manuscript, Harvard University, 1996.
+
+\bibitem{McCannMax} Robert J. McCann , Maxim Trokhimtchouk, Optimal partition of a large labor force into working pairs,  \textit{Economic Theory} Vol. 42, No. 2 (Feb., 2010), pp. 375-395 (21 pages)
+\bibitem{McCannCordero} D. Cordero-Erausquin , R. McCann  and
+M. Schmuckenschläger, A Riemannian interpolation inequality à la Borell,
+Brascamp and Lieb,\textit{ Invent. math.} 146, 219–257 (2001), (DOI) 10.1007/s002220100160.
+
+\bibitem{HeckmanHonore} J. J. Heckman and B. E. Honoré,The Empirical Content of the Roy Model
+\textit{Econometrica}, Vol. 58, No. 5 (Sep., 1990), pp. 1121-1149 (29 pages).
+\bibitem{Roy} A. D. Roy, Some Thoughts on the Distribution of Earnings,\textit{Oxford Economic Papers}, New Series, Vol. 3, No. 2 (Jun., 1951), pp. 135-146 (12 pages).
+
+\bibitem{santambrogio} F. Santambrogio,  \textit{Optimal Transport for Applied Mathematicians, Calculus of Variations, PDEs, and
+Modeling}, \textit{Progress in Nonlinear Differential
+Equations and Their Applications}, Volume 87, Birkhäuser, Springer International Publishing Switzerland 2015
+
+\bibitem{McCannGuillen} R. McCann and N. Guillen,  Five lectures on optimal transportation: geometry, regularity and applications,  \textit{Analysis and Geometry of Metric Measure Spaces: Lecture Notes of the Seminaire de Mathematiques Superieure (SMS) Montreal 2011.} G. Dafni et al, eds. Providence: Amer. Math. Soc. (2013) 145-180. 
+\bibitem{Ball} K. Ball, An Elementary Introduction to Monotone Transportation, \textit{Geometric Aspects of Functional Analysis},Part of the Lecture Notes in Mathematics book series (LNM,volume 1850), pp 41–52.
+
+\bibitem{Roth} A. Roth, A. Marilda, O. Sotomayor, \textit{Two-sided matching}, Econometric society monographs, vol 18, Cambridge University Press.
+
+\bibitem{Siow} A. Syow and E. Mak, Occupational Choice and Matching in the Labor Market [accepted, to appear in JPE].
+\bibitem{Galichon} A. Galichon, \textit{Optimal Transport Methods in Economics}, 2016, Princeton University Press, 184 pp.
+
+\bibitem{Bloom} J. Song, D. Price, F. Guvenen, N. Bloom, T. von Watcher, Firming up inequality, \emph{The Quarterly Journal of Economics}, 134,2018.
+
+\bibitem{Mak} Aloysius Siow \& Eric Mak \textit{Occupational Choice and Matching in the Labor Market}, 2017 Meeting Papers 30, Society for Economic Dynamics.
+
+\bibitem{Villani} C. Villani, \textit{Topics in Optimal Transportation}, American Mathematical Society, Graduate Studies in Mathematics Volume 58, 2003. 
+
+\bibitem{VillaniOldAndNew} C. Villani, \textit{Optimal Transport: Old and New}, Springer, A series of Comprehensive Studies in Mathematics, 2009, Berlin.
+\end{thebibliography}
+ 
+\end{document}
+
+\section{Introduction}
+
+
+
+
+

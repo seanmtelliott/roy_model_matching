@@ -2,7 +2,7 @@
 library(plotly)
 library(dplyr)
 
-p_Ll <- 0.25
+P_Ll <- 0.5
 
 sample_simplex <- function(n) {
   X <- matrix(rexp(3 * n), ncol=3)
@@ -42,32 +42,32 @@ plot_ly() %>%
     opacity = 0.2
   ) %>%
   
-  # Monotonic region in blue
-  # add_markers(
-  #   data = df %>% filter(monotonic),
-  #   x = ~x, y = ~y, z = ~z,
-  #   marker = list(color = 'blue', size = 2),
-  #   name = 'Monotonic region (x < y < z)',
-  #   opacity = P_Ll
-  # ) %>%
-  
-  # Intersection in orange
-  # add_markers(
-  #   data = df %>% filter(both_conditions),
-  #   x = ~x, y = ~y, z = ~z,
-  #   marker = list(color = 'orange', size = 2),
-  #   name = 'Monotonic & z ≤ x + y',
-  #   opacity = 0.8
-  # ) %>%
-  
+  #Monotonic region in blue
   add_markers(
-    data = df %>% filter(specialization),
+    data = df %>% filter(monotonic),
     x = ~x, y = ~y, z = ~z,
-    marker = list(color = 'green', size = 2),
-    name = 'specialization (p_Ll < y + z)',
-    opacity =  0.8
+    marker = list(color = 'blue', size = 2),
+    name = 'Monotonic region (x < y < z)',
+    opacity = P_Ll
+  ) %>%
+
+  #Intersection in orange
+  add_markers(
+    data = df %>% filter(both_conditions),
+    x = ~x, y = ~y, z = ~z,
+    marker = list(color = 'orange', size = 2),
+    name = 'Monotonic & z ≤ x + y',
+    opacity = 0.8
   ) %>%
   
+  # add_markers(
+  #   data = df %>% filter(specialization),
+  #   x = ~x, y = ~y, z = ~z,
+  #   marker = list(color = 'green', size = 2),
+  #   name = 'specialization (p_Ll < y + z)',
+  #   opacity =  0.8
+  # ) %>%
+  # 
   # Vertices in black
   add_markers(
     data = vertices,
